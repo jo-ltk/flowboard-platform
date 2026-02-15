@@ -1,4 +1,4 @@
-import pino, { Logger } from "pino";
+import pino from "pino";
 
 const levels = {
   http: 10,
@@ -9,7 +9,7 @@ const levels = {
   fatal: 60,
 };
 
-export const logger: Logger = pino({
+export const logger = pino({
   level: process.env.LOG_LEVEL || "info",
   customLevels: levels,
   formatters: {

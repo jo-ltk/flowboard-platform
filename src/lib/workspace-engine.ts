@@ -9,6 +9,7 @@ const MOCK_WORKSPACES: WorkspaceMetadata[] = [
     memberCount: 8,
     aiUsage: { tokensUsed: 42500, tokensLimit: 100000 },
     automationUsage: { executed: 12, limit: 50 },
+    subscription: { status: 'active', planType: 'architect' },
     role: 'owner',
     active: true,
   },
@@ -19,6 +20,7 @@ const MOCK_WORKSPACES: WorkspaceMetadata[] = [
     memberCount: 2,
     aiUsage: { tokensUsed: 8000, tokensLimit: 10000 },
     automationUsage: { executed: 4, limit: 5 },
+    subscription: { status: 'active', planType: 'starter' },
     role: 'admin',
     active: false,
   },
@@ -29,6 +31,7 @@ const MOCK_WORKSPACES: WorkspaceMetadata[] = [
     memberCount: 142,
     aiUsage: { tokensUsed: 250000, tokensLimit: 1000000 },
     automationUsage: { executed: 450, limit: -1 },
+    subscription: { status: 'active', planType: 'enterprise' },
     role: 'member',
     active: false,
   }
@@ -50,6 +53,7 @@ export const createWorkspace = (name: string): WorkspaceMetadata => {
     memberCount: 1,
     aiUsage: { tokensUsed: 0, tokensLimit: 10000 },
     automationUsage: { executed: 0, limit: 5 },
+    subscription: { status: 'active', planType: 'starter' },
     role: 'owner',
     active: false,
   };

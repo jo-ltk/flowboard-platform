@@ -22,12 +22,9 @@ export class RegionRouter {
       throw new Error(`No database configured for region: ${region}`);
     }
 
+    // In Prisma 7.x, client engine requires accelerateUrl
     const client = new PrismaClient({
-      datasources: {
-        db: {
-          url,
-        },
-      },
+      accelerateUrl: url,
     });
 
     if (process.env.NODE_ENV !== "production") {

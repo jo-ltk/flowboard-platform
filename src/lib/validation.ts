@@ -37,7 +37,7 @@ export async function validateRequest<T>(req: Request, schema: z.Schema<T>) {
         success: false, 
         error: NextResponse.json({ 
           error: "Validation failed", 
-          details: error.errors.map(e => ({ path: e.path, message: e.message }))
+          details: (error as any).errors.map((e: any) => ({ path: e.path, message: e.message }))
         }, { status: 400 }) 
       };
     }

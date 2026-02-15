@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { stripeService } from "@/services/billing/stripe-service";
-import { getServerSession } from "next-auth"; // Assuming Auth.js
+// Assuming Auth.js
 // import { authOptions } from "@/lib/auth"; // Need to check where auth is
 
 export async function POST(req: Request) {
