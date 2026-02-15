@@ -3,6 +3,7 @@
 /* ══════════════════════════════════════════
    FlowBoard — Soft Editorial Pastel System
    Premium · Design-forward · Modern Editorial
+   Mobile-First · Performance-Optimized
    ══════════════════════════════════════════ */
 
 @theme inline {
@@ -65,11 +66,11 @@
 
 /* ─── Custom Utilities ─── */
 @utility text-clamp-hero {
-  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-size: clamp(2.5rem, 10vw, 9rem);
 }
 
 @utility text-clamp-statement {
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2.2rem, 8vw, 7rem);
 }
 
 @utility perspective-2000 {
@@ -167,8 +168,30 @@
   clip-path: ellipse(120% 100% at 50% 0%);
 }
 
+/* ─── Scrollbar Hide Utility ─── */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ─── Base Styles ─── */
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-cream text-foreground antialiased;
     font-feature-settings: "cv11", "ss01";
@@ -176,6 +199,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeSpeed;
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ::selection {
@@ -190,6 +215,17 @@
   h5,
   h6 {
     color: var(--color-deep-blue);
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Prevent iOS input zoom */
+  @media screen and (max-width: 640px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
   }
 }
 
@@ -199,8 +235,11 @@
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.magnetic-wrap:hover {
-  transform: scale(1.03) translate(2px, -2px);
+/* Hover effects only on devices that support hover */
+@media (hover: hover) {
+  .magnetic-wrap:hover {
+    transform: scale(1.03) translate(2px, -2px);
+  }
 }
 
 /* ─── Smooth Float Animation (Removed for performance) ─── */
@@ -222,8 +261,29 @@
   transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.card-editorial:hover {
-  box-shadow: var(--shadow-medium);
-  border-color: var(--color-border-blue);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .card-editorial:hover {
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-border-blue);
+    transform: translateY(-2px);
+  }
+}
+
+/* ─── Reduced Motion Preferences ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Safe Area Padding (iOS notch/bar) ─── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

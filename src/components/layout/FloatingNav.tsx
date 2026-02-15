@@ -24,7 +24,7 @@ const FloatingNav = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[850px] px-6"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[850px] px-6 hidden sm:block"
     >
       <div className="glass-panel nav-shadow bg-surface-elevated/80 backdrop-blur-xl border border-border-blue/30 px-6 py-4 flex items-center justify-between rounded-full">
         {/* Left: Minimal Logo */}
