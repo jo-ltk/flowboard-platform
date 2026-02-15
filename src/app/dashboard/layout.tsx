@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { DashboardNavbar } from "@/components/layout/DashboardNavbar";
 import { SidebarProvider } from "@/hooks/use-sidebar";
+import FlowBoardChatbot from "@/components/chat/FlowBoardChatbot";
 
 export const metadata = {
   title: "Dashboard",
@@ -26,6 +27,7 @@ export default function DashboardLayout({
             <div className="mx-auto max-w-[1280px]">
               {children}
             </div>
+            <FlowBoardChatbot />
           </main>
         </div>
       </div>
