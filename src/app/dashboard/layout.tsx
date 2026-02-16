@@ -7,6 +7,8 @@ export const metadata = {
   title: "Dashboard",
 };
 
+import { ActivityProvider } from "@/context/ActivityContext";
+
 export default function DashboardLayout({
   children,
 }: {
@@ -14,23 +16,25 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen overflow-hidden bg-cream">
-        {/* Sidebar */}
-        <Sidebar />
+      <ActivityProvider>
+        <div className="flex h-screen overflow-hidden bg-cream">
+          {/* Sidebar */}
+          <Sidebar />
 
-        {/* Main area */}
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <DashboardNavbar />
+          {/* Main area */}
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <DashboardNavbar />
 
-          {/* Content area */}
-          <main className="flex-1 overflow-y-auto bg-surface-primary/30 p-10 lg:p-16">
-            <div className="mx-auto max-w-[1280px]">
-              {children}
-            </div>
-            <FlowBoardChatbot />
-          </main>
+            {/* Content area */}
+            <main className="flex-1 overflow-y-auto bg-surface-primary/30 p-10 lg:p-16">
+              <div className="mx-auto max-w-[1280px]">
+                {children}
+              </div>
+              <FlowBoardChatbot />
+            </main>
+          </div>
         </div>
-      </div>
+      </ActivityProvider>
     </SidebarProvider>
   );
 }
