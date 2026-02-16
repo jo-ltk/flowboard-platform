@@ -59,7 +59,6 @@ export const WorkspaceSwitcher = () => {
     }
   };
 
-  console.log('[WorkspaceSwitcher] Render. Active:', activeWorkspace?.name);
 
   return (
     <div className="relative w-full px-4 mb-8">
@@ -113,7 +112,6 @@ export const WorkspaceSwitcher = () => {
                       role="button"
                       tabIndex={0}
                       onClick={() => {
-                        console.log('[WorkspaceSwitcher] Change requested:', ws.name);
                         setActiveWorkspace(ws);
                         setIsOpen(false);
                       }}
@@ -184,7 +182,7 @@ export const WorkspaceSwitcher = () => {
 
       <AnimatePresence>
         {isCreating && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
+            <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
                 <motion.div 
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -232,7 +230,7 @@ export const WorkspaceSwitcher = () => {
       </AnimatePresence>
       <AnimatePresence>
         {isDeleting && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
+            <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
                 <motion.div 
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}

@@ -166,7 +166,7 @@ export const AutomationPanel = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "p-6 rounded-[24px] bg-white border border-soft-blue/10 shadow-soft transition-all duration-300 group",
+              "p-6 rounded-xl bg-white border border-soft-blue/10 shadow-soft transition-all duration-300 group",
               rule.isActive ? "ring-2 ring-soft-blue/20 bg-cream/30" : "opacity-75 grayscale-[0.5]"
             )}
           >
