@@ -19,7 +19,11 @@ import {
   Trash2,
   Edit2,
   X,
-  Check
+  Check,
+  List,
+  GripVertical,
+  Play,
+  Activity
 } from "lucide-react";
 import { PresenceSystem } from "@/components/system/PresenceSystem";
 import { ActivityFeed } from "@/components/system/ActivityFeed";
@@ -41,6 +45,9 @@ export function ProjectView() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showBoard, setShowBoard] = useState(false);
+  const [draggedTask, setDraggedTask] = useState<any>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   // Task Editing State
@@ -217,36 +224,116 @@ export function ProjectView() {
     }
   };
 
-  const toggleTaskCompletion = async (id: any) => {
+  const updateTaskStatus = async (id: any, newStatus: string) => {
     const task = tasks.find(t => t.id === id);
     if (!task) return;
 
-    const newStatus = task.status === "completed" ? "pending" : "completed";
-    
+    // Optimistically update
+    const oldStatus = task.status;
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, status: newStatus } : t));
+
     try {
         await fetch('/api/tasks', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, status: newStatus })
         });
-
-        setTasks(tasks.map(t => t.id === id ? { ...t, status: newStatus } : t));
-        toast.info("Task status updated");
+        
+        toast.success(`Task marked as ${newStatus.replace('-', ' ')}`);
         
         addEvent({
           user: { name: "You" },
-          action: newStatus === "completed" ? "completed task" : "reopened task",
+          action: "updated status to " + newStatus,
           target: task.title,
           type: "status"
         });
     } catch (err) {
+        // Revert
+        setTasks(prev => prev.map(t => t.id === id ? { ...t, status: oldStatus } : t));
         toast.error("Failed to update status");
     }
   };
 
+  const toggleTaskCompletion = async (id: any) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    const newStatus = task.status === "completed" ? "pending" : "completed";
+    await updateTaskStatus(id, newStatus);
+  };
+
+  const moveToInProgress = async (id: any) => {
+    await updateTaskStatus(id, "in-progress");
+  };
+
   const handleViewBoard = () => {
-    console.log("[ProjectView] View Board clicked");
-    toast("Board view coming soon!");
+    setShowBoard(prev => !prev);
+  };
+
+  // Board columns config
+  const boardColumns = [
+    { id: "pending", title: "To Do", color: "bg-orange-400", lightBg: "bg-orange-50", borderColor: "border-orange-200" },
+    { id: "in-progress", title: "In Progress", color: "bg-blue-500", lightBg: "bg-blue-50", borderColor: "border-blue-200" },
+    { id: "completed", title: "Done", color: "bg-emerald-500", lightBg: "bg-emerald-50", borderColor: "border-emerald-200" },
+  ];
+
+  const getTasksByStatus = (status: string) => {
+    return tasks.filter(t => t.status === status);
+  };
+
+  const handleDragStart = (e: React.DragEvent, task: any) => {
+    setDraggedTask(task);
+    e.dataTransfer.effectAllowed = 'move';
+    // Set a tiny timeout to allow the drag image to render
+    setTimeout(() => {
+      const el = document.getElementById(`board-card-${task.id}`);
+      if (el) el.style.opacity = '0.4';
+    }, 0);
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    const el = document.getElementById(`board-card-${draggedTask?.id}`);
+    if (el) el.style.opacity = '1';
+    setDraggedTask(null);
+    setDragOverColumn(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent, columnId: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverColumn(columnId);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    setDragOverColumn(null);
+  };
+
+  const handleDrop = async (e: React.DragEvent, newStatus: string) => {
+    e.preventDefault();
+    setDragOverColumn(null);
+    if (!draggedTask || draggedTask.status === newStatus) return;
+
+    // Optimistically update UI
+    setTasks(prev => prev.map(t => t.id === draggedTask.id ? { ...t, status: newStatus } : t));
+    
+    try {
+      await fetch('/api/tasks', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: draggedTask.id, status: newStatus })
+      });
+      toast.success(`Moved "${draggedTask.title}" to ${newStatus === 'completed' ? 'Done' : newStatus === 'in-progress' ? 'In Progress' : 'To Do'}`);
+      addEvent({
+        user: { name: "You" },
+        action: newStatus === 'completed' ? 'completed task' : 'moved task to ' + newStatus,
+        target: draggedTask.title,
+        type: 'status'
+      });
+    } catch (err) {
+      // Revert on failure
+      setTasks(prev => prev.map(t => t.id === draggedTask.id ? { ...t, status: draggedTask.status } : t));
+      toast.error('Failed to update task status');
+    }
+    setDraggedTask(null);
   };
 
   const handleMoreActions = () => {
@@ -331,16 +418,22 @@ export function ProjectView() {
                 <button 
                   onClick={triggerUpload}
                   disabled={isUploading}
-                  className="h-10 px-5 rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="h-10 px-5 rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 whitespace-nowrap"
                 >
                   {isUploading ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Upload className="w-3 h-3" />}
                   {isUploading ? "Uploading..." : "Upload Tasks"}
                 </button>
                 <button 
                   onClick={handleViewBoard}
-                  className="h-10 px-5 rounded-full bg-cream text-deep-blue text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                  className={cn(
+                    "h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer whitespace-nowrap",
+                    showBoard 
+                      ? "bg-deep-blue text-cream hover:bg-deep-blue/90 ring-2 ring-light-green/40" 
+                      : "bg-cream text-deep-blue hover:bg-white"
+                  )}
                 >
-                  <Layout className="w-3 h-3" /> View Board
+                  {showBoard ? <List className="w-3 h-3" /> : <Layout className="w-3 h-3" />}
+                  {showBoard ? 'List View' : 'View Board'}
                 </button>
                 <button 
                   onClick={handleMoreActions}
@@ -353,6 +446,150 @@ export function ProjectView() {
         </div>
       </div>
 
+      {/* BOARD VIEW */}
+      {showBoard && (
+        <div className="space-y-6 fade-in-up">
+          <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3">
+              <h2 className="font-syne text-2xl font-bold text-deep-blue">Kanban Board</h2>
+              <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
+                {tasks.length} TASKS
+              </Badge>
+            </div>
+            <button 
+              onClick={handleNewObjective}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-soft hover:bg-deep-blue hover:text-white hover:border-transparent transition-all duration-300 text-xs font-bold text-deep-blue uppercase tracking-widest shadow-sm hover:shadow-md cursor-pointer"
+            >
+              <Plus className="w-3 h-3" />
+              New Task
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {boardColumns.map((column) => {
+              const columnTasks = getTasksByStatus(column.id);
+              return (
+                <div 
+                  key={column.id}
+                  className={cn(
+                    "rounded-2xl border-2 border-dashed transition-all duration-300 min-h-[400px] flex flex-col",
+                    dragOverColumn === column.id 
+                      ? `${column.borderColor} ${column.lightBg} scale-[1.01] shadow-lg` 
+                      : "border-border-soft bg-surface-sunken/30"
+                  )}
+                  onDragOver={(e) => handleDragOver(e, column.id)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, column.id)}
+                >
+                  {/* Column Header */}
+                  <div className="p-4 pb-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={cn("w-3 h-3 rounded-full", column.color)} />
+                      <h3 className="font-syne text-sm font-bold text-deep-blue uppercase tracking-wider">{column.title}</h3>
+                    </div>
+                    <Badge variant="secondary" className="bg-white text-deep-blue/50 text-[10px] font-mono border border-border-soft">
+                      {columnTasks.length}
+                    </Badge>
+                  </div>
+
+                  {/* Cards */}
+                  <div className="px-3 pb-3 space-y-3 flex-1">
+                    {columnTasks.map((task) => (
+                      <div
+                        key={task.id}
+                        id={`board-card-${task.id}`}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, task)}
+                        onDragEnd={handleDragEnd}
+                        className="group relative p-4 rounded-xl bg-white border border-white shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-200 cursor-grab active:cursor-grabbing active:shadow-xl active:scale-[1.03]"
+                      >
+                        {/* Drag handle */}
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-40 transition-opacity">
+                          <GripVertical className="w-3 h-3 text-deep-blue" />
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                          <button 
+                            onClick={() => toggleTaskCompletion(task.id)}
+                            className={cn(
+                              "w-5 h-5 rounded-full shrink-0 flex items-center justify-center transition-all duration-300 cursor-pointer mt-0.5",
+                              task.status === "completed" 
+                                ? "bg-emerald-500 text-white" 
+                                : "border-2 border-border-soft text-transparent hover:border-soft-blue"
+                            )}
+                          >
+                            <CheckCircle2 className="w-3 h-3" />
+                          </button>
+                          <div className="flex-1 min-w-0">
+                            <h4 className={cn(
+                              "text-sm font-medium text-deep-blue leading-snug line-clamp-2",
+                              task.status === "completed" && "opacity-50 line-through decoration-deep-blue/20"
+                            )}>
+                              {task.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border-soft/50">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className={cn(
+                              "text-[8px] font-bold uppercase tracking-wider px-1.5 py-0",
+                              task.priority === 'high' ? "bg-red-50 text-red-600" :
+                              task.priority === 'medium' ? "bg-orange-50 text-orange-600" :
+                              "bg-blue-50 text-blue-600"
+                            )}>
+                              {task.priority}
+                            </Badge>
+                            <span className="text-[10px] text-deep-blue/30 font-mono">{task.time}</span>
+                          </div>
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button 
+                              onClick={() => startEdit(task)}
+                              className="p-1 rounded hover:bg-surface-tinted text-deep-blue/40 hover:text-deep-blue transition-colors cursor-pointer"
+                              title="Edit"
+                            >
+                              <Edit2 className="w-3 h-3" />
+                            </button>
+                            <button 
+                              onClick={() => deleteTask(task.id)}
+                              className="p-1 rounded hover:bg-red-50 text-deep-blue/40 hover:text-red-600 transition-colors cursor-pointer"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {columnTasks.length === 0 && (
+                      <div className={cn(
+                        "flex flex-col items-center justify-center py-12 px-4 rounded-xl border-2 border-dashed transition-all",
+                        dragOverColumn === column.id 
+                          ? `${column.borderColor} ${column.lightBg}` 
+                          : "border-transparent"
+                      )}>
+                        <div className="w-10 h-10 rounded-full bg-surface-sunken flex items-center justify-center mb-3">
+                          <Layout className="w-4 h-4 text-deep-blue/20" />
+                        </div>
+                        <p className="text-xs text-deep-blue/30 font-medium text-center">
+                          {dragOverColumn === column.id ? "Drop here" : "No tasks yet"}
+                        </p>
+                        <p className="text-[10px] text-deep-blue/20 mt-1">
+                          Drag tasks here
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* LIST VIEW */}
+      {!showBoard && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Main Content: Tasks & Roadmap */}
         <div className="lg:col-span-8 space-y-10">
@@ -362,9 +599,14 @@ export function ProjectView() {
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-3">
                 <h2 className="font-syne text-2xl font-bold text-deep-blue">Strategic Tasks</h2>
-                <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
-                  {tasks.filter(t => t.status !== "completed").length} OPEN
-                </Badge>
+                <div className="flex gap-2">
+                  <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
+                    {tasks.filter(t => t.status === "pending").length} PENDING
+                  </Badge>
+                  <Badge variant="secondary" className="bg-blue-50 text-blue-600 border-none text-[10px]">
+                    {tasks.filter(t => t.status === "in-progress").length} IN PROGRESS
+                  </Badge>
+                </div>
               </div>
               <button 
                 onClick={handleNewObjective}
@@ -436,17 +678,36 @@ export function ProjectView() {
                   ) : (
                     <>
                       <div className="flex justify-between items-start mb-4">
-                        <button 
-                          onClick={() => toggleTaskCompletion(task.id)}
-                          className={cn(
-                            "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
-                            task.status === "completed" 
-                              ? "bg-light-green text-deep-blue scale-110" 
-                              : "border-2 border-border-soft text-transparent hover:border-soft-blue group-hover:scale-110"
+                        <div className="flex items-center gap-2">
+                          <button 
+                            onClick={() => toggleTaskCompletion(task.id)}
+                            className={cn(
+                              "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
+                              task.status === "completed" 
+                                ? "bg-emerald-500 text-white scale-110" 
+                                : "border-2 border-border-soft text-transparent hover:border-soft-blue group-hover:scale-110"
+                            )}
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                          </button>
+                          
+                          {task.status === "pending" && (
+                            <button 
+                              onClick={() => moveToInProgress(task.id)}
+                              className="w-6 h-6 rounded-full border border-soft-blue/30 flex items-center justify-center text-soft-blue hover:bg-soft-blue hover:text-white transition-all cursor-pointer"
+                              title="Start Task"
+                            >
+                              <Play className="w-2.5 h-2.5 fill-current" />
+                            </button>
                           )}
-                        >
-                          <CheckCircle2 className="w-4 h-4" />
-                        </button>
+
+                          {task.status === "in-progress" && (
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 animate-pulse">
+                              <Activity className="w-2.5 h-2.5" />
+                              <span className="text-[8px] font-bold uppercase tracking-wider">Working</span>
+                            </div>
+                          )}
+                        </div>
                         
                         <div className="flex items-center gap-2">
                           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
@@ -622,6 +883,7 @@ export function ProjectView() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

@@ -15,7 +15,9 @@ import {
   ChevronDown,
   Loader2,
   X,
-  Trash2
+  Trash2,
+  Play,
+  Activity
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -118,10 +120,33 @@ export function TaskManagement() {
       return task;
     }));
 
-    toast.success(`Task status updated to ${nextStatus}`);
-    console.log(`[TaskManagement] Task ${id} updated status to ${nextStatus}`);
-    
-    // In a real app, you'd call a PATCH API here
+    try {
+      await fetch(`/api/dashboard/tasks`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: nextStatus })
+      });
+      toast.success(`Task marked as ${nextStatus}`);
+    } catch (err) {
+      toast.error("Failed to update status");
+      fetchTasks(); // Revert
+    }
+  };
+
+  const setInProgress = async (id: string) => {
+    try {
+      setTasks(prev => prev.map(t => t.id === id ? { ...t, status: "IN_PROGRESS" } : t));
+      const res = await fetch(`/api/dashboard/tasks`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: "IN_PROGRESS" })
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Task is now in progress");
+    } catch (err) {
+      toast.error("Failed to update status");
+      fetchTasks();
+    }
   };
 
   const handleConfirmTask = async (taskData: { 
@@ -282,17 +307,27 @@ export function TaskManagement() {
                 task.status === "COMPLETED" && "opacity-60 grayscale-[0.5]"
               )}
             >
-              {/* Status Toggle */}
-              <button 
-                onClick={() => toggleTaskStatus(task.id)}
-                className="shrink-0 cursor-pointer"
-              >
-                {task.status === "COMPLETED" ? (
-                  <CheckCircle2 className="w-6 h-6 text-light-green fill-light-green/10" />
-                ) : (
-                  <Circle className="w-6 h-6 text-deep-blue/10 group-hover:text-soft-blue transition-colors" />
+              <div className="flex flex-col items-center gap-2">
+                <button 
+                  onClick={() => toggleTaskStatus(task.id)}
+                  className="shrink-0 cursor-pointer"
+                >
+                  {task.status === "COMPLETED" ? (
+                    <CheckCircle2 className="w-6 h-6 text-light-green fill-light-green/10" />
+                  ) : (
+                    <Circle className="w-6 h-6 text-deep-blue/10 group-hover:text-soft-blue transition-colors" />
+                  )}
+                </button>
+                {task.status === "TODO" && (
+                  <button 
+                    onClick={() => setInProgress(task.id)}
+                    className="shrink-0 w-6 h-6 rounded-full border border-blue-100 flex items-center justify-center text-blue-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer"
+                    title="Start Working"
+                  >
+                    <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
+                  </button>
                 )}
-              </button>
+              </div>
 
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-3">
@@ -310,6 +345,12 @@ export function TaskManagement() {
                   )}>
                     {task.priority}
                   </Badge>
+                  {task.status === "IN_PROGRESS" && (
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 animate-pulse">
+                      <Activity className="w-2.5 h-2.5" />
+                      <span className="text-[8px] font-black uppercase tracking-wider">Working</span>
+                    </div>
+                  )}
                 </div>
                 {task.description && (
                   <p className="text-sm text-deep-blue/50 font-medium line-clamp-1 max-w-2xl">

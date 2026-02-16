@@ -55,13 +55,46 @@ const INITIAL_RULES: AutomationRule[] = [
 
 export const AutomationPanel = () => {
   const [rules, setRules] = useState<AutomationRule[]>(INITIAL_RULES);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [newRule, setNewRule] = useState({ trigger: "", action: "" });
+  const [suggestions, setSuggestions] = useState<{trigger: string, action: string}[]>([]);
 
   const toggleRule = (id: string) => {
     setRules(rules.map(r => r.id === id ? { ...r, isActive: !r.isActive } : r));
   };
 
+  const handleAddRule = () => {
+    if (!newRule.trigger || !newRule.action) return;
+    
+    const rule: AutomationRule = {
+      id: Math.random().toString(36).substr(2, 9),
+      trigger: newRule.trigger,
+      actions: [newRule.action],
+      isActive: true,
+      frequencyScore: Math.floor(Math.random() * 40) + 60,
+    };
+    
+    setRules([...rules, rule]);
+    setNewRule({ trigger: "", action: "" });
+    setIsModalOpen(false);
+  };
+
+  const generateSuggestions = () => {
+    setIsSuggesting(true);
+    // Simulate AI thinking
+    setTimeout(() => {
+      setSuggestions([
+        { trigger: "When PR remains unreviewed for 24h", action: "Nudge reviewers on Discord" },
+        { trigger: "When task is moved to 'Peer Review'", action: "Assign random team member" },
+        { trigger: "Every Friday at 4:30 PM", action: "Post 'Week in Review' stats" },
+      ]);
+      setIsSuggesting(false);
+    }, 1500);
+  };
+
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8 p-6 relative">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div>
@@ -72,7 +105,10 @@ export const AutomationPanel = () => {
             Define intelligent rules to automate your project lifecycle.
           </p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-2.5 bg-deep-blue text-white rounded-lg hover:bg-deep-blue-dark transition-all duration-300 font-medium shadow-soft">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center gap-2 px-6 py-2.5 bg-deep-blue text-white rounded-lg hover:bg-deep-blue-dark transition-all duration-300 font-medium shadow-soft"
+        >
           <Plus className="w-4 h-4" />
           <span>New Automation</span>
         </button>
@@ -84,6 +120,8 @@ export const AutomationPanel = () => {
           <motion.div
             key={rule.id}
             layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             className={cn(
               "p-6 rounded-lg bg-white border border-soft-blue/10 shadow-soft transition-all duration-300 group",
               rule.isActive ? "ring-2 ring-soft-blue/20 bg-cream/30" : "opacity-75 grayscale-[0.5]"
@@ -143,17 +181,20 @@ export const AutomationPanel = () => {
         ))}
 
         {/* Empty Slot / Placeholder */}
-        <button className="border-2 border-dashed border-soft-blue/20 rounded-lg flex flex-col items-center justify-center p-8 text-soft-blue/40 hover:border-soft-blue/40 transition-colors group">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="border-2 border-dashed border-soft-blue/20 rounded-lg flex flex-col items-center justify-center p-8 text-soft-blue/40 hover:border-soft-blue/40 transition-colors group"
+        >
           <div className="w-12 h-12 rounded-full bg-soft-blue/5 flex items-center justify-center mb-4 group-hover:bg-soft-blue/10 transition-all">
             <Plus className="w-6 h-6" />
           </div>
-          <span className="font-syne font-bold">Add Custom Rule</span>
+          <span className="font-syne font-bold text-deep-blue">Add Custom Rule</span>
           <span className="text-xs mt-1">AI can suggest rules based on your usage</span>
         </button>
       </div>
 
       {/* AI Simulation / Insight Bar */}
-      <div className="mt-12 p-8 rounded-lg bg-gradient-to-r from-soft-blue/5 to-light-green/5 border border-soft-blue/10 flex flex-col md:flex-row items-center gap-8">
+      <div className="mt-12 p-8 rounded-lg bg-linear-to-r from-soft-blue/5 to-light-green/5 border border-soft-blue/10 flex flex-col md:flex-row items-center gap-8">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2 text-deep-blue">
             <Brain className="w-5 h-5" />
@@ -174,6 +215,117 @@ export const AutomationPanel = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal Overlay */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-[32px] w-full max-w-2xl overflow-hidden shadow-2xl border border-soft-blue/10"
+          >
+            <div className="p-8 space-y-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-syne font-bold text-deep-blue">Create Custom Rule</h3>
+                  <p className="text-soft-blue text-sm">Design a new automation or let AI guide you.</p>
+                </div>
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="w-10 h-10 rounded-full bg-soft-blue/5 flex items-center justify-center text-soft-blue hover:bg-soft-blue/10 transition-colors"
+                >
+                  <Plus className="w-5 h-5 rotate-45" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Manual form */}
+                <div className="space-y-6">
+                  <div>
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-2">When this happens (Trigger)</label>
+                    <input 
+                      type="text"
+                      className="w-full px-4 py-3 rounded-xl bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-medium text-deep-blue"
+                      placeholder="e.g. When task priority is 'High'"
+                      value={newRule.trigger}
+                      onChange={(e) => setNewRule({ ...newRule, trigger: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-2">Then do this (Action)</label>
+                    <input 
+                      type="text"
+                      className="w-full px-4 py-3 rounded-xl bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-medium text-deep-blue"
+                      placeholder="e.g. Notify manager on Slack"
+                      value={newRule.action}
+                      onChange={(e) => setNewRule({ ...newRule, action: e.target.value })}
+                    />
+                  </div>
+                  <button 
+                    onClick={handleAddRule}
+                    disabled={!newRule.trigger || !newRule.action}
+                    className="w-full py-4 bg-deep-blue text-white rounded-xl font-bold hover:bg-deep-blue-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-deep-blue/20"
+                  >
+                    Create Automation
+                  </button>
+                </div>
+
+                {/* AI Suggestions column */}
+                <div className="bg-soft-blue/5 rounded-2xl p-6 border border-soft-blue/10 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-4 h-4 text-deep-blue" />
+                      <span className="font-syne font-bold text-sm text-deep-blue">AI Suggestions</span>
+                    </div>
+                    {suggestions.length === 0 && !isSuggesting && (
+                      <button 
+                        onClick={generateSuggestions}
+                        className="text-[10px] font-mono font-bold uppercase text-soft-blue hover:text-deep-blue transition-colors"
+                      >
+                        Find Patterns
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-3">
+                    {isSuggesting ? (
+                      <div className="h-full flex flex-col items-center justify-center space-y-3 text-center">
+                        <div className="w-8 h-8 rounded-full border-2 border-soft-blue/20 border-t-deep-blue animate-spin" />
+                        <p className="text-xs text-soft-blue font-medium">Analyzing workspace behavior...</p>
+                      </div>
+                    ) : suggestions.length > 0 ? (
+                      suggestions.map((s, i) => (
+                        <button 
+                          key={i}
+                          onClick={() => setNewRule({ trigger: s.trigger, action: s.action })}
+                          className="w-full text-left p-3 rounded-xl bg-white border border-soft-blue/10 hover:border-light-green transition-all group"
+                        >
+                          <div className="text-[10px] font-bold text-light-green-dark mb-1 group-hover:scale-105 transition-transform origin-left">Strategy Suggestion</div>
+                          <div className="text-xs font-bold text-deep-blue leading-tight mb-1">{s.trigger}</div>
+                          <div className="text-[10px] text-soft-blue truncate">{"→ " + s.action}</div>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center text-center p-4">
+                        <Zap className="w-6 h-6 text-soft-blue/20 mb-2" />
+                        <p className="text-[10px] text-soft-blue/60 font-medium">
+                          Click "Find Patterns" to let AI analyze your team's workflow and suggest optimizations.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-deep-blue p-4 text-center">
+              <p className="text-[10px] font-mono text-cream/40 uppercase tracking-widest">
+                FlowBoard Autonomous System v2.0 • Real-time Policy Engine
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
