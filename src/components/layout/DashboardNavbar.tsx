@@ -1,9 +1,10 @@
 "use client";
 
-import { Menu, Bell, Search, PlayCircle } from "lucide-react";
+import { Menu, Bell, Search, PlayCircle, ExternalLink } from "lucide-react";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { useDemoMode } from "@/context/DemoContext";
 import { DemoMode } from "@/components/system/DemoMode";
+import Link from "next/link";
 
 export function DashboardNavbar() {
   const { toggle } = useSidebar();
@@ -49,6 +50,15 @@ export function DashboardNavbar() {
 
       {/* Right section */}
       <div className="flex items-center gap-6">
+        {/* Landing Page Link */}
+        <Link
+          href="/"
+          className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl border border-soft-blue/10 text-deep-blue/40 font-syne font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-white hover:text-deep-blue transition-all"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Visit Site
+        </Link>
+
         {/* Notifications */}
         <button
           className="relative inline-flex items-center justify-center rounded-xl p-3 text-deep-blue/40 transition-all hover:bg-surface-sunken hover:text-deep-blue group"

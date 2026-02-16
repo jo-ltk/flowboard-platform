@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  Home,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/use-sidebar";
@@ -41,9 +42,10 @@ export function Sidebar() {
       )}
     >
       {/* Logo area */}
-      <div
+      <Link 
+        href="/"
         className={cn(
-          "flex h-20 items-center px-8 shrink-0",
+          "flex h-20 items-center px-8 shrink-0 group hover:opacity-80 transition-opacity",
           collapsed ? "justify-center" : "gap-4"
         )}
       >
@@ -55,7 +57,7 @@ export function Sidebar() {
             {siteConfig.name}
           </span>
         )}
-      </div>
+      </Link>
 
       {/* Workspace Switcher */}
       {!collapsed && (
@@ -116,6 +118,18 @@ export function Sidebar() {
             </div>
           </div>
         )}
+        
+        {/* Landing Page Link */}
+        <Link
+          href="/"
+          className={cn(
+            "flex w-full items-center gap-4 rounded-xl px-4 py-4 text-[10px] font-bold uppercase tracking-widest text-soft-blue/40 transition-all duration-300 hover:bg-soft-blue/10 hover:text-cream group mb-2 border border-white/5",
+            collapsed && "justify-center px-0"
+          )}
+        >
+          <Home className="h-5 w-5" />
+          {!collapsed && <span>Landing Page</span>}
+        </Link>
         
         <button
           onClick={toggle}
