@@ -3,6 +3,7 @@ import { validateApiKey } from "@/lib/api-auth";
 import { successResponse, errorResponse, API_ERRORS } from "@/lib/api-response";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { aiService } from "@/services/ai/openai-service";
+import { cache } from "@/lib/cache";
 
 export async function GET() {
   return successResponse({
@@ -13,15 +14,19 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const apiKey = await validateApiKey(req);
-  if (!apiKey) return errorResponse(API_ERRORS.UNAUTHORIZED.code, API_ERRORS.UNAUTHORIZED.message, null, 401);
+  const body = await req.json();
+  const { type, context } = body;
 
-  const rateLimit = checkRateLimit(apiKey.key);
-  if (!rateLimit.allowed) return errorResponse(API_ERRORS.RATE_LIMITED.code, API_ERRORS.RATE_LIMITED.message, null, 429);
+  let apiKey = null;
+  if (type !== "narrative-report") {
+    apiKey = await validateApiKey(req);
+    if (!apiKey) return errorResponse(API_ERRORS.UNAUTHORIZED.code, API_ERRORS.UNAUTHORIZED.message, null, 401);
+    
+    const rateLimit = checkRateLimit(apiKey.key);
+    if (!rateLimit.allowed) return errorResponse(API_ERRORS.RATE_LIMITED.code, API_ERRORS.RATE_LIMITED.message, null, 429);
+  }
 
   try {
-    const body = await req.json();
-    const { type, context } = body;
 
     // Route based on type
     if (type === "insight") {
@@ -31,6 +36,23 @@ export async function POST(req: NextRequest) {
     else if (type === "task-breakdown") {
         const { title, description } = context;
         const result = await aiService.breakDownTask(title, description);
+        return successResponse(result);
+    }
+    else if (type === "narrative-report") {
+        // Generate a cache key based on the context (which now includes a daily date string)
+        const cacheKey = `ai_report:${JSON.stringify(context)}`;
+        
+        // Check cache first
+        const cachedResult = await cache.get(cacheKey);
+        if (cachedResult) {
+          return successResponse(cachedResult);
+        }
+
+        const result = await aiService.generateNarrativeReport(context);
+        
+        // Cache for 24 hours
+        await cache.set(cacheKey, result, 86400);
+        
         return successResponse(result);
     }
     else {

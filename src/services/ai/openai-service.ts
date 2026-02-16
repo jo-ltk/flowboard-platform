@@ -56,6 +56,47 @@ export const aiService = {
   },
 
   /**
+   * Generate a full narrative report
+   */
+  async generateNarrativeReport(context: any) {
+    try {
+      const openai = getOpenRouterClient();
+      const response = await openai.chat.completions.create({
+        model: MODELS.SMART,
+        messages: [
+          {
+            role: "system",
+            content: `You are an elite executive strategy consultant AI for FlowBoard. 
+            Generate a comprehensive narrative report for a workspace. 
+            The report must be professional, insightful, and strategic.
+            
+            Return ONLY a JSON object with this exact structure:
+            {
+              "summary": "2-3 paragraphs of strategic overview using rich, professional language.",
+              "productivityDelta": number (between 5 and 25),
+              "riskReduction": number (between 10 and 60),
+              "timeSaved": number (between 5 and 30),
+              "automationSavings": number (between 1000 and 10000),
+              "topInsights": ["insight 1", "insight 2", "insight 3"]
+            }`
+          },
+          {
+            role: "user",
+            content: `Generate a narrative report for this workspace context: ${JSON.stringify(context)}`
+          }
+        ],
+        response_format: { type: "json_object" }
+      });
+
+      const content = response.choices[0].message.content;
+      return content ? JSON.parse(content) : null;
+    } catch (error: any) {
+      console.error("Narrative Report Error:", error);
+      throw new Error(`Failed to generate narrative report: ${error.message}`);
+    }
+  },
+
+  /**
    * Generate subtasks break-down
    */
   async breakDownTask(taskTitle: string, description: string) {

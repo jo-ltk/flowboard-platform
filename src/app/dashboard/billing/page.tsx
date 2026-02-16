@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BillingPanel } from '@/components/system/BillingPanel';
 import { getActiveWorkspace } from '@/lib/workspace-engine';
-import { CreditCard, ShieldCheck, Zap } from 'lucide-react';
+import { CreditCard, ShieldCheck, Zap, Loader2 } from 'lucide-react';
 
 export default function BillingPage() {
   const activeWs = getActiveWorkspace();
@@ -31,7 +31,14 @@ export default function BillingPage() {
         </div>
       </header>
 
-      <BillingPanel workspace={activeWs} />
+      <Suspense fallback={
+        <div className="h-64 flex flex-col items-center justify-center gap-4 bg-white rounded-3xl border border-stone-200/60">
+          <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+          <p className="font-mono text-[10px] uppercase tracking-widest text-stone-400">Loading Billing Context...</p>
+        </div>
+      }>
+        <BillingPanel workspace={activeWs} />
+      </Suspense>
     </div>
   );
 }
