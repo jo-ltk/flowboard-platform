@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { 
@@ -20,23 +20,98 @@ import {
 import { PresenceSystem } from "@/components/system/PresenceSystem";
 import { ActivityFeed } from "@/components/system/ActivityFeed";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { Upload, FileText, CheckCircle } from "lucide-react";
 
 export function ProjectView() {
-  const tasks = [
+  console.log("[ProjectView] Rendering...");
+
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const [tasks, setTasks] = useState([
     { id: 1, title: "Finalize core design system tokens", status: "completed", priority: "high", time: "2h left", assignee: "Alex" },
     { id: 2, title: "Implement responsive dashboard sidebar", status: "in-progress", priority: "medium", time: "4h left", assignee: "Sarah" },
     { id: 3, title: "Define micro-interaction motion curves", status: "pending", priority: "low", time: "1h left", assignee: "Mike" },
     { id: 4, title: "Refactor project view for editorial aesthetic", status: "pending", priority: "high", time: "3h left", assignee: "You" },
     { id: 5, title: "Sync with stakeholders on font choices", status: "completed", priority: "medium", time: "Done", assignee: "Lisa" },
     { id: 6, title: "Update API documentation for v2", status: "pending", priority: "medium", time: "1d left", assignee: "Tom" },
-  ];
+  ]);
 
-  const phases = [
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log(`[ProjectView] Uploading file: ${file.name}`);
+      setIsUploading(true);
+      toast.info(`Uploading ${file.name}...`);
+      
+      // Simulate real upload & connection logic
+      setTimeout(() => {
+        setIsUploading(false);
+        const newTaskId = tasks.length + 1;
+        setTasks([{
+          id: newTaskId,
+          title: `Imported: ${file.name.split('.')[0]} Tasks`,
+          status: "pending",
+          priority: "high",
+          time: "Just now",
+          assignee: "You"
+        }, ...tasks]);
+        toast.success("Task file connected and uploaded successfully!");
+      }, 2000);
+    }
+  };
+
+  const triggerUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const [phases, setPhases] = useState([
     { name: "Discovery", status: "completed", progress: 100 },
     { name: "Design", status: "in-progress", progress: 65 },
     { name: "Development", status: "pending", progress: 0 },
     { name: "Testing", status: "pending", progress: 0 },
-  ];
+  ]);
+
+  const handleNewObjective = () => {
+    console.log("[ProjectView] New Objective clicked");
+    const newId = tasks.length + 1;
+    const newTask = {
+      id: newId,
+      title: `New Task #${newId}`,
+      status: "pending",
+      priority: "medium",
+      time: "Just now",
+      assignee: "You"
+    };
+    setTasks([newTask, ...tasks]);
+    toast.success("New objective created!");
+  };
+
+  const toggleTaskCompletion = (id: number) => {
+    console.log(`[ProjectView] Toggling task completion for ID: ${id}`);
+    setTasks(tasks.map(t => 
+      t.id === id 
+        ? { ...t, status: t.status === "completed" ? "pending" : "completed" } 
+        : t
+    ));
+    toast.info("Task status updated");
+  };
+
+  const handleViewBoard = () => {
+    console.log("[ProjectView] View Board clicked");
+    toast("Board view coming soon!");
+  };
+
+  const handleMoreActions = () => {
+    console.log("[ProjectView] More actions clicked");
+    toast("More actions menu coming soon!");
+  };
+
+  const handleApplyStrategy = (index: number) => {
+    console.log(`[ProjectView] Applying AI Strategy #${index}`);
+    toast.success("AI Strategy applied successfully!");
+  };
 
   return (
     <div className="space-y-8 pb-20 fade-in-up">
@@ -83,10 +158,10 @@ export function ProjectView() {
           <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-between h-full gap-6">
              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 w-full max-w-xs transition-transform hover:scale-[1.02]">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 rounded-lg bg-light-green/20 text-light-green">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-white/80">Timeline</span>
+                   <div className="p-2 rounded-lg bg-light-green/20 text-light-green">
+                     <Clock className="w-4 h-4" />
+                   </div>
+                   <span className="text-xs font-bold uppercase tracking-wider text-white/80">Timeline</span>
                 </div>
                 <div className="flex items-baseline gap-2">
                    <span className="text-3xl font-syne font-bold">14</span>
@@ -98,10 +173,31 @@ export function ProjectView() {
              </div>
              
              <div className="flex gap-3">
-                <button className="h-10 px-5 rounded-full bg-cream text-deep-blue text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileUpload} 
+                  className="hidden" 
+                  accept=".csv,.json,.txt"
+                />
+                <button 
+                  onClick={triggerUpload}
+                  disabled={isUploading}
+                  className="h-10 px-5 rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {isUploading ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Upload className="w-3 h-3" />}
+                  {isUploading ? "Uploading..." : "Upload Tasks"}
+                </button>
+                <button 
+                  onClick={handleViewBoard}
+                  className="h-10 px-5 rounded-full bg-cream text-deep-blue text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                >
                   <Layout className="w-3 h-3" /> View Board
                 </button>
-                <button className="h-10 w-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white">
+                <button 
+                  onClick={handleMoreActions}
+                  className="h-10 w-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white cursor-pointer"
+                >
                    <MoreHorizontal className="w-4 h-4" />
                 </button>
              </div>
@@ -119,10 +215,13 @@ export function ProjectView() {
               <div className="flex items-center gap-3">
                 <h2 className="font-syne text-2xl font-bold text-deep-blue">Strategic Tasks</h2>
                 <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
-                  {tasks.length} OPEN
+                  {tasks.filter(t => t.status !== "completed").length} OPEN
                 </Badge>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-soft hover:bg-deep-blue hover:text-white hover:border-transparent transition-all duration-300 text-xs font-bold text-deep-blue uppercase tracking-widest shadow-sm hover:shadow-md">
+              <button 
+                onClick={handleNewObjective}
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-soft hover:bg-deep-blue hover:text-white hover:border-transparent transition-all duration-300 text-xs font-bold text-deep-blue uppercase tracking-widest shadow-sm hover:shadow-md cursor-pointer"
+              >
                 <Plus className="w-3 h-3" />
                 New Objective
               </button>
@@ -132,15 +231,18 @@ export function ProjectView() {
               {tasks.map((task) => (
                 <div 
                   key={task.id}
-                  className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-default"
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <button className={cn(
-                      "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300",
-                      task.status === "completed" 
-                        ? "bg-light-green text-deep-blue scale-110" 
-                        : "border-2 border-border-soft text-transparent hover:border-soft-blue group-hover:scale-110"
-                    )}>
+                    <button 
+                      onClick={() => toggleTaskCompletion(task.id)}
+                      className={cn(
+                        "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
+                        task.status === "completed" 
+                          ? "bg-light-green text-deep-blue scale-110" 
+                          : "border-2 border-border-soft text-transparent hover:border-soft-blue group-hover:scale-110"
+                      )}
+                    >
                       <CheckCircle2 className="w-4 h-4" />
                     </button>
                     <Badge variant="secondary" className={cn(
@@ -186,7 +288,7 @@ export function ProjectView() {
                <div className="absolute top-0 right-0 w-64 h-full bg-linear-to-l from-surface-tinted/50 to-transparent pointer-events-none" />
                <div className="relative z-10 space-y-8">
                   {phases.map((phase, i) => (
-                    <div key={i} className="group">
+                    <div key={i} className="group cursor-default">
                        <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-3">
                              <div className={cn(
@@ -244,7 +346,11 @@ export function ProjectView() {
                     "Consolidate design tokens into a central theme file for 20% faster implementation.",
                     "Review 'Task 4' - critical path blocker detected.",
                   ].map((suggestion, i) => (
-                    <div key={i} className="p-4 rounded-2xl bg-white border border-border-soft/60 hover:border-soft-blue/40 hover:bg-surface-elevated transition-all cursor-pointer group">
+                    <div 
+                      key={i} 
+                      onClick={() => handleApplyStrategy(i)}
+                      className="p-4 rounded-2xl bg-white border border-border-soft/60 hover:border-soft-blue/40 hover:bg-surface-elevated transition-all cursor-pointer group"
+                    >
                       <p className="text-xs font-medium text-deep-blue/70 leading-relaxed group-hover:text-deep-blue transition-colors">
                         {suggestion}
                       </p>

@@ -20,6 +20,8 @@ import {
   Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { AIInsightPanel } from "./AIInsightPanel";
 import { DataVizSystem } from "./DataVizSystem";
 import { PresenceSystem } from "@/components/system/PresenceSystem";
@@ -27,13 +29,31 @@ import { ActivityFeed } from "@/components/system/ActivityFeed";
 import { useDemoMode } from "@/context/DemoContext";
 
 export function DashboardOverview() {
+  const router = useRouter();
   const { isDemoMode } = useDemoMode();
+  
+  console.log("[DashboardOverview] Rendering...");
+
   const currentDate = new Date().toLocaleDateString('en-US', { 
     weekday: 'long', 
     year: 'numeric', 
     month: 'long', 
     day: 'numeric' 
   });
+
+  const handleProjectClick = (label: string) => {
+    console.log(`[DashboardOverview] Project clicked: ${label}`);
+    if (label === "Design System") {
+      router.push("/dashboard/projects");
+    } else {
+      toast(`Navigation to ${label} details coming soon!`);
+    }
+  };
+
+  const handleViewAll = () => {
+    console.log("[DashboardOverview] View All Projects clicked");
+    router.push("/dashboard/projects");
+  };
 
   return (
     <div className="space-y-8 pb-20 fade-in-up">
@@ -116,7 +136,10 @@ export function DashboardOverview() {
                   <h2 className="font-syne text-2xl font-bold text-deep-blue">Active Projects</h2>
                   <div className="h-px w-24 bg-border-soft/50" />
                </div>
-               <button className="text-xs font-bold text-deep-blue uppercase tracking-widest hover:text-soft-blue transition-colors flex items-center gap-1">
+               <button 
+                onClick={handleViewAll}
+                className="text-xs font-bold text-deep-blue uppercase tracking-widest hover:text-soft-blue transition-colors flex items-center gap-1 cursor-pointer"
+               >
                   View All <ArrowUpRight className="w-3 h-3" />
                </button>
             </div>
@@ -128,7 +151,11 @@ export function DashboardOverview() {
                   { label: "User Feedback Loop", progress: 40, status: "Review", icon: Users, color: "text-orange-600", bg: "bg-orange-100", barColor: "bg-orange-500" },
                   { label: "Analytics Dashboard", progress: 92, status: "Polishing", icon: BarChart3, color: "text-pink-600", bg: "bg-pink-100", barColor: "bg-pink-500" },
                ].map((project, i) => (
-                  <div key={i} className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                  <div 
+                    key={i} 
+                    onClick={() => handleProjectClick(project.label)}
+                    className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  >
                      <div className="flex justify-between items-start mb-6">
                         <div className={cn("p-3 rounded-xl transition-all duration-300 group-hover:scale-110", project.bg)}>
                            <project.icon className={cn("w-5 h-5", project.color)} />
@@ -221,8 +248,8 @@ export function DashboardOverview() {
           <section className="space-y-6">
              <div className="bg-white rounded-[32px] p-8 border border-border-soft shadow-soft">
                 <div className="flex flex-col gap-1 mb-8">
-                  <h2 className="font-syne text-xl font-bold text-deep-blue">Strategic Operations</h2>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-deep-blue/40">System-wide performance telemetry</p>
+                   <h2 className="font-syne text-xl font-bold text-deep-blue">Strategic Operations</h2>
+                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-deep-blue/40">System-wide performance telemetry</p>
                 </div>
                 <DataVizSystem />
              </div>

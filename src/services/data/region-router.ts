@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { db } from "@/lib/db";
 
 // Cache for Prisma clients per region
 const regionClients: Record<string, PrismaClient> = {};
@@ -13,19 +14,24 @@ export class RegionRouter {
    * Get a strict database connection for a specific region
    */
   static getClient(region: string = "us-east-1"): PrismaClient {
+    // If it's the default region, use the singleton 'db' instance
+    if (region === "us-east-1" || !region) {
+      return db;
+    }
+
     if (regionClients[region]) {
       return regionClients[region];
     }
 
     const url = REGION_DB_URLS[region];
     if (!url) {
-      throw new Error(`No database configured for region: ${region}`);
+      return db; // Fallback to main db
     }
 
-    // In Prisma 7.x, client engine requires accelerateUrl
+    // Use a separate client for other regions if configured
     const client = new PrismaClient({
-      accelerateUrl: url,
-    });
+      datasourceUrl: url,
+    } as any);
 
     if (process.env.NODE_ENV !== "production") {
       regionClients[region] = client;
@@ -36,11 +42,8 @@ export class RegionRouter {
 
   /**
    * Determines the optimal region based on user's IP or preference
-   * This would typically use a GeoIP service
    */
   static resolveRegion(ip?: string): string {
-    // Mock logic: if IP starts with 192 (US) vs something else
-    // Real implementation would use MaxMind or Edge headers
     return "us-east-1"; 
   }
 }

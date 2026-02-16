@@ -4,6 +4,14 @@ import { successResponse, errorResponse, API_ERRORS } from "@/lib/api-response";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { aiService } from "@/services/ai/openai-service";
 
+export async function GET() {
+  return successResponse({
+    status: "operational",
+    message: "FlowBoard AI API is online. Please use POST with a valid API key to interact.",
+    documentation: "https://docs.flowboard.com/api/v1/ai"
+  });
+}
+
 export async function POST(req: NextRequest) {
   const apiKey = await validateApiKey(req);
   if (!apiKey) return errorResponse(API_ERRORS.UNAUTHORIZED.code, API_ERRORS.UNAUTHORIZED.message, null, 401);

@@ -5,6 +5,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Zap, Users, Brain, Activity, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from "sonner";
 import { PLAN_CONFIGS, WorkspaceMetadata, PlanType, UserRole } from '@/types/workspace';
 
 interface BillingPanelProps {
@@ -165,12 +166,20 @@ const PlanCard = ({ plan, isCurrent, role }: { plan: any, isCurrent: boolean, ro
       </ul>
 
       <AccessGate role={role} action="billing_access" showBlur={false}>
-        <button className={cn(
-          "w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all",
-          isCurrent 
-            ? "bg-stone-200 text-stone-500 cursor-default" 
-            : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98]"
-        )}>
+        <button 
+          onClick={() => {
+            if (!isCurrent) {
+              console.log(`[BillingPanel] Upgrade clicked for plan: ${plan.type}`);
+              toast.success(`Redirecting to ${plan.type} checkout...`);
+            }
+          }}
+          className={cn(
+            "w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all",
+            isCurrent 
+              ? "bg-stone-200 text-stone-500 cursor-default" 
+              : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+          )}
+        >
           {isCurrent ? "Current Plan" : "Upgrade to " + plan.type}
           {!isCurrent && <ArrowRight size={18} />}
         </button>

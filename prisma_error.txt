@@ -1,2 +1,0 @@
-﻿Datasource "db": PostgreSQL database "dummy", schema "public" at "localhost:5432"
-
