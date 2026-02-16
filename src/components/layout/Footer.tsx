@@ -27,8 +27,8 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-deep-blue shadow-soft">
-                <span className="text-sm font-bold text-cream">F</span>
+              <div className="flex h-8 w-8 items-center justify-center">
+                <img src="/assets/logo.svg" alt="FlowBoard Logo" className="w-full h-full object-contain" />
               </div>
               <span className="text-lg font-syne font-bold text-deep-blue tracking-tight">
                 {siteConfig.name}

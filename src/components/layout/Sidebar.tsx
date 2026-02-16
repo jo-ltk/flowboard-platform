@@ -45,8 +45,8 @@ export function Sidebar() {
           collapsed ? "justify-center" : "gap-4"
         )}
       >
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-light-green shadow-glow-green rotate-3 hover:rotate-0 transition-transform duration-500 cursor-pointer">
-          <span className="text-lg font-syne font-black text-deep-blue">F</span>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md rotate-3 hover:rotate-0 transition-transform duration-500 cursor-pointer overflow-hidden">
+          <img src="/assets/logo.svg" alt="FlowBoard" className="w-full h-full object-contain scale-110" />
         </div>
         {!collapsed && (
           <span className="text-xl font-syne font-bold text-cream tracking-tighter">

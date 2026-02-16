@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/Container";
 const NAV_LINKS = [
   { label: "Services", href: "#services" },
   { label: "Features", href: "#features" },
-  { label: "Blog", href: "#blog" },
+  { label: "AI Demo", href: "#ai-demo" },
   { label: "About", href: "#about" },
   { label: "Pricing", href: "#pricing" },
   { label: "Contact", href: "#contact" },
@@ -52,9 +52,7 @@ export function Navbar() {
             {/* Mobile: Logo Left-aligned | Desktop: Logo Centered */}
             <div className="lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
               <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-deep-blue shadow-soft">
-                  <span className="text-sm font-bold text-cream">F</span>
-                </div>
+                <img src="/assets/logo.svg" alt="FlowBoard Logo" className="w-8 h-8 object-contain" />
                 <span className="text-xl sm:text-2xl font-serif font-bold text-deep-blue tracking-tight">
                   Flowboard
                 </span>

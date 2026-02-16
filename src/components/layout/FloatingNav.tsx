@@ -28,8 +28,9 @@ const FloatingNav = () => {
     >
       <div className="glass-panel nav-shadow bg-surface-elevated/80 backdrop-blur-xl border border-border-blue/30 px-6 py-4 flex items-center justify-between rounded-full">
         {/* Left: Minimal Logo */}
-        <Link href="/" className="text-xl font-syne font-bold tracking-[0.2em] text-deep-blue hover:opacity-70 transition-opacity">
-          FLOW
+        <Link href="/" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+          <img src="/assets/logo.svg" alt="FlowBoard" className="w-6 h-6 object-contain" />
+          <span className="text-lg font-syne font-bold tracking-tight text-deep-blue">FlowBoard</span>
         </Link>
 
         {/* Center: Links */}

@@ -1,0 +1,13 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Shape (Blue) -->
+  <path d="M140 100 H360 C390 100 410 120 410 150 V200 C410 230 390 250 360 250 H140 C110 250 90 230 90 200 V150 C90 120 110 100 140 100 Z" fill="#A8C8E8"/>
+  
+  <!-- Middle Shape (Green) - Overlapping -->
+  <path d="M140 220 H320 C350 220 370 240 370 270 V320 C370 350 350 370 320 370 H140 C110 370 90 350 90 320 V270 C90 240 110 220 140 220 Z" fill="#A8E8C0"/>
+  
+  <!-- Bottom Shape (Lavender) - Vertical Stem part essentially -->
+  <path d="M140 340 H260 C290 340 310 360 310 390 V440 C310 470 290 490 260 490 H140 C110 490 90 470 90 440 V390 C90 360 110 340 140 340 Z" fill="#C8B8E8"/>
+  
+  <!-- Dot (Yellow) -->
+  <circle cx="440" cy="120" r="40" fill="#F0D060"/>
+</svg>
