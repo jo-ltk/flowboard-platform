@@ -51,13 +51,13 @@ export const PLAN_CONFIGS: Record<PlanType, WorkspacePlan> = {
     aiTokenLimit: 100000,
     automationLimit: 50,
     memberLimit: 15,
-    price: '$29'
+    price: '$24'
   },
   enterprise: {
     type: 'enterprise',
     aiTokenLimit: 1000000,
     automationLimit: -1, // unlimited
     memberLimit: -1, // unlimited
-    price: 'Custom'
+    price: '$89'
   }
 };

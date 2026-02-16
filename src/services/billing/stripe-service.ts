@@ -76,15 +76,25 @@ export const stripeService = {
         if (priceId === process.env.STRIPE_ARCHITECT_PRICE_ID) newPlan = "architect";
         if (priceId === process.env.STRIPE_ENTERPRISE_PRICE_ID) newPlan = "enterprise";
 
-        await db.workspace.update({
-            where: { id: workspaceId },
-            data: {
-                planType: newPlan,
-                subscriptionStatus: "active",
-                subscriptionEndsAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 days
-                stripeSubscriptionId: `sub_mock_${Date.now()}`
+        const isMockWorkspace = workspaceId.startsWith("ws-");
+
+        if (!isMockWorkspace) {
+            try {
+                await db.workspace.update({
+                    where: { id: workspaceId },
+                    data: {
+                        planType: newPlan,
+                        subscriptionStatus: "active",
+                        subscriptionEndsAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 days
+                        stripeSubscriptionId: `sub_mock_${Date.now()}`
+                    }
+                });
+            } catch (e) {
+                console.warn(`[MOCK] Could not update DB for workspace ${workspaceId}. This usually means it's a mock ID not in our real DB.`);
             }
-        });
+        } else {
+            console.log(`[MOCK] Skipping DB update for mock workspace ${workspaceId}`);
+        }
 
         return {
             url: successUrl + `?session_id=cs_mock_${Date.now()}`,
