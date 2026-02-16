@@ -2,29 +2,43 @@
 
 import React, { useState } from "react";
 import { AutomationPanel } from "@/components/system/AutomationPanel";
-import { Settings, Shield, Bell, Zap, Database, Sliders, Lock } from "lucide-react";
+import SecurityPanel from "@/components/system/SecurityPanel";
+import BrandingPanel from "@/components/system/BrandingPanel";
+import { BillingPanel } from "@/components/system/BillingPanel";
+import { 
+  Zap, 
+  Shield, 
+  Palette, 
+  CreditCard,
+  Settings 
+} from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { getActiveWorkspace } from "@/lib/workspace-engine";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("automations");
+  const activeWs = getActiveWorkspace();
 
   const tabs = [
     { id: "automations", label: "Automations", icon: Zap },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "security", label: "Security", icon: Shield },
-    { id: "integrations", label: "Integrations", icon: Sliders },
-    { id: "data", label: "Data Export", icon: Database },
-    { id: "admin", label: "Admin Permissions", icon: Lock },
+    { id: "billing", label: "Billing", icon: CreditCard },
   ];
 
   const handleTabChange = (id: string) => {
     console.log(`[SettingsPage] Tab changed to: ${id}`);
     setActiveTab(id);
-    if (id !== "automations") {
-      toast.info(`${id.charAt(0).toUpperCase() + id.slice(1)} settings coming soon!`);
+  };
+
+  const renderPanel = () => {
+    switch (activeTab) {
+      case "automations":
+        return <AutomationPanel />;
+      case "billing":
+        return <BillingPanel workspace={activeWs} />;
+      default:
+        return <AutomationPanel />;
     }
   };
 
@@ -101,19 +115,7 @@ export default function SettingsPage() {
         {/* Main Content Area */}
         <div className="lg:col-span-9">
           <div className="bg-white rounded-[32px] border border-soft-blue/10 shadow-soft overflow-hidden min-h-[600px]">
-            {activeTab === "automations" ? (
-              <AutomationPanel />
-            ) : (
-              <div className="flex flex-col items-center justify-center h-[600px] text-center p-10 space-y-4">
-                <div className="p-4 rounded-full bg-soft-blue/10 text-soft-blue">
-                   <Settings className="w-8 h-8 animate-spin-slow" />
-                </div>
-                <h2 className="font-syne text-2xl font-bold text-deep-blue">Under Construction</h2>
-                <p className="text-deep-blue/60 max-w-md">
-                  We're currently architecting the {activeTab} experience. Check back soon for full control.
-                </p>
-              </div>
-            )}
+            {renderPanel()}
           </div>
         </div>
       </div>

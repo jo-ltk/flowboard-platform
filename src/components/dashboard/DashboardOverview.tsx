@@ -31,7 +31,24 @@ import { useDemoMode } from "@/context/DemoContext";
 export function DashboardOverview() {
   const router = useRouter();
   const { isDemoMode } = useDemoMode();
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
   
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/dashboard/overview');
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   console.log("[DashboardOverview] Rendering...");
 
   const currentDate = new Date().toLocaleDateString('en-US', { 
@@ -102,22 +119,27 @@ export function DashboardOverview() {
                 <div className="flex items-center justify-between mb-4 relative z-10">
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-lg bg-light-green/20 text-light-green">
-                      <Zap className="w-4 h-4" />
+                       <Zap className="w-4 h-4" />
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider text-white/80">Velocity</span>
                   </div>
-                  {isDemoMode && (
+                  {(isDemoMode || (data?.stats?.velocity > 90)) && (
                     <Badge variant="outline" className="border-light-green/30 text-light-green text-[9px] px-1.5 py-0">
-                      +4.6%
+                      +{data?.stats?.velocity > 90 ? "4.6%" : "2.1%"}
                     </Badge>
                   )}
                 </div>
                 <div className="relative z-10">
                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-syne font-bold text-white">{isDemoMode ? "98.8" : "94.2"}%</span>
+                      <span className="text-4xl font-syne font-bold text-white">
+                        {loading ? "..." : (data?.stats?.velocity || "94.2")}%
+                      </span>
                    </div>
                    <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
-                      <div className="bg-light-green h-full w-[94%] rounded-full shadow-[0_0_10px_rgba(204,255,0,0.5)]" />
+                      <div 
+                        className="bg-light-green h-full rounded-full shadow-[0_0_10px_rgba(204,255,0,0.5)] transition-all duration-1000" 
+                        style={{ width: `${data?.stats?.velocity || 94}%` }}
+                      />
                    </div>
                 </div>
              </div>
@@ -144,41 +166,54 @@ export function DashboardOverview() {
                </button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-               {[
-                  { label: "Design System", progress: 85, status: "Active", icon: Layers, color: "text-purple-600", bg: "bg-purple-100", barColor: "bg-purple-500" },
-                  { label: "API Integration", progress: 62, status: "In Progress", icon: Globe, color: "text-blue-600", bg: "bg-blue-100", barColor: "bg-blue-500" },
-                  { label: "User Feedback Loop", progress: 40, status: "Review", icon: Users, color: "text-orange-600", bg: "bg-orange-100", barColor: "bg-orange-500" },
-                  { label: "Analytics Dashboard", progress: 92, status: "Polishing", icon: BarChart3, color: "text-pink-600", bg: "bg-pink-100", barColor: "bg-pink-500" },
-               ].map((project, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => handleProjectClick(project.label)}
-                    className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                     <div className="flex justify-between items-start mb-6">
-                        <div className={cn("p-3 rounded-xl transition-all duration-300 group-hover:scale-110", project.bg)}>
-                           <project.icon className={cn("w-5 h-5", project.color)} />
-                        </div>
-                        <Badge variant="secondary" className="bg-surface-tinted text-deep-blue/60 text-[9px] font-bold uppercase tracking-wider">
-                           {project.status}
-                        </Badge>
-                     </div>
-                     
-                     <h3 className="font-syne text-lg font-bold text-deep-blue mb-1">{project.label}</h3>
-                     <div className="flex items-center justify-between text-[11px] text-deep-blue/40 font-medium mb-4">
-                        <span>Milestone 3/5</span>
-                        <span>{project.progress}%</span>
-                     </div>
-                     
-                     <div className="relative h-1.5 w-full bg-surface-sunken rounded-full overflow-hidden">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+               {loading ? (
+                 [1, 2, 3, 4].map((i) => (
+                   <div key={i} className="h-48 rounded-xl bg-white/5 animate-pulse border border-white/10" />
+                 ))
+               ) : (
+                 (data?.projects || []).map((project: any, i: number) => {
+                    const ProjectIcon = (() => {
+                        switch(project.icon) {
+                            case 'Layers': return Layers;
+                            case 'Globe': return Globe;
+                            case 'Users': return Users;
+                            case 'BarChart3': return BarChart3;
+                            default: return Layers;
+                        }
+                    })();
+
+                    return (
                         <div 
-                           className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out", project.barColor)}
-                           style={{ width: `${project.progress}%` }}
-                        />
-                     </div>
-                  </div>
-               ))}
+                        key={i} 
+                        onClick={() => handleProjectClick(project.label)}
+                        className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                        >
+                        <div className="flex justify-between items-start mb-6">
+                            <div className={cn("p-3 rounded-xl transition-all duration-300 group-hover:scale-110", project.bg)}>
+                                <ProjectIcon className={cn("w-5 h-5", project.color)} />
+                            </div>
+                            <Badge variant="secondary" className="bg-surface-tinted text-deep-blue/60 text-[9px] font-bold uppercase tracking-wider">
+                                {project.status}
+                            </Badge>
+                        </div>
+                        
+                        <h3 className="font-syne text-lg font-bold text-deep-blue mb-1">{project.label}</h3>
+                        <div className="flex items-center justify-between text-[11px] text-deep-blue/40 font-medium mb-4">
+                            <span>Progress</span>
+                            <span>{project.progress}%</span>
+                        </div>
+                        
+                        <div className="relative h-1.5 w-full bg-surface-sunken rounded-full overflow-hidden">
+                            <div 
+                                className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out", project.barColor)}
+                                style={{ width: `${project.progress}%` }}
+                            />
+                        </div>
+                        </div>
+                    );
+                 })
+               )}
             </div>
           </section>
 
@@ -199,20 +234,20 @@ export function DashboardOverview() {
                     
                     <div className="space-y-3">
                        <div className="p-4 rounded-2xl bg-white border border-border-soft flex justify-between items-center group hover:border-soft-blue/30 transition-all">
-                          <div className="flex items-center gap-3">
-                             <div className="w-2 h-2 rounded-full bg-light-green" />
-                             <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Uptime</span>
-                          </div>
-                          <span className="font-mono font-bold text-deep-blue">99.98%</span>
-                       </div>
-                       
-                       <div className="p-4 rounded-2xl bg-white border border-border-soft flex justify-between items-center group hover:border-soft-blue/30 transition-all">
-                          <div className="flex items-center gap-3">
-                             <div className="w-2 h-2 rounded-full bg-soft-blue" />
-                             <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Latency</span>
-                          </div>
-                          <span className="font-mono font-bold text-deep-blue">24ms</span>
-                       </div>
+                           <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-light-green" />
+                              <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Uptime</span>
+                           </div>
+                           <span className="font-mono font-bold text-deep-blue">{data?.stats?.uptime || "99.98%"}</span>
+                        </div>
+                        
+                        <div className="p-4 rounded-2xl bg-white border border-border-soft flex justify-between items-center group hover:border-soft-blue/30 transition-all">
+                           <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-soft-blue" />
+                              <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Latency</span>
+                           </div>
+                           <span className="font-mono font-bold text-deep-blue">{data?.stats?.latency || "24ms"}</span>
+                        </div>
                     </div>
                  </div>
                  
@@ -251,7 +286,7 @@ export function DashboardOverview() {
                    <h2 className="font-syne text-xl font-bold text-deep-blue">Strategic Operations</h2>
                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-deep-blue/40">System-wide performance telemetry</p>
                 </div>
-                <DataVizSystem />
+                <DataVizSystem stats={data?.stats} />
              </div>
           </section>
         </div>
@@ -262,7 +297,7 @@ export function DashboardOverview() {
               
               {/* AI Insight Panel */}
               <div className="transform transition-all duration-500 hover:translate-x-[-4px]">
-                 <AIInsightPanel />
+                  <AIInsightPanel stats={data?.stats} />
               </div>
 
 

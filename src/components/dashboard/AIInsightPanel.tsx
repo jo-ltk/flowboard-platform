@@ -14,16 +14,17 @@ interface InsightProps {
   productivity: number;
   risk: number;
   workload: number;
+  stats?: any;
 }
 
-export function AIInsightPanel({ productivity: initialProductivity = 92, risk: initialRisk = 12, workload: initialWorkload = 74 }: Partial<InsightProps>) {
+export function AIInsightPanel({ productivity: initialProductivity = 92, risk: initialRisk = 12, workload: initialWorkload = 74, stats }: Partial<InsightProps>) {
   const { isDemoMode } = useDemoMode();
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [hasOptimized, setHasOptimized] = useState(false);
   
   // Initialize metrics state based on props and demo mode
   const [metrics, setMetrics] = useState({
-    productivity: isDemoMode ? initialProductivity + 6 : initialProductivity,
+    productivity: stats?.velocity || (isDemoMode ? initialProductivity + 6 : initialProductivity),
     risk: isDemoMode ? Math.max(0, initialRisk - 8) : initialRisk,
     workload: initialWorkload
   });

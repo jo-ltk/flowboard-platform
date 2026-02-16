@@ -22,32 +22,26 @@ interface ActivityContextType {
 const ActivityContext = createContext<ActivityContextType | undefined>(undefined);
 
 export function ActivityProvider({ children }: { children: React.ReactNode }) {
-  const [events, setEvents] = useState<ActivityEvent[]>([
-    {
-      id: '1',
-      user: { name: 'Sarah Chen' },
-      action: 'completed task',
-      target: 'Homepage Redesign',
-      timestamp: '2m ago',
-      type: 'status'
-    },
-    {
-      id: '2',
-      user: { name: 'AI Assistant' },
-      action: 'suggested optimization',
-      target: 'SEO Meta Tags',
-      timestamp: '15m ago',
-      type: 'ai'
-    },
-    {
-      id: '3',
-      user: { name: 'Marcus Miller' },
-      action: 'commented on',
-      target: 'User Auth Flow',
-      timestamp: '1h ago',
-      type: 'comment'
-    }
-  ]);
+  const [events, setEvents] = useState<ActivityEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const res = await fetch('/api/dashboard/overview');
+        const data = await res.json();
+        if (data.activities) {
+          setEvents(data.activities);
+        }
+      } catch (err) {
+        console.error("Failed to fetch activities:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   const addEvent = (event: Omit<ActivityEvent, 'id' | 'timestamp'>) => {
     const newEvent: ActivityEvent = {

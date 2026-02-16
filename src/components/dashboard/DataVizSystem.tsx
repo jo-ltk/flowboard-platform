@@ -6,14 +6,16 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui";
 
 // 1. Editorial Bar Visualization
-const EditorialBarChart = () => {
-  const data = [
+const EditorialBarChart = ({ data }: { data?: any[] }) => {
+  const defaultData = [
     { label: "Mon", value: 65 },
     { label: "Tue", value: 85 },
     { label: "Wed", value: 45 },
     { label: "Thu", value: 92 }, // Peak
     { label: "Fri", value: 70 },
   ];
+
+  const chartData = data || defaultData;
 
   return (
     <div className="space-y-6">
@@ -22,7 +24,7 @@ const EditorialBarChart = () => {
         <span className="font-mono text-[10px] uppercase tracking-widest text-deep-blue/40">Unit: Module/hr</span>
       </div>
       <div className="space-y-4">
-        {data.map((item, i) => (
+        {chartData.map((item, i) => (
           <div key={i} className="group flex items-center gap-4">
             <div className="w-8 font-mono text-[10px] font-bold text-deep-blue/40 uppercase">
               {item.label}
@@ -146,17 +148,17 @@ const TimelineStrip = () => {
   );
 };
 
-export function DataVizSystem() {
+export function DataVizSystem({ stats }: { stats?: any }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       {/* Velocity Grid */}
-      <motion.div 
+       <motion.div 
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         className="lg:col-span-7 bg-white/40 border border-border-soft rounded-2xl p-8 shadow-soft"
       >
-        <EditorialBarChart />
+        <EditorialBarChart data={stats?.weeklyVelocity} />
       </motion.div>
 
       {/* Ring & Stats */}
@@ -166,7 +168,7 @@ export function DataVizSystem() {
         viewport={{ once: true }}
         className="lg:col-span-5 flex flex-col gap-8"
       >
-        <ProductivityRing />
+        <ProductivityRing value={stats?.velocity} />
         <div className="flex-1 bg-white/50 border border-border-soft rounded-2xl p-6 flex flex-col justify-center">
           <h4 className="font-syne text-sm font-bold text-deep-blue mb-4 uppercase tracking-widest">Ongoing Timeline</h4>
           <TimelineStrip />
