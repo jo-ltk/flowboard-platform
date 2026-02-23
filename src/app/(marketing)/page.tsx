@@ -4,6 +4,7 @@ import FeatureGrid from "@/components/sections/FeatureGrid";
 import AIDemo from "@/components/sections/AIDemo";
 import SocialProof from "@/components/sections/SocialProof";
 import Pricing from "@/components/sections/Pricing";
+import Blog from "@/components/sections/Blog";
 import FlowBoardChatbot from "@/components/chat/FlowBoardChatbot";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -23,8 +24,10 @@ export default function MarketingPage() {
       <AIDemo />
       <SocialProof />
       <Pricing />
+      <Blog />
 
       <FlowBoardChatbot />
+
 
       {/* Final CTA Section - High-End Redesign */}
       <section

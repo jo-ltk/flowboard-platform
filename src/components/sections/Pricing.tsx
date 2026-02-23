@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import GooglePayButton from "@google-pay/button-react";
 
 const PLANS = [
   {
@@ -45,6 +46,7 @@ const PLANS = [
 
 export default function Pricing() {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   return (
     <section
@@ -73,7 +75,10 @@ export default function Pricing() {
             {(["monthly", "yearly"] as const).map((c) => (
               <button
                 key={c}
-                onClick={() => setBilling(c)}
+                onClick={() => {
+                  setBilling(c);
+                  setSelectedPlan(null);
+                }}
                 className={`relative px-10 h-full flex items-center text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 overflow-hidden ${
                   billing === c ? "text-white" : "text-[#8A9E96] hover:text-[#2F3A35]"
                 }`}
@@ -151,15 +156,67 @@ export default function Pricing() {
                 </ul>
               </div>
 
-              <button
-                className={`w-full py-6 font-black text-[10px] uppercase tracking-[0.4em] transition-all duration-500 border rounded-none ${
-                  plan.recommended
-                    ? "bg-[#2F3A35] text-white border-[#2F3A35] hover:bg-[#8CBA41] hover:border-[#8CBA41]"
-                    : "bg-transparent text-[#2F3A35] border-[#2F3A35] hover:bg-[#2F3A35] hover:text-white"
-                }`}
-              >
-                {plan.cta}
-              </button>
+              {selectedPlan === plan.name && plan.price[billing] > 0 ? (
+                <div className="w-full h-[64px] flex justify-center items-center">
+                  <GooglePayButton
+                    environment="TEST"
+                    paymentRequest={{
+                      apiVersion: 2,
+                      apiVersionMinor: 0,
+                      allowedPaymentMethods: [
+                        {
+                          type: "CARD",
+                          parameters: {
+                            allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                            allowedCardNetworks: ["MASTERCARD", "VISA"],
+                          },
+                          tokenizationSpecification: {
+                            type: "PAYMENT_GATEWAY",
+                            parameters: {
+                              gateway: "example",
+                              gatewayMerchantId: "exampleGatewayMerchantId",
+                            },
+                          },
+                        },
+                      ],
+                      merchantInfo: {
+                        merchantId: "12345678901234567890",
+                        merchantName: "FlowBoard Demo",
+                      },
+                      transactionInfo: {
+                        totalPriceStatus: "FINAL",
+                        totalPriceLabel: "Total",
+                        totalPrice: plan.price[billing].toString(),
+                        currencyCode: "USD",
+                        countryCode: "US",
+                      },
+                    }}
+                    onLoadPaymentData={(paymentRequest) => {
+                      console.log("load payment data", paymentRequest);
+                      alert(`Payment successful for ${plan.name} plan!`);
+                      setSelectedPlan(null);
+                    }}
+                    buttonSizeMode="fill"
+                  />
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (plan.price[billing] > 0) {
+                      setSelectedPlan(plan.name);
+                    } else {
+                      alert("Getting started for free!");
+                    }
+                  }}
+                  className={`w-full py-6 font-black text-[10px] uppercase tracking-[0.4em] transition-all duration-500 border rounded-none ${
+                    plan.recommended
+                      ? "bg-[#2F3A35] text-white border-[#2F3A35] hover:bg-[#8CBA41] hover:border-[#8CBA41]"
+                      : "bg-transparent text-[#2F3A35] border-[#2F3A35] hover:bg-[#2F3A35] hover:text-white"
+                  }`}
+                >
+                  {plan.cta}
+                </button>
+              )}
             </motion.div>
           ))}
         </div>

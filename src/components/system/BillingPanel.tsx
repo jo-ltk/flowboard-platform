@@ -217,37 +217,22 @@ const UsageMeter = ({ icon: Icon, label, used, limit, color }: any) => {
   );
 };
 
+import GooglePayButton from "@google-pay/button-react";
 import { AccessGate } from './AccessGate';
 
 const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent: boolean, role: UserRole, workspaceId: string }) => {
   const [loading, setLoading] = React.useState(false);
+  const [showGPay, setShowGPay] = React.useState(false);
 
-  const handleUpgrade = async () => {
+  const handleUpgradeClick = () => {
     if (isCurrent || loading) return;
     
-    setLoading(true);
-    try {
-      const response = await fetch('/api/billing/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          workspaceId,
-          planType: plan.type,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
-      const { url } = await response.json();
-      window.location.href = url;
-    } catch (error) {
-      console.error('[Billing] Error:', error);
-      toast.error("Failed to start checkout. Please try again.");
-      setLoading(false);
+    // For paid plans, show GPay instead of immediate redirect
+    if (plan.price !== "$0") {
+      setShowGPay(true);
+    } else {
+      // Free plan logic if applicable
+      toast.info("You're already on a free plan, or contact support to downgrade.");
     }
   };
 
@@ -280,19 +265,66 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
       </ul>
 
       <AccessGate role={role} action="billing_access" showBlur={false}>
-        <button 
-          onClick={handleUpgrade}
-          disabled={loading || isCurrent}
-          className={cn(
-            "w-full py-4  font-bold flex items-center justify-center gap-2 transition-all",
-            isCurrent 
-              ? "bg-stone-200 text-stone-500 cursor-default" 
-              : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-          )}
-        >
-          {loading ? "Processing..." : isCurrent ? "Current Plan" : "Upgrade to " + plan.type}
-          {!isCurrent && !loading && <ArrowRight size={18} />}
-        </button>
+        {showGPay && !isCurrent ? (
+           <div className="w-full h-[56px] flex justify-center items-center">
+            <GooglePayButton
+              environment="TEST"
+              paymentRequest={{
+                apiVersion: 2,
+                apiVersionMinor: 0,
+                allowedPaymentMethods: [
+                  {
+                    type: "CARD",
+                    parameters: {
+                      allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                      allowedCardNetworks: ["MASTERCARD", "VISA"],
+                    },
+                    tokenizationSpecification: {
+                      type: "PAYMENT_GATEWAY",
+                      parameters: {
+                        gateway: "example",
+                        gatewayMerchantId: "exampleGatewayMerchantId",
+                      },
+                    },
+                  },
+                ],
+                merchantInfo: {
+                  merchantId: "12345678901234567890",
+                  merchantName: "FlowBoard",
+                },
+                transactionInfo: {
+                  totalPriceStatus: "FINAL",
+                  totalPriceLabel: "Total",
+                  totalPrice: plan.price.replace(/[^0-9.]/g, ''),
+                  currencyCode: "USD",
+                  countryCode: "US",
+                },
+              }}
+              onLoadPaymentData={(paymentRequest) => {
+                console.log("load payment data", paymentRequest);
+                toast.success(`Payment successful for ${plan.type} plan!`);
+                setShowGPay(false);
+                // Trigger reload with success params to trigger mock UI update
+                window.location.href = `/dashboard/billing?success=true&upgraded=${plan.type}`;
+              }}
+              buttonSizeMode="fill"
+            />
+          </div>
+        ) : (
+          <button 
+            onClick={handleUpgradeClick}
+            disabled={loading || isCurrent}
+            className={cn(
+              "w-full py-4  font-bold flex items-center justify-center gap-2 transition-all",
+              isCurrent 
+                ? "bg-stone-200 text-stone-500 cursor-default" 
+                : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            )}
+          >
+            {loading ? "Processing..." : isCurrent ? "Current Plan" : "Upgrade to " + plan.type}
+            {!isCurrent && !loading && <ArrowRight size={18} />}
+          </button>
+        )}
       </AccessGate>
     </div>
   );
