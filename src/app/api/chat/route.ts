@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
             }
           }
 
+          // Debug: Log what we received
+          console.log("[AI Assistant] Stream complete. Tool call name:", toolCallName, "Arguments:", fullToolCallArguments ? fullToolCallArguments.substring(0, 100) + "..." : "(empty)", "Has content:", hasSentContent);
+
           // If a tool call was made, execute it after the stream chunks are processed
           if (toolCallName === "create_task" && fullToolCallArguments) {
             // If the AI didn't say anything, send a status update
@@ -66,7 +69,25 @@ export async function POST(req: NextRequest) {
             }
 
             try {
-              const args = JSON.parse(fullToolCallArguments);
+              // Try to parse the JSON, with fallback handling for incomplete chunks
+              let args;
+              try {
+                args = JSON.parse(fullToolCallArguments);
+              } catch (parseErr) {
+                // Try to find and extract JSON from the string if direct parsing fails
+                console.warn("[AI Assistant] Direct parse failed, attempting extraction:", fullToolCallArguments.substring(0, 200));
+                const jsonMatch = fullToolCallArguments.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                  args = JSON.parse(jsonMatch[0]);
+                } else {
+                  // Even if we can't parse, try to create a basic task with what we have
+                  console.error("[AI Assistant] Failed to parse JSON, raw args:", fullToolCallArguments);
+                  controller.enqueue(new TextEncoder().encode("\n\n**System Notice:** AI response received but couldn't parse task data. Please try again or create the task manually."));
+                  controller.close();
+                  return;
+                }
+              }
+              
               console.log("[AI Assistant] ARCHITECTING TASK:", args);
 
               // 1. Determine Target Project

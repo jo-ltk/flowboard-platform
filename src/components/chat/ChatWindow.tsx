@@ -151,6 +151,11 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
     }
 
     const userMsg: Message = { role: "user", content: userContent };
+    
+    // Build the messages array for the API call (including the new message)
+    // Note: We build this BEFORE the async fetch, using the current messages state
+    const apiMessages = [...messages, userMsg];
+    
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setPendingImages([]);
@@ -161,7 +166,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [...messages, userMsg],
+          messages: apiMessages,
           context: {
             page: window.location.pathname,
             workspaceId: activeWorkspace?.id,
