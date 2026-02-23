@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Send, X, ExternalLink, MessageCircle, Image as ImageIcon, Paperclip } from "lucide-react";
+import { Send, X, ExternalLink, MessageCircle, Image as ImageIcon, Paperclip, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useWorkspaces } from "@/context/WorkspaceContext";
 import ChatBubble from "./ChatBubble";
@@ -215,8 +215,8 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
   return (
     <>
       <div
-        className={`fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 w-full sm:w-[420px] h-dvh sm:h-[600px] bg-cream sm:bg-cream/90 sm:glass-panel flex flex-col overflow-hidden z-100 sm:border border-t border-soft-blue/20 sm:rounded-xl sm:shadow-xl transition-all ${
-          isDragOver ? "ring-2 ring-soft-blue ring-inset bg-soft-blue/5" : ""
+        className={`fixed inset-0 sm:inset-auto sm:bottom-28 sm:right-6 w-full sm:w-[380px] h-dvh sm:h-[520px] bg-white flex flex-col overflow-hidden z-100 border-l sm:border border-[#DDE5E1] rounded-none transition-all ${
+          isDragOver ? "ring-2 ring-[#8CBA41] ring-inset bg-[#f8faf9]" : ""
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -224,47 +224,31 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
       >
         {/* Drop overlay */}
         {isDragOver && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-soft-blue/10 backdrop-blur-sm pointer-events-none rounded-xl">
-            <ImageIcon className="w-10 h-10 text-soft-blue mb-3" />
-            <p className="font-syne font-bold text-sage-deep text-sm">Drop image to analyze</p>
-            <p className="text-xs text-sage-deep/50 mt-1">FlowBoard AI will extract tasks automatically</p>
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm pointer-events-none rounded-none">
+            <ImageIcon className="w-12 h-12 text-[#8CBA41] mb-4" />
+            <p className="font-bold text-[#2F3A35] text-sm uppercase tracking-widest">Release to Analyze</p>
+            <p className="text-[10px] text-[#8CBA41] mt-2 uppercase tracking-widest font-bold">Cognitive Vision Mode</p>
           </div>
         )}
 
-        {/* Background Glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-soft-blue/5 blur-[50px] -z-10 rounded-full hidden sm:block" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-light-green/5 blur-[50px] -z-10 rounded-full hidden sm:block" />
-
-        {/* Mobile drag handle */}
-        <div className="flex justify-center pt-3 pb-1 sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-sage-deep/15" />
-        </div>
-
-        {/* Header */}
-        <div className="shrink-0 px-5 sm:px-6 py-4 sm:py-5 border-b border-border-soft flex items-center justify-between bg-white/40 backdrop-blur-sm">
+        {/* Header - Architectural Style */}
+        <div className="shrink-0 px-5 py-4 border-b border-[#DDE5E1] flex items-center justify-between bg-white">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <h3 className="font-syne font-bold text-sage-deep text-base sm:text-lg tracking-tight">FlowBoard AI</h3>
-              <div className="w-2 h-2 rounded-full bg-light-green" />
+              <h3 className="font-bold text-[#2F3A35] text-base tracking-tighter uppercase">FlowBoard AI</h3>
+              <div className="w-1.5 h-1.5 bg-[#8CBA41]" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-sage-deep/40">
-              Your Intelligent Workspace Assistant
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#8A9E96] mt-0.5">
+              Intelligent Workspace Assist
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-soft-blue/10 rounded-full border border-soft-blue/20"
-              title="Drop images or paste screenshots"
-            >
-              <ImageIcon className="w-3 h-3 text-soft-blue" />
-              <span className="text-[9px] font-mono text-soft-blue uppercase tracking-widest">Vision</span>
-            </div>
+          <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="w-10 h-10 sm:w-auto sm:h-auto sm:p-2 flex items-center justify-center hover:bg-soft-blue/10 rounded-full transition-colors text-sage-deep/60"
+              className="w-8 h-8 flex items-center justify-center hover:bg-[#f8faf9] border border-transparent hover:border-[#DDE5E1] rounded-none transition-all text-[#2F3A35]"
               aria-label="Close chat"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -272,84 +256,55 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
         {/* Body */}
         <div
           ref={scrollRef}
-          className="flex-1 overflow-y-auto px-5 sm:px-6 py-5 sm:py-6 scroll-smooth"
+          className="flex-1 overflow-y-auto px-5 py-6 scroll-smooth"
         >
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col justify-center items-center text-center space-y-5 sm:space-y-6">
-              <div className="w-14 h-14 sm:w-16 sm:h-16  bg-surface-tinted flex items-center justify-center border border-soft-blue/10">
-                <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-soft-blue" />
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-syne font-bold text-sage-deep text-sm sm:text-base">Strategic Guidance Starts Here</h4>
-                <p className="text-sm text-sage-deep/60 max-w-[260px] sm:max-w-[240px]">
-                  Ask me anything, or drop a screenshot to auto-extract tasks.
+            <div className="h-full flex flex-col justify-start space-y-8">
+              <div className="space-y-3">
+                <span className="text-[9px] font-bold text-[#8CBA41] uppercase tracking-[0.4em]">Strategic Engine</span>
+                <h4 className="text-2xl font-bold text-[#2F3A35] leading-none tracking-tighter">Your Intelligence <br /> starts here.</h4>
+                <p className="text-[13px] text-[#5C6B64] font-light max-w-[240px] leading-relaxed">
+                  Ask anything, or drop a whiteboard to auto-orchestrate.
                 </p>
               </div>
 
-              {/* Vision hint card */}
-              <div className="flex items-start gap-3 w-full bg-soft-blue/5 border border-soft-blue/15 rounded-xl p-3.5 text-left">
-                <div className="w-8 h-8 rounded-lg bg-soft-blue/15 flex items-center justify-center shrink-0">
-                  <ImageIcon className="w-4 h-4 text-soft-blue" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-sage-deep">Vision Analysis</p>
-                  <p className="text-[11px] text-sage-deep/55 mt-0.5 leading-relaxed">
-                    Drop a screenshot, whiteboard, or mockup — AI will read it and create tasks automatically.
-                  </p>
+              {/* Suggested Tasks - Grid Layout */}
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 gap-1.5 w-full">
+                  {SUGGESTED_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => handleSend(prompt)}
+                      className="text-left px-4 py-3 text-[12px] font-medium text-[#2F3A35] bg-white border border-[#DDE5E1] rounded-none hover:bg-[#2F3A35] hover:text-white transition-all group active:scale-[0.98] flex items-center justify-between"
+                    >
+                      {prompt}
+                      <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 w-full">
-                {SUGGESTED_PROMPTS.map((prompt) => (
-                  <button
-                    key={prompt}
-                    onClick={() => handleSend(prompt)}
-                    className="text-left px-4 py-3.5 sm:py-3 text-sm text-sage-deep/80 bg-white/60 border border-border-soft rounded-xl hover:border-soft-blue/40 hover:bg-soft-blue/5 transition-all group min-h-[44px] active:scale-[0.98]"
-                  >
-                    {prompt}
-                  </button>
-                ))}
+              {/* Vision hint card - Architectural */}
+              <div className="border-l-4 border-[#8CBA41] bg-[#f8faf9] p-4 rounded-none">
+                <p className="text-[11px] text-[#5C6B64] font-light leading-relaxed">
+                  Drop a mockup. AI will interpret the vision and generate structured tasks instantly.
+                </p>
               </div>
             </div>
           ) : (
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-6">
               {messages.map((msg, i) => (
-                <div key={i} className="space-y-2">
+                <div key={i} className="space-y-3">
                   <ChatBubble role={msg.role} content={msg.content} />
-                  {msg.role === "assistant" && typeof msg.content === "string" && msg.content.includes("Task synchronized") && (
-                    <div className="flex justify-start pl-4 pb-2">
-                      <button
-                        onClick={() => router.push("/dashboard/tasks")}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-light-green text-sage-deep text-[10px] font-bold uppercase tracking-wider rounded-full shadow-soft hover:bg-light-green/90 transition-all border border-dark-green/10 min-h-[44px] cursor-pointer hover:scale-105"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        View Live Task List
-                      </button>
-                    </div>
-                  )}
-                  {msg.role === "assistant" &&
-                    typeof msg.content === "string" &&
-                    msg.content.toLowerCase().includes("project") &&
-                    !msg.content.includes("Task synchronized") && (
-                      <div className="flex justify-start pl-4 pb-2">
-                        <button
-                          onClick={() => router.push("/dashboard")}
-                          className="flex items-center gap-2 px-4 py-2.5 bg-soft-blue text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-soft hover:bg-soft-blue/90 transition-all min-h-[44px] cursor-pointer hover:scale-105"
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                          Open Project Workspace
-                        </button>
-                      </div>
-                    )}
                 </div>
               ))}
               {isTyping && (
-                <div className="flex justify-start mb-4">
-                  <div className="bg-cream-warm border border-border-soft px-4 py-3  rounded-tl-none">
-                    <div className="flex gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-soft-blue opacity-50 animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <div className="w-1.5 h-1.5 rounded-full bg-soft-blue opacity-50 animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <div className="w-1.5 h-1.5 rounded-full bg-soft-blue opacity-50 animate-bounce" style={{ animationDelay: "300ms" }} />
+                <div className="flex justify-start">
+                  <div className="bg-[#f8faf9] border border-[#DDE5E1] px-6 py-4 rounded-none">
+                    <div className="flex gap-2">
+                      <div className="w-1.5 h-1.5 bg-[#8CBA41] animate-pulse" />
+                      <div className="w-1.5 h-1.5 bg-[#8CBA41] animate-pulse" style={{ animationDelay: "200ms" }} />
+                      <div className="w-1.5 h-1.5 bg-[#8CBA41] animate-pulse" style={{ animationDelay: "400ms" }} />
                     </div>
                   </div>
                 </div>
@@ -358,35 +313,34 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
           )}
         </div>
 
-        {/* Pending Image Previews */}
+        {/* Pending Image Previews - Sharp */}
         {pendingImages.length > 0 && (
-          <div className="shrink-0 px-4 pt-3 flex gap-2 flex-wrap bg-white/60 border-t border-border-soft">
+          <div className="shrink-0 px-6 pt-4 pb-2 flex gap-3 flex-wrap bg-white border-t border-[#DDE5E1]">
             {pendingImages.map((src, i) => (
               <div key={i} className="relative group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
                   alt={`Pending ${i}`}
-                  className="w-14 h-14 object-cover rounded-lg border border-soft-blue/30"
+                  className="w-16 h-16 object-cover rounded-none border border-[#DDE5E1]"
                 />
                 <button
                   onClick={() => removePendingImage(i)}
-                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-sage-deep text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-[#2F3A35] text-white rounded-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label="Remove image"
                 >
                   <X className="w-3 h-3" />
                 </button>
               </div>
             ))}
-            <div className="text-[10px] font-mono text-sage-deep/40 self-center ml-1">
-              {pendingImages.length} image{pendingImages.length > 1 ? "s" : ""} ready · AI will analyze
+            <div className="text-[10px] font-bold text-[#8CBA41] uppercase tracking-widest self-center ml-2">
+              {pendingImages.length} Image Asset{pendingImages.length > 1 ? "s" : ""} Stage for Processing
             </div>
           </div>
         )}
 
-        {/* Footer Input */}
-        <div className="shrink-0 p-4 sm:p-4 bg-white/60 backdrop-blur-md border-t border-border-soft pb-[max(env(safe-area-inset-bottom),16px)] sm:pb-4">
-          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        {/* Footer Input - Structured Design */}
+        <div className="shrink-0 p-6 bg-white border-t border-[#DDE5E1]">
+          <div className="flex items-center gap-3 mb-4">
             {/* Hidden file input */}
             <input
               ref={fileInputRef}
@@ -405,45 +359,50 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
             {/* Attach image button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl border border-border-soft bg-surface-sunken hover:bg-soft-blue/10 hover:border-soft-blue/30 transition-colors text-sage-deep/50 hover:text-soft-blue"
+              className="w-14 h-14 shrink-0 flex items-center justify-center border border-[#DDE5E1] bg-[#f8faf9] hover:bg-[#2F3A35] hover:text-white transition-all text-[#2F3A35]"
               aria-label="Attach image"
               title="Attach image (or drag & drop / paste)"
             >
-              <Paperclip className="w-4 h-4" />
+              <Paperclip className="w-5 h-5" />
             </button>
 
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
-              onPaste={handlePaste}
-              placeholder={pendingImages.length > 0 ? "Add a note, or send to analyze…" : "Ask FlowBoard AI…"}
-              className="flex-1 bg-surface-sunken border border-border-soft rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-soft-blue/20 text-sage-deep min-h-[44px]"
-            />
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
+                onPaste={handlePaste}
+                placeholder={pendingImages.length > 0 ? "Add intent..." : "Analyze workspace..."}
+                className="w-full bg-[#f8faf9] border border-[#DDE5E1] px-6 py-4 text-sm rounded-none focus:outline-none focus:border-[#8CBA41] text-[#2F3A35] h-14"
+              />
+            </div>
+            
             <button
               onClick={() => handleSend(input)}
               disabled={isTyping}
-              className="w-11 h-11 sm:w-auto sm:h-auto shrink-0 sm:p-3 bg-sage-deep text-cream rounded-xl hover:bg-sage-deep-dark transition-colors shadow-sm flex items-center justify-center disabled:opacity-50"
+              className="w-14 h-14 shrink-0 bg-[#2F3A35] text-white rounded-none hover:bg-black transition-all flex items-center justify-center disabled:opacity-30"
               aria-label="Send message"
             >
               <Send className="w-5 h-5" />
             </button>
           </div>
+
           <div className="flex items-center justify-between px-1">
             <button
               onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-1.5 text-[10px] font-mono text-sage-deep/40 hover:text-sage-deep transition-colors uppercase tracking-widest min-h-[44px] cursor-pointer"
+              className="flex items-center gap-2 text-[10px] font-bold text-[#8A9E96] hover:text-[#2F3A35] transition-all uppercase tracking-widest"
             >
               <ExternalLink className="w-3 h-3" />
-              Open Dashboard
+              Access Control Panel
             </button>
-            <span className="text-[9px] sm:text-[10px] font-mono text-sage-deep/20 hidden sm:block">
-              DROP IMAGE · PASTE · CTRL+/
+            <span className="text-[10px] font-bold text-[#DDE5E1] uppercase tracking-widest hidden sm:block">
+              Multimodal Ready
             </span>
           </div>
         </div>
       </div>
     </>
+
   );
 }

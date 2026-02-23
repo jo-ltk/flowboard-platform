@@ -28,7 +28,7 @@ export default function ChatBubble({ role, content }: ChatBubbleProps) {
         {content.map((part, i) => {
           if (part.type === "image_url" && part.image_url?.url) {
             return (
-              <div key={i} className="rounded-xl overflow-hidden border border-white/20 max-w-[260px]">
+              <div key={i} className="rounded-none overflow-hidden border border-[#DDE5E1] max-w-[260px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={part.image_url.url}
@@ -49,19 +49,20 @@ export default function ChatBubble({ role, content }: ChatBubbleProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       className={`flex w-full ${isUser ? "justify-end" : "justify-start"} mb-4`}
     >
       <div
-        className={`max-w-[85%] px-5 py-3  text-sm leading-relaxed shadow-soft ${
+        className={`max-w-[85%] px-6 py-4 text-sm leading-relaxed rounded-none border ${
           isUser
-            ? "bg-soft-blue text-sage-deep rounded-tr-none"
-            : "bg-cream-warm border border-border-soft text-sage-deep rounded-tl-none"
+            ? "bg-[#8CBA41] text-white border-[#8CBA41]"
+            : "bg-white border-[#DDE5E1] text-[#2F3A35]"
         }`}
       >
         {renderContent()}
       </div>
     </motion.div>
+
   );
 }

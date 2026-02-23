@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 
 interface ChatButtonProps {
   onClick: () => void;
@@ -12,15 +12,23 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
   return (
     <button
       onClick={onClick}
-      className={`relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-300 hover:-translate-y-1 ${
+      className={`relative w-16 h-16 rounded-none flex items-center justify-center cursor-pointer z-50 transition-all duration-500 scale-90 sm:scale-100 ${
         isOpen 
-          ? "bg-sage-deep text-cream shadow-md" 
-          : "bg-surface-elevated text-soft-blue border border-soft-blue/20 shadow-md"
+          ? "bg-[#2F3A35] text-white shadow-2xl" 
+          : "bg-[#8CBA41] text-white shadow-xl hover:bg-[#2F3A35]"
       }`}
     >
-      <div className={`transition-transform duration-300 ${isOpen ? "rotate-90" : "rotate-0"}`}>
-        <MessageCircle className={`w-8 h-8 ${isOpen ? "text-light-green" : "text-soft-blue"}`} />
+      <div className={`transition-transform duration-500 ${isOpen ? "rotate-90" : "rotate-0"}`}>
+        {isOpen ? (
+          <X className="w-8 h-8" />
+        ) : (
+          <MessageCircle className="w-8 h-8" />
+        )}
       </div>
+      {/* Decorative accent corner */}
+      {!isOpen && (
+        <div className="absolute top-0 right-0 w-3 h-3 bg-[#2F3A35]" />
+      )}
     </button>
   );
 }
