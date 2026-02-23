@@ -24,7 +24,7 @@ export const OnboardingComplete: React.FC<CompleteProps> = ({ onComplete, worksp
             animate={{ pathLength: 1 }}
             transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
           >
-            <svg className="w-16 h-16 text-deep-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-16 h-16 text-sage-deep" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <motion.path 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
@@ -43,11 +43,11 @@ export const OnboardingComplete: React.FC<CompleteProps> = ({ onComplete, worksp
       </div>
 
       <div className="space-y-4">
-        <h2 className="font-syne text-[32px] sm:text-[42px] leading-[1.1] text-deep-blue font-bold">
+        <h2 className="font-syne text-[32px] sm:text-[42px] leading-[1.1] text-sage-deep font-bold">
           System Ready.
         </h2>
-        <p className="font-mono text-[13px] text-deep-blue/60 leading-relaxed max-w-xs mx-auto">
-          Welcome to <span className="text-deep-blue font-bold">{workspaceName}</span>. Your architectural workspace has been initialized and is ready for execution.
+        <p className="font-mono text-[13px] text-sage-deep/60 leading-relaxed max-w-xs mx-auto">
+          Welcome to <span className="text-sage-deep font-bold">{workspaceName}</span>. Your architectural workspace has been initialized and is ready for execution.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export const OnboardingComplete: React.FC<CompleteProps> = ({ onComplete, worksp
         <Button
           variant="primary"
           onClick={onComplete}
-          className="w-full h-14 rounded-xl text-lg tracking-widest group bg-deep-blue"
+          className="w-full h-14 rounded-xl text-lg tracking-widest group bg-sage-deep"
         >
           Enter Dashboard
           <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,7 +64,7 @@ export const OnboardingComplete: React.FC<CompleteProps> = ({ onComplete, worksp
         </Button>
       </div>
       
-      <div className="font-mono text-[10px] tracking-widest text-deep-blue/30 uppercase pt-8">
+      <div className="font-mono text-[10px] tracking-widest text-sage-deep/30 uppercase pt-8">
         Session Certified — FlowBoard
       </div>
     </div>

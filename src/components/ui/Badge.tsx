@@ -7,11 +7,11 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-surface-sunken text-deep-blue/60 border-border-soft",
-  primary: "bg-deep-blue/5 text-deep-blue border-deep-blue/10",
-  secondary: "bg-soft-blue/10 text-deep-blue border-soft-blue/20",
-  accent: "bg-light-green/15 text-deep-blue border-light-green/30",
-  outline: "bg-transparent text-deep-blue/60 border-border-blue/40",
+  default: "bg-surface-sunken text-sage-deep/60 border-border-soft",
+  primary: "bg-sage-deep/5 text-sage-deep border-sage-deep/10",
+  secondary: "bg-soft-blue/10 text-sage-deep border-soft-blue/20",
+  accent: "bg-light-green/15 text-sage-deep border-light-green/30",
+  outline: "bg-transparent text-sage-deep/60 border-border-blue/40",
 };
 
 export function Badge({

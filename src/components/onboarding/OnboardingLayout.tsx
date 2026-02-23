@@ -49,10 +49,10 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
               <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-soft-blue font-bold mb-4 block">
                 Step 0{currentStep} / 0{totalSteps}
               </span>
-              <h2 className="font-syne text-[32px] sm:text-[42px] leading-[1.1] text-deep-blue font-bold mb-6">
+              <h2 className="font-syne text-[32px] sm:text-[42px] leading-[1.1] text-sage-deep font-bold mb-6">
                 {title}
               </h2>
-              <p className="font-mono text-[13px] text-deep-blue/60 leading-relaxed">
+              <p className="font-mono text-[13px] text-sage-deep/60 leading-relaxed">
                 {description}
               </p>
             </div>
@@ -81,7 +81,7 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
                 {visualPanel || (
                   <div className="w-full aspect-video bg-surface-elevated rounded-[24px] shadow-elevated border border-border-soft flex items-center justify-center relative overflow-hidden">
                      <div className="absolute inset-0 pastel-dots opacity-[0.05]" />
-                     <div className="text-deep-blue/10 font-syne text-[120px] font-bold select-none">
+                     <div className="text-sage-deep/10 font-syne text-[120px] font-bold select-none">
                         F{currentStep}
                      </div>
                   </div>
@@ -93,8 +93,8 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
       </div>
       
       {/* Sidebar-like Minimal Footer */}
-      <div className="fixed bottom-8 left-8 lg:left-12 flex items-center gap-4 text-[10px] font-mono tracking-widest text-deep-blue/30 uppercase pointer-events-none">
-        <span className="w-8 h-[1px] bg-deep-blue/20" />
+      <div className="fixed bottom-8 left-8 lg:left-12 flex items-center gap-4 text-[10px] font-mono tracking-widest text-sage-deep/30 uppercase pointer-events-none">
+        <span className="w-8 h-[1px] bg-sage-deep/20" />
         Curated Setup
       </div>
     </div>

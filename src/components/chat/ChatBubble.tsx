@@ -54,10 +54,10 @@ export default function ChatBubble({ role, content }: ChatBubbleProps) {
       className={`flex w-full ${isUser ? "justify-end" : "justify-start"} mb-4`}
     >
       <div
-        className={`max-w-[85%] px-5 py-3 rounded-2xl text-sm leading-relaxed shadow-soft ${
+        className={`max-w-[85%] px-5 py-3  text-sm leading-relaxed shadow-soft ${
           isUser
-            ? "bg-soft-blue text-deep-blue rounded-tr-none"
-            : "bg-cream-warm border border-border-soft text-deep-blue rounded-tl-none"
+            ? "bg-soft-blue text-sage-deep rounded-tr-none"
+            : "bg-cream-warm border border-border-soft text-sage-deep rounded-tl-none"
         }`}
       >
         {renderContent()}

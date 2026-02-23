@@ -127,8 +127,8 @@ export const WorkspaceProvider = ({ children }: { children: React.ReactNode }) =
     return (
         <div className="flex items-center justify-center min-h-screen bg-cream">
             <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-deep-blue border-t-light-green rounded-full animate-spin" />
-                <p className="font-syne font-bold text-deep-blue/40 uppercase tracking-widest text-xs">Architecting Core Systems...</p>
+                <div className="w-12 h-12 border-4 border-sage-deep border-t-light-green rounded-full animate-spin" />
+                <p className="font-syne font-bold text-sage-deep/40 uppercase tracking-widest text-xs">Architecting Core Systems...</p>
             </div>
         </div>
     );

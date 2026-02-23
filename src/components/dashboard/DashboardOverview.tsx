@@ -87,76 +87,74 @@ export function DashboardOverview() {
   };
 
   return (
-    <div className="space-y-8 pb-20 fade-in-up">
-      {/* Editorial Header Block - Matches ProjectView */}
-      <div className="relative overflow-hidden rounded-[40px] bg-linear-to-br from-deep-blue to-deep-blue/90 p-10 lg:p-14 text-cream shadow-2xl ring-1 ring-white/10">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-soft-blue/30 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-light-green/20 blur-[120px] rounded-full" />
-        
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex flex-wrap items-center gap-4">
-              <Badge className="bg-light-green/90 backdrop-blur-md text-deep-blue border-none px-3 py-1 font-mono text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-light-green/20">
+    <div className="space-y-6 pb-20 fade-in-up">
+      {/* ─── Calm Editorial Header ─── */}
+      <div className="relative overflow-hidden  bg-white border border-[#DDE5E1] p-8 lg:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
+        {/* Subtle sage orb */}
+        <div className="absolute top-0 right-0 w-[300px] h-[200px] bg-[#AFC8B8]/12 blur-[80px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-8 space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#7C9A8B]/10 border border-[#7C9A8B]/20 text-[#5F7D6E] text-[11px] font-semibold uppercase tracking-[0.08em]">
                 {activeWorkspace.name}
-              </Badge>
-              <div className="h-px w-8 bg-white/20" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-60">
-                Heuristic Monitor Active
+              </span>
+              <div className="h-3.5 w-px bg-[#DDE5E1]" />
+              <span className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">
+                Flow Monitor
               </span>
             </div>
-            
-            <div className="space-y-3">
-              <h1 className="font-syne text-5xl lg:text-7xl font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-linear-to-r from-cream via-white to-cream/80">
-                Overview
+
+            <div>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-[#2F3A35]">
+                Good morning ☀️
               </h1>
-              <p className="text-lg text-cream/70 font-medium leading-relaxed max-w-xl">
-                Real-time telemetry of project velocity, system health, and heuristic productivity metrics.
+              <p className="mt-2 text-base text-[#5C6B64] font-light leading-relaxed max-w-md">
+                Here's your project overview — calm, clear, and up to date.
               </p>
             </div>
 
-            <div className="flex items-center gap-6 pt-2">
+            <div className="flex items-center gap-4 pt-1">
               <PresenceSystem />
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-sm transition-transform hover:scale-105 cursor-default">
-                <Calendar className="w-3.5 h-3.5 text-light-green" />
-                <span className="font-mono text-[10px] font-bold text-white uppercase tracking-wider">
+              <div className="h-3.5 w-px bg-[#DDE5E1]" />
+              <div className="flex items-center gap-2 bg-[#F4F7F5] px-3.5 py-2 rounded-full border border-[#DDE5E1] cursor-default">
+                <Calendar className="w-3.5 h-3.5 text-[#7C9A8B]" />
+                <span className="text-[11px] font-medium text-[#5C6B64] tracking-wide">
                   {currentDate}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-between h-full gap-6">
-             {/* Key Metric Card */}
-             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 w-full max-w-xs transition-transform hover:scale-[1.02] relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-light-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="flex items-center justify-between mb-4 relative z-10">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-light-green/20 text-light-green">
-                       <Zap className="w-4 h-4" />
-                    </div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-white/80">Velocity</span>
+          {/* Velocity metric */}
+          <div className="lg:col-span-4">
+            <div className="bg-[#F4F7F5]  p-6 border border-[#DDE5E1] hover:border-[#AFC8B8] transition-all duration-200 group">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-[#7C9A8B]/12 border border-[#7C9A8B]/20">
+                    <Zap className="w-3.5 h-3.5 text-[#7C9A8B]" />
                   </div>
-                  {(isDemoMode || (data?.stats?.velocity > 90)) && (
-                    <Badge variant="outline" className="border-light-green/30 text-light-green text-[9px] px-1.5 py-0">
-                      +{data?.stats?.velocity > 90 ? "4.6%" : "2.1%"}
-                    </Badge>
-                  )}
+                  <span className="text-xs font-semibold uppercase tracking-[0.08em] text-[#8A9E96]">Team Velocity</span>
                 </div>
-                <div className="relative z-10">
-                   <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-syne font-bold text-white">
-                        {loading ? "..." : (data?.stats?.velocity || "94.2")}%
-                      </span>
-                   </div>
-                   <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
-                      <div 
-                        className="bg-light-green h-full rounded-full shadow-[0_0_10px_rgba(204,255,0,0.5)] transition-all duration-1000" 
-                        style={{ width: `${data?.stats?.velocity || 94}%` }}
-                      />
-                   </div>
-                </div>
-             </div>
+                {(isDemoMode || (data?.stats?.velocity > 90)) && (
+                  <Badge variant="outline" className="border-[#AFC8B8] text-[#5F7D6E] text-[9px] px-2 py-0.5">
+                    +{data?.stats?.velocity > 90 ? "4.6%" : "2.1%"}
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-[#2F3A35]">
+                  {loading ? "–" : (data?.stats?.velocity || "94.2")}
+                </span>
+                <span className="text-lg font-semibold text-[#8A9E96]">%</span>
+              </div>
+              <div className="w-full bg-[#DDE5E1] h-1.5 rounded-full mt-3.5 overflow-hidden">
+                <div
+                  className="bg-[#7C9A8B] h-full rounded-full transition-all duration-1000"
+                  style={{ width: `${data?.stats?.velocity || 94}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -169,21 +167,21 @@ export function DashboardOverview() {
           <section className="space-y-6">
             <div className="flex items-center justify-between px-1">
                <div className="flex items-center gap-3">
-                  <h2 className="font-syne text-2xl font-bold text-deep-blue">Active Projects</h2>
-                  <div className="h-px w-24 bg-border-soft/50" />
+                  <h2 className="text-2xl font-bold text-[#2F3A35]">Active Projects</h2>
+                  <div className="h-[2px] w-16 bg-[#DDE5E1]" />
                </div>
                <button 
                 onClick={handleViewAll}
-                className="text-xs font-bold text-deep-blue uppercase tracking-widest hover:text-soft-blue transition-colors flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#7C9A8B] uppercase tracking-widest hover:text-[#5F7D6E] transition-colors flex items-center gap-1.5 cursor-pointer"
                >
-                  View All <ArrowUpRight className="w-3 h-3" />
+                  View All <ArrowUpRight className="w-3.5 h-3.5" />
                </button>
             </div>
             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                {loading ? (
                  [1, 2, 3, 4].map((i) => (
-                   <div key={i} className="h-48 rounded-xl bg-white/5 animate-pulse border border-white/10" />
+                   <div key={i} className="h-44  bg-[#E9EFEC] animate-pulse border border-[#DDE5E1]" />
                  ))
                ) : (
                  (data?.projects || []).map((project: any, i: number) => {
@@ -198,32 +196,32 @@ export function DashboardOverview() {
                     })();
 
                     return (
-                        <div 
-                        key={i} 
-                        onClick={() => handleProjectClick(project)}
-                        className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                        <div
+                          key={i}
+                          onClick={() => handleProjectClick(project)}
+                          className="group relative p-6  bg-white border border-[#DDE5E1] shadow-[0_1px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.08)] hover:border-[#AFC8B8] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                         >
-                        <div className="flex justify-between items-start mb-6">
-                            <div className={cn("p-3 rounded-xl transition-all duration-300 group-hover:scale-110", project.bg)}>
-                                <ProjectIcon className={cn("w-5 h-5", project.color)} />
+                          <div className="flex justify-between items-start mb-5">
+                            <div className="p-2.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] transition-all duration-200 group-hover:border-[#AFC8B8]">
+                              <ProjectIcon className="w-4.5 h-4.5 text-[#7C9A8B]" />
                             </div>
-                            <Badge variant="secondary" className="bg-surface-tinted text-deep-blue/60 text-[9px] font-bold uppercase tracking-wider">
-                                {project.status}
+                            <Badge variant="secondary" className="bg-[#F4F7F5] text-[#8A9E96] border border-[#DDE5E1] text-[9px] font-semibold uppercase tracking-wider">
+                              {project.status}
                             </Badge>
-                        </div>
-                        
-                        <h3 className="font-syne text-lg font-bold text-deep-blue mb-1">{project.label}</h3>
-                        <div className="flex items-center justify-between text-[11px] text-deep-blue/40 font-medium mb-4">
+                          </div>
+
+                          <h3 className="font-semibold text-base text-[#2F3A35] mb-2">{project.label}</h3>
+                          <div className="flex items-center justify-between text-[11px] text-[#8A9E96] font-medium mb-3">
                             <span>Progress</span>
-                            <span>{project.progress}%</span>
-                        </div>
-                        
-                        <div className="relative h-1.5 w-full bg-surface-sunken rounded-full overflow-hidden">
-                            <div 
-                                className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out", project.barColor)}
-                                style={{ width: `${project.progress}%` }}
+                            <span className="font-semibold text-[#5C6B64]">{project.progress}%</span>
+                          </div>
+
+                          <div className="relative h-1.5 w-full bg-[#E9EFEC] rounded-full overflow-hidden">
+                            <div
+                              className="absolute top-0 left-0 h-full rounded-full bg-[#7C9A8B] transition-all duration-1000 ease-out"
+                              style={{ width: `${project.progress}%` }}
                             />
-                        </div>
+                          </div>
                         </div>
                     );
                  })
@@ -234,74 +232,75 @@ export function DashboardOverview() {
           {/* System Health & Activity Feed Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* System Health Card */}
-              <Card className="rounded-[32px] border-none bg-surface-elevated shadow-soft overflow-hidden h-full">
-                 <div className="p-8 pb-4">
-                    <div className="flex items-center justify-between mb-6">
-                       <h3 className="font-syne text-lg font-bold text-deep-blue uppercase tracking-tight flex items-center gap-2">
-                          <Activity className="w-5 h-5 text-soft-blue" /> System Health
-                       </h3>
-                       <div className="flex gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-light-green animate-pulse" />
-                          <div className="w-1.5 h-1.5 rounded-full bg-light-green/30" />
-                       </div>
+              <Card className=" border border-[#DDE5E1] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden h-full">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-sm font-semibold text-[#2F3A35] flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-[#7C9A8B]" /> System Health
+                    </h3>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-[#7C9A8B] animate-pulse" />
+                      <span className="text-[10px] text-[#8A9E96] font-medium">Live</span>
                     </div>
-                    
-                    <div className="space-y-3">
-                       <div className="p-4 rounded-2xl bg-white border border-border-soft flex justify-between items-center group hover:border-soft-blue/30 transition-all">
-                           <div className="flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-light-green" />
-                              <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Uptime</span>
-                           </div>
-                           <span className="font-mono font-bold text-deep-blue">{data?.stats?.uptime || "99.98%"}</span>
-                        </div>
-                        
-                        <div className="p-4 rounded-2xl bg-white border border-border-soft flex justify-between items-center group hover:border-soft-blue/30 transition-all">
-                           <div className="flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-soft-blue" />
-                              <span className="text-xs font-bold text-deep-blue/60 uppercase tracking-wide">Latency</span>
-                           </div>
-                           <span className="font-mono font-bold text-deep-blue">{data?.stats?.latency || "24ms"}</span>
-                        </div>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 rounded-full bg-[#7C9A8B]" />
+                        <span className="text-xs font-medium text-[#5C6B64] uppercase tracking-wide">Uptime</span>
+                      </div>
+                      <span className="text-sm font-semibold text-[#2F3A35]">{data?.stats?.uptime || "99.98%"}</span>
                     </div>
-                 </div>
-                 
-                 {/* Mini Utilization Graph Visualization */}
-                 <div className="relative h-24 mt-4 bg-surface-sunken/50 w-full overflow-hidden">
-                    <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between px-4 pb-0 h-16 gap-1">
-                       {[40, 60, 45, 70, 50, 65, 55, 80, 75, 60, 90, 85].map((h, i) => (
-                          <div 
-                             key={i} 
-                             className="w-full bg-soft-blue/20 rounded-t-sm hover:bg-soft-blue/40 transition-colors"
-                             style={{ height: `${h}%` }}
-                          />
-                       ))}
+
+                    <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 rounded-full bg-[#AFC8B8]" />
+                        <span className="text-xs font-medium text-[#5C6B64] uppercase tracking-wide">Latency</span>
+                      </div>
+                      <span className="text-sm font-semibold text-[#2F3A35]">{data?.stats?.latency || "24ms"}</span>
                     </div>
-                 </div>
+                  </div>
+                </div>
+
+                {/* Mini bar chart */}
+                <div className="h-20 bg-[#F4F7F5] border-t border-[#DDE5E1] flex items-end gap-0.5 p-3">
+                  {[40, 60, 45, 70, 50, 65, 55, 80, 75, 60, 90, 85].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 rounded-t-sm transition-colors"
+                      style={{
+                        height: `${h}%`,
+                        background: i >= 9 ? "#7C9A8B" : `rgba(175,200,184,${0.25 + i * 0.06})`
+                      }}
+                    />
+                  ))}
+                </div>
               </Card>
 
               {/* Activity Feed */}
-              <div className="bg-surface-elevated/50 backdrop-blur-md rounded-[32px] border border-white/50 p-1 h-full">
-                <div className="p-6 pb-2">
-                   <h3 className="font-syne text-sm font-bold text-deep-blue uppercase tracking-widest flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-deep-blue/40" /> Recent Activity
-                   </h3>
+              <div className="bg-white  border border-[#DDE5E1] shadow-[0_2px_12px_rgba(0,0,0,0.04)] h-full overflow-hidden">
+                <div className="p-5 border-b border-[#DDE5E1]">
+                  <h3 className="text-sm font-semibold text-[#2F3A35] flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-[#7C9A8B]" /> Recent Activity
+                  </h3>
                 </div>
                 <div className="h-[280px] overflow-hidden relative">
-                   <div className="absolute inset-0 z-10 bg-linear-to-b from-transparent via-transparent to-surface-elevated pointer-events-none" />
-                   <ActivityFeed />
+                  <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-white pointer-events-none" />
+                  <ActivityFeed />
                 </div>
               </div>
           </div>
 
           {/* Data Visualization Section */}
-          <section className="space-y-6">
-             <div className="bg-white rounded-[32px] p-8 border border-border-soft shadow-soft">
-                <div className="flex flex-col gap-1 mb-8">
-                   <h2 className="font-syne text-xl font-bold text-deep-blue">Strategic Operations</h2>
-                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-deep-blue/40">System-wide performance telemetry</p>
-                </div>
-                <DataVizSystem stats={data?.stats} />
-             </div>
+          <section>
+            <div className="bg-white  border border-[#DDE5E1] shadow-[0_2px_12px_rgba(0,0,0,0.04)] p-7">
+              <div className="flex flex-col gap-1 mb-6">
+                <h2 className="text-lg font-semibold text-[#2F3A35]">Project Analytics</h2>
+                <p className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">Performance overview</p>
+              </div>
+              <DataVizSystem stats={data?.stats} />
+            </div>
           </section>
         </div>
 

@@ -1,35 +1,35 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { Check, ArrowRight } from "lucide-react";
 
 const PLANS = [
   {
     name: "Starter",
     price: { monthly: 0, yearly: 0 },
-    description: "For individuals exploring the boundaries of flow.",
-    features: ["5 Workspaces", "10 Projects", "Core AI Analysis", "Community Support"],
-    cta: "Begin Journey",
+    description: "For individuals exploring calm, structured flow.",
+    features: ["5 Workspaces", "10 Projects", "Core AI Scheduling", "Community Support"],
+    cta: "Get Started Free",
     recommended: false,
   },
   {
     name: "Architect",
     price: { monthly: 24, yearly: 19 },
-    description: "Professional tools for power builders of the future.",
+    description: "Professional tools for teams who value clarity and speed.",
     features: [
-      "Infinite Workspaces",
+      "Unlimited Workspaces",
       "Advanced AI Orchestration",
-      "Custom Editorial Themes",
+      "Custom Reports & Analytics",
       "Priority API Access",
       "1:1 Strategy Calls",
     ],
-    cta: "Expand Scope",
+    cta: "Start Building",
     recommended: true,
   },
   {
     name: "Enterprise",
     price: { monthly: 89, yearly: 69 },
-    description: "Custom solutions for global-scale operations.",
+    description: "Bespoke solutions for global-scale operations.",
     features: [
       "Custom Governance",
       "SAML/SSO Integration",
@@ -37,164 +37,121 @@ const PLANS = [
       "Dedicated Success Lead",
       "Unlimited Everything",
     ],
-    cta: "Contact Design",
+    cta: "Contact Us",
     recommended: false,
   },
 ];
 
 export default function Pricing() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const scrollToCard = (direction: "left" | "right") => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const cardWidth = container.firstElementChild?.clientWidth ?? 300;
-    const gap = 16;
-    const scrollAmount = direction === "left" ? -(cardWidth + gap) : (cardWidth + gap);
-    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-  };
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
 
   return (
-    <section id="pricing" className="relative py-16 sm:py-24 md:py-32 px-5 sm:px-6 md:px-12 lg:px-20 bg-cream overflow-hidden">
-      <div className="max-w-7xl mx-auto text-center mb-10 sm:mb-16 md:mb-20">
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] text-deep-blue/40">
-          Investment Structures
-        </span>
-        <h2 className="mt-3 sm:mt-4 font-syne text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-deep-blue">
-          Fair pricing for <br className="hidden sm:block" />infinite growth.
-        </h2>
+    <section
+      id="pricing"
+      className="relative w-full bg-[#f8faf9] py-24 sm:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden font-[Poppins]"
+    >
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20 max-w-7xl">
+          <div className="max-w-2xl">
+            <span className="text-sm font-bold text-[#8A9E96] uppercase tracking-[0.2em] mb-4 block">
+              Pricing
+            </span>
+            <h2 className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium text-[#2F3A35] leading-[1.1] tracking-tight mb-6">
+              Clear pricing, <br />
+              <span className="text-[#8CBA41]">no surprises.</span>
+            </h2>
+            <p className="text-[#5C6B64] text-lg font-light leading-relaxed">
+              Start free. Scale when you're ready. Every plan includes the calm, focused experience FlowBoard is known for.
+            </p>
+          </div>
 
-        {/* Billing Toggle */}
-        <div className="mt-8 sm:mt-12 flex justify-center">
-          <div className="relative p-1 bg-surface-sunken rounded-full flex items-center border border-border-soft">
-            <div
-              className="absolute h-[calc(100%-8px)] rounded-full bg-cream shadow-sm border border-border-soft transition-all duration-300"
-              style={{
-                width: "calc(50% - 4px)",
-                left: billingCycle === "monthly" ? "4px" : "calc(50%)",
-              }}
-            />
-            <button
-              onClick={() => setBillingCycle("monthly")}
-              className={`relative z-10 px-5 sm:px-8 py-2 font-mono text-[10px] sm:text-xs uppercase tracking-widest transition-colors min-h-[44px] ${
-                billingCycle === "monthly" ? "text-deep-blue" : "text-deep-blue/40"
-              }`}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setBillingCycle("yearly")}
-              className={`relative z-10 px-5 sm:px-8 py-2 font-mono text-[10px] sm:text-xs uppercase tracking-widest transition-colors min-h-[44px] ${
-                billingCycle === "yearly" ? "text-deep-blue" : "text-deep-blue/40"
-              }`}
-            >
-              Yearly
-            </button>
+          {/* Sharp Billing Toggle */}
+          <div className="flex items-center border border-[#DDE5E1] bg-white p-1 rounded-none h-14 w-fit shrink-0">
+            {(["monthly", "yearly"] as const).map((c) => (
+              <button
+                key={c}
+                onClick={() => setBilling(c)}
+                className={`px-8 h-full flex items-center text-[11px] font-bold uppercase tracking-widest transition-all ${
+                  billing === c ? "bg-[#2F3A35] text-white" : "text-[#8A9E96] hover:text-[#2F3A35]"
+                }`}
+              >
+                {c}
+                {c === "yearly" && (
+                  <span className="ml-2 text-[10px] text-[#8CBA41]">—20%</span>
+                )}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* Mobile: horizontal scroll carousel | Desktop: grid */}
-      {/* Scroll indicators (mobile only) */}
-      <div className="flex items-center justify-center gap-4 mb-4 md:hidden">
-        <button 
-          onClick={() => scrollToCard("left")}
-          className="w-10 h-10 rounded-full border border-border-soft bg-surface-elevated flex items-center justify-center text-deep-blue/40 hover:text-deep-blue transition-colors"
-          aria-label="Scroll left"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-deep-blue/30">Swipe to explore</span>
-        <button 
-          onClick={() => scrollToCard("right")}
-          className="w-10 h-10 rounded-full border border-border-soft bg-surface-elevated flex items-center justify-center text-deep-blue/40 hover:text-deep-blue transition-colors"
-          aria-label="Scroll right"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
-
-      <div className="max-w-6xl mx-auto">
-        {/* Mobile: Scrollable | Desktop: Grid */}
-        <div 
-          ref={scrollContainerRef}
-          className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 items-stretch overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-2 px-2 md:mx-0 md:px-0 scrollbar-hide"
-        >
+        {/* Architectural Pricing Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#DDE5E1] border border-[#DDE5E1]">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col p-7 sm:p-10 rounded-[var(--radius-lg)] border bg-surface-elevated transition-all duration-300 hover:shadow-md snap-center shrink-0 w-[85vw] sm:w-[75vw] md:w-auto ${
-                plan.recommended 
-                  ? "border-light-green border-2 shadow-glow-blue z-10" 
-                  : "border-soft-blue/30 shadow-sm"
+              className={`bg-white p-10 sm:p-14 flex flex-col justify-between relative ${
+                plan.recommended ? "z-10" : "z-0"
               }`}
             >
               {plan.recommended && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-light-green px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-light-green-dark shadow-sm">
-                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold text-deep-blue whitespace-nowrap">
-                    Most Architectural
-                  </span>
+                <div className="absolute top-0 right-0 bg-[#8CBA41] text-white px-4 py-1 text-[10px] font-bold uppercase tracking-widest">
+                  Popular
                 </div>
               )}
 
-              <div className="mb-6 sm:mb-8">
-                <h3 className="font-syne text-xl sm:text-2xl font-bold text-deep-blue">{plan.name}</h3>
-                <p className="mt-2 text-xs text-deep-blue/50 leading-relaxed min-h-10 sm:h-10">
-                  {plan.description}
-                </p>
-              </div>
-
-              <div className="mb-8 sm:mb-10">
-                <div className="flex items-baseline gap-1">
-                  <span className="font-syne text-4xl sm:text-5xl font-bold text-deep-blue transition-all duration-500">
-                    ${billingCycle === "monthly" ? plan.price.monthly : plan.price.yearly}
-                  </span>
-                  <span className="font-mono text-[9px] sm:text-[10px] uppercase text-deep-blue/40">
-                    / user / month
-                  </span>
-                </div>
-                {billingCycle === "yearly" && (
-                  <div className="mt-2 font-mono text-[10px] text-light-green-dark uppercase tracking-wider font-bold">
-                    Billed annually (Save ~20%)
+              <div>
+                <div className="mb-12">
+                  <h3 className="text-[13px] font-bold uppercase tracking-[0.25em] text-[#8A9E96] mb-8">
+                    {plan.name}
+                  </h3>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-5xl md:text-6xl font-medium tracking-tighter text-[#2F3A35]">
+                      ${billing === "monthly" ? plan.price.monthly : plan.price.yearly}
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#8A9E96]">
+                      / mo
+                    </span>
                   </div>
-                )}
-              </div>
+                  <p className="text-[#5C6B64] text-[15px] font-light leading-relaxed h-12">
+                    {plan.description}
+                  </p>
+                </div>
 
-              <div className="flex-grow">
-                <div className="w-full h-px bg-border-soft mb-6 sm:mb-8" />
-                <ul className="space-y-3 sm:space-y-4">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${plan.recommended ? "bg-light-green/40" : "bg-soft-blue/20"}`}>
-                        <Check className="w-2.5 h-2.5 text-deep-blue" />
-                      </div>
-                      <span className="font-mono text-[11px] text-deep-blue/70">
-                        {feature}
+                <div className="w-10 h-px bg-[#DDE5E1] mb-10" />
+
+                <ul className="space-y-4 mb-12">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-4">
+                      <Check className="w-4 h-4 text-[#8CBA41] shrink-0 mt-0.5" />
+                      <span className="text-sm text-[#5C6B64] font-light leading-relaxed">
+                        {f}
                       </span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="mt-8 sm:mt-12">
-                <button className={`group relative w-full inline-flex items-center justify-center gap-3 px-6 py-4 rounded-[var(--radius-md)] font-semibold uppercase tracking-wide text-[10px] transition-all duration-300 min-h-[48px] ${
-                  plan.recommended 
-                    ? "bg-deep-blue text-cream hover:bg-deep-blue-dark shadow-sm" 
-                    : "bg-soft-blue/10 text-deep-blue hover:bg-soft-blue/20"
-                }`}>
-                  {plan.cta}
-                  <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
+              <button
+                className={`w-full py-5 font-bold text-[11px] uppercase tracking-[0.2em] transition-all border ${
+                  plan.recommended
+                    ? "bg-[#2F3A35] text-white border-[#2F3A35] hover:bg-black"
+                    : "bg-transparent text-[#2F3A35] border-[#DDE5E1] hover:bg-[#F4F7F5]"
+                }`}
+              >
+                {plan.cta}
+              </button>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Background Decorative Elements */}
-      <div className="absolute top-[20%] left-[5%] w-40 sm:w-64 h-40 sm:h-64 bg-light-green/5 blur-[30px] sm:blur-[50px] pointer-events-none -z-10" />
-      <div className="absolute bottom-[20%] right-[5%] w-48 sm:w-80 h-48 sm:h-80 bg-soft-blue/5 blur-[30px] sm:blur-[50px] pointer-events-none -z-10" />
+        <div className="mt-12 flex justify-between items-center text-[#8A9E96]">
+          <p className="text-[11px] font-medium uppercase tracking-widest">
+            No credit card required to start.
+          </p>
+          <div className="w-24 h-px bg-[#DDE5E1]" />
+        </div>
+      </div>
     </section>
   );
 }

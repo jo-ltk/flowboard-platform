@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Syne, Instrument_Serif, Geist_Mono } from "next/font/google";
+import { Poppins, Syne, Instrument_Serif, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/constants";
 
-const inter = Inter({
-  variable: "--font-inter",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -69,7 +70,7 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${inter.variable} ${syne.variable} ${instrumentSerif.variable} ${geistMono.variable}`}
+      className={`${poppins.variable} ${syne.variable} ${instrumentSerif.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen font-body antialiased">
         <WorkspaceProvider>

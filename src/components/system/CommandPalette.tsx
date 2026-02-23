@@ -97,7 +97,7 @@ export const CommandPalette = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-deep-blue/10 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-sage-deep/10 backdrop-blur-[2px]"
           />
 
           <motion.div
@@ -105,7 +105,7 @@ export const CommandPalette = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-2xl bg-cream border border-soft-blue/30 rounded-2xl shadow-elevated overflow-hidden ring-1 ring-deep-blue/5"
+            className="relative w-full max-w-2xl bg-cream border border-soft-blue/30  shadow-elevated overflow-hidden ring-1 ring-sage-deep/5"
             onKeyDown={handleKeyDown}
           >
             <div className="flex items-center px-6 py-5 border-b border-soft-blue/10">
@@ -116,7 +116,7 @@ export const CommandPalette = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 autoFocus
                 placeholder="Type a command or ask AI..."
-                className="w-full bg-transparent border-none outline-none text-deep-blue text-lg font-syne font-bold placeholder:text-soft-blue/50 placeholder:font-medium"
+                className="w-full bg-transparent border-none outline-none text-sage-deep text-lg font-syne font-bold placeholder:text-soft-blue/50 placeholder:font-medium"
               />
               <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-soft-blue/10 border border-soft-blue/20">
                 <Command className="w-3 h-3 text-soft-blue" />
@@ -128,7 +128,7 @@ export const CommandPalette = () => {
               {/* AI Insights Section (Sticky-style if relevant) */}
               {query === "" && aiAnalysis && aiAnalysis.recommendations.length > 0 && (
                 <div className="px-3 mb-6">
-                  <h3 className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 font-mono mb-2">
+                  <h3 className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-sage-deep/40 font-mono mb-2">
                     AI Strategic Recommendations
                   </h3>
                   <div className="space-y-2">
@@ -142,25 +142,25 @@ export const CommandPalette = () => {
                           className={cn(
                             "flex items-center justify-between p-4 rounded-xl transition-all duration-300 cursor-pointer border",
                             isActive 
-                              ? "bg-light-green border-deep-blue/10 shadow-medium translate-x-1" 
+                              ? "bg-light-green border-sage-deep/10 shadow-medium translate-x-1" 
                               : "bg-surface-tinted border-transparent grayscale-[0.3]"
                           )}
                         >
                           <div className="flex items-center gap-4">
                             <div className="p-2 rounded-lg bg-white shadow-soft">
-                              <Brain className="w-5 h-5 text-deep-blue" />
+                              <Brain className="w-5 h-5 text-sage-deep" />
                             </div>
                             <div>
-                              <p className="text-sm font-syne font-bold text-deep-blue">{rec.action}</p>
-                              <p className="text-[11px] text-deep-blue/60 font-medium">{rec.reason}</p>
+                              <p className="text-sm font-syne font-bold text-sage-deep">{rec.action}</p>
+                              <p className="text-[11px] text-sage-deep/60 font-medium">{rec.reason}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="text-right">
-                              <span className="text-[10px] font-mono font-bold text-deep-blue/40 block uppercase">Impact</span>
-                              <span className="text-xs font-bold text-deep-blue">+{rec.impactScore}</span>
+                              <span className="text-[10px] font-mono font-bold text-sage-deep/40 block uppercase">Impact</span>
+                              <span className="text-xs font-bold text-sage-deep">+{rec.impactScore}</span>
                             </div>
-                            {isActive && <ArrowRight className="w-4 h-4 text-deep-blue" />}
+                            {isActive && <ArrowRight className="w-4 h-4 text-sage-deep" />}
                           </div>
                         </div>
                       );
@@ -207,13 +207,13 @@ export const CommandPalette = () => {
                                 <div className="flex items-center gap-3">
                                   <div className={cn(
                                     "p-2 rounded-lg transition-colors",
-                                    isActive ? "bg-white text-deep-blue shadow-soft" : "bg-soft-blue/10 text-soft-blue"
+                                    isActive ? "bg-white text-sage-deep shadow-soft" : "bg-soft-blue/10 text-soft-blue"
                                   )}>
                                     {cmd.icon}
                                   </div>
                                   <span className={cn(
                                     "font-syne font-bold transition-colors",
-                                    isActive ? "text-deep-blue" : "text-deep-blue/60"
+                                    isActive ? "text-sage-deep" : "text-sage-deep/60"
                                   )}>
                                     {cmd.title}
                                   </span>
@@ -224,7 +224,7 @@ export const CommandPalette = () => {
                                   </div>
                                 )}
                                 {isActive && !cmd.shortcut && (
-                                  <CornerDownLeft className="w-3 h-3 text-deep-blue/30" />
+                                  <CornerDownLeft className="w-3 h-3 text-sage-deep/30" />
                                 )}
                               </button>
                             );
@@ -249,7 +249,7 @@ export const CommandPalette = () => {
                 </span>
               </div>
               {aiAnalysis && (
-                <div className="flex items-center gap-3 text-deep-blue">
+                <div className="flex items-center gap-3 text-sage-deep">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle className="w-3 h-3 text-light-green-dark" />
                     <span className="font-bold uppercase tracking-tight">Focus Score: {aiAnalysis.productivityScore}%</span>

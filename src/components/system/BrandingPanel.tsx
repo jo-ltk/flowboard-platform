@@ -31,7 +31,7 @@ export default function BrandingPanel() {
         <div className="space-y-6">
           
           {/* Brand Identity */}
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg text-indigo-600 dark:text-indigo-400">
                 <ImageIcon className="w-5 h-5" />
@@ -66,7 +66,7 @@ export default function BrandingPanel() {
           </section>
 
           {/* Color & Typography */}
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-pink-50 dark:bg-pink-900/20 rounded-lg text-pink-600 dark:text-pink-400">
                 <Palette className="w-5 h-5" />
@@ -115,7 +115,7 @@ export default function BrandingPanel() {
           </section>
 
           {/* Custom Domain */}
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg text-emerald-600 dark:text-emerald-400">
                 <Globe className="w-5 h-5" />

@@ -33,7 +33,7 @@ export const TooltipContent = ({ children, className }: { children: React.ReactN
       className
     )}>
       {children}
-      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-deep-blue" />
+      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-sage-deep" />
     </div>
   );
 };

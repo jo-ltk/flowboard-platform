@@ -8,7 +8,7 @@ export function NarrativeReport() {
   return (
     <Link
       href="/report"
-      className="w-full h-14 flex items-center justify-center gap-4 px-8 rounded-2xl bg-deep-blue text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-deep-blue/90 hover:shadow-2xl hover:shadow-deep-blue/30 active:scale-[0.98] transition-all duration-500 group relative overflow-hidden"
+      className="w-full h-14 flex items-center justify-center gap-4 px-8  bg-sage-deep text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-sage-deep/90 hover:shadow-2xl hover:shadow-sage-deep/30 active:scale-[0.98] transition-all duration-500 group relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-linear-to-r from-light-green/0 via-light-green/10 to-light-green/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       <FileText className="w-4 h-4 group-hover:rotate-12 transition-transform" />

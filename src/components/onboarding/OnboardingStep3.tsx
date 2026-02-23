@@ -40,7 +40,7 @@ export const OnboardingStep3: React.FC<Step3Props> = ({ data, updateData, onNext
           <button
             key={option.id}
             onClick={() => updateData({ automationLevel: option.id })}
-            className={`w-full p-6 bg-surface-elevated border rounded-2xl text-left transition-all ${
+            className={`w-full p-6 bg-surface-elevated border  text-left transition-all ${
               data.automationLevel === option.id
                 ? 'border-light-green bg-light-green/5 shadow-glow-green'
                 : 'border-border-soft hover:border-light-green/30'
@@ -48,15 +48,15 @@ export const OnboardingStep3: React.FC<Step3Props> = ({ data, updateData, onNext
           >
             <div className="flex items-start gap-5">
               <div className={`w-12 h-12 rounded-full border border-border-soft flex items-center justify-center font-serif text-xl shrink-0 transition-colors ${
-                data.automationLevel === option.id ? 'bg-light-green text-deep-blue' : 'bg-surface-sunken text-deep-blue/20'
+                data.automationLevel === option.id ? 'bg-light-green text-sage-deep' : 'bg-surface-sunken text-sage-deep/20'
               }`}>
                 {option.icon}
               </div>
               <div>
-                <h3 className="font-syne font-bold text-deep-blue text-lg mb-1">
+                <h3 className="font-syne font-bold text-sage-deep text-lg mb-1">
                   {option.title}
                 </h3>
-                <p className="font-mono text-[11px] text-deep-blue/50 leading-relaxed">
+                <p className="font-mono text-[11px] text-sage-deep/50 leading-relaxed">
                   {option.desc}
                 </p>
               </div>
@@ -67,7 +67,7 @@ export const OnboardingStep3: React.FC<Step3Props> = ({ data, updateData, onNext
                   : 'border-border-soft bg-transparent'
               }`}>
                 {data.automationLevel === option.id && (
-                  <svg className="w-4 h-4 text-deep-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-sage-deep" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 )}

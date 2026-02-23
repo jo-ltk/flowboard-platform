@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Sparkles, ArrowRight, TrendingUp, AlertCircle, Zap, Loader2, Check } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -22,7 +22,6 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [hasOptimized, setHasOptimized] = useState(false);
   
-  // Initialize metrics state based on props and demo mode
   const [metrics, setMetrics] = useState({
     productivity: stats?.velocity || (isDemoMode ? initialProductivity + 6 : initialProductivity),
     risk: isDemoMode ? Math.max(0, initialRisk - 8) : initialRisk,
@@ -31,80 +30,70 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
 
   const handleOptimize = () => {
     if (hasOptimized) return;
-    
     setIsOptimizing(true);
     
-    // Simulate complex AI heuristic processing
     setTimeout(() => {
       setIsOptimizing(false);
       setHasOptimized(true);
-      
-      // Update metrics to show improvement
       setMetrics(prev => ({
         productivity: Math.min(100, prev.productivity + 4),
         risk: Math.max(0, prev.risk - 5),
         workload: Math.max(0, prev.workload - 8)
       }));
 
-      toast.success("Schedule Optimized Successfully", {
-        description: "AI has reallocated 4 hours for deep work blocks.",
+      toast.success("Schedule Balanced", {
+        description: "Focus blocks have been intelligently reallocated.",
         duration: 4000,
       });
     }, 2000);
   };
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.3,
+        delayChildren: 0.2,
       },
-    } as any,
+    },
   };
 
-  const item = {
-    hidden: { opacity: 0, y: 20 },
+  const item: Variants = {
+    hidden: { opacity: 0, y: 15 },
     show: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] } as any 
+      transition: { duration: 0.6, ease: "easeOut" }
     },
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative overflow-hidden bg-cream border border-soft-blue/20 rounded-[16px] p-8 shadow-soft"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="relative overflow-hidden bg-white border border-[#DDE5E1]  p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
     >
       {/* Background Accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-light-green/10 blur-3xl rounded-full -mr-16 -mt-16" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#AFC8B8]/12 blur-3xl rounded-full -mr-16 -mt-16 pointer-events-none" />
       
       {/* Top Section */}
-      <div className="flex justify-between items-start mb-10">
+      <div className="flex justify-between items-start mb-8">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h2 className="font-syne text-2xl font-bold text-deep-blue">Heuristic Intelligence</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-bold tracking-tight text-[#2F3A35]">Flow Insights</h2>
             <div className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-light-green opacity-75"></span>
-              <motion.span 
-                animate={{ 
-                  boxShadow: ["0 0 0px rgba(231,241,168,0.4)", "0 0 12px rgba(231,241,168,0.8)", "0 0 0px rgba(231,241,168,0.4)"] 
-                }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="relative inline-flex rounded-full h-2 w-2 bg-light-green"
-              />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7C9A8B] opacity-40"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7C9A8B]" />
             </div>
           </div>
-          <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-deep-blue/40">
-            Active Neural Context · Version 4.2.0
+          <p className="text-[10px] uppercase font-bold tracking-[0.15em] text-[#8A9E96]">
+            Intelligent Balance Active
           </p>
         </div>
-        <Badge variant="outline" className="border-deep-blue/10 bg-white/50 text-deep-blue/60 text-[10px] uppercase font-mono px-3">
-          Real-time
+        <Badge variant="outline" className="border-[#DDE5E1] bg-[#F4F7F5] text-[#5C6B64] text-[9px] uppercase font-semibold px-2.5 py-1 tracking-wider">
+          Live
         </Badge>
       </div>
 
@@ -113,51 +102,50 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
         variants={container}
         initial="hidden"
         animate="show"
-        className="space-y-8"
+        className="space-y-6"
       >
         {/* Summary Paragraph */}
-        <motion.div variants={item} className="relative">
-          <div className="absolute -left-4 top-0 bottom-0 w-1 bg-light-green rounded-full opacity-60" />
-          <p className="text-deep-blue/80 text-sm leading-relaxed font-medium">
-            Project velocity has increased by <span className="text-deep-blue font-bold">14%</span> since the last deploymentcycle.
-            Current heuristic analysis suggests shifting focus to <span className="italic">API Integration</span> modules to prevent
-            a potential bottleneck detected in the upcoming sprint phase.
+        <motion.div variants={item} className="relative pl-5">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#AFC8B8] rounded-full opacity-60" />
+          <p className="text-[#5C6B64] text-[13px] leading-relaxed font-medium">
+            Project velocity is up by <span className="text-[#2F3A35] font-bold">14%</span>.
+            We suggest dedicating Thursday for <span className="italic text-[#7C9A8B]">deep work</span> to maintain this momentum and clear upcoming bottlenecks.
           </p>
         </motion.div>
 
         {/* Strategic Insight Bullets */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {[
             { 
               icon: <TrendingUp className="w-3.5 h-3.5" />, 
-              text: "Morning focus hours (9-11 AM) show 2.4x higher commit density.", 
+              text: "Morning flow state (9-11 AM) remains most effective.", 
               score: metrics.productivity 
             },
             { 
               icon: <Zap className="w-3.5 h-3.5" />, 
-              text: "Automation potential identified in 3 repetitive frontend workflows.",
+              text: "Found workflow optimizations for team collaboration.",
               score: metrics.workload 
             },
             { 
               icon: <AlertCircle className="w-3.5 h-3.5" />, 
-              text: "Deadline risk for 'Phase 2' remains low but trending upward (+3%).", 
+              text: "Timeline risk remains low; stability trending upward.", 
               score: metrics.risk 
             },
           ].map((bullet, idx) => (
             <motion.div 
               key={idx}
               variants={item}
-              className="group flex items-center justify-between p-4 rounded-xl bg-white/40 border border-transparent hover:border-soft-blue/10 hover:bg-white/60 transition-all cursor-default"
+              className="group flex items-center justify-between p-3.5 rounded-xl bg-[#F4F7F5]/50 border border-transparent hover:border-[#DDE5E1] hover:bg-white transition-all cursor-default"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-lg bg-soft-blue/10 flex items-center justify-center text-deep-blue group-hover:scale-110 transition-transform">
+              <div className="flex items-center gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-white border border-[#DDE5E1] flex items-center justify-center text-[#7C9A8B] group-hover:scale-105 transition-transform">
                   {bullet.icon}
                 </div>
-                <span className="text-xs font-semibold text-deep-blue/70 group-hover:text-deep-blue transition-colors">
+                <span className="text-xs font-semibold text-[#5C6B64] group-hover:text-[#2F3A35] transition-colors">
                   {bullet.text}
                 </span>
               </div>
-              <div className="font-mono text-[10px] font-bold text-deep-blue/30 group-hover:text-deep-blue/60 transition-colors px-2">
+              <div className="text-[10px] font-bold text-[#8A9E96] group-hover:text-[#5C6B64] transition-colors tabular-nums">
                 {idx === 2 ? `-${bullet.score}%` : `+${bullet.score}%`}
               </div>
             </motion.div>
@@ -167,19 +155,19 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
         {/* Predictive Recommendation Block */}
         <motion.div 
           variants={item}
-          className="p-5 rounded-xl bg-deep-blue text-white shadow-medium relative overflow-hidden group"
+          className="p-5 rounded-xl bg-[#2F3A35] text-white shadow-md relative overflow-hidden group"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">
-            <Sparkles className="w-12 h-12" />
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+            <Sparkles className="w-10 h-10 text-[#AFC8B8]" />
           </div>
           <div className="relative z-10 space-y-2">
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-soft-blue-light">
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#AFC8B8]">
               <Zap className="w-3 h-3 fill-current" />
-              Strategic Move
+              Strategic Shift
             </div>
-            <p className="text-sm font-medium leading-relaxed opacity-90">
-              Clear 4 hours on Thursday afternoon. Predictive models indicate a high-flow state 
-              window for architectural refactoring.
+            <p className="text-[13px] font-medium leading-relaxed text-white/90">
+              Clear 4 hours on Thursday. It looks like an ideal window for 
+              high-focus creative tasks.
             </p>
           </div>
         </motion.div>
@@ -191,28 +179,28 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
             onClick={handleOptimize}
             disabled={isOptimizing || hasOptimized}
             className={cn(
-              "w-full h-14 border transition-all duration-300 rounded-xl shadow-soft font-syne font-bold group relative overflow-hidden",
+              "w-full h-12 flex items-center justify-center gap-2.5 rounded-xl font-bold text-[13px] transition-all duration-300",
               hasOptimized 
-                ? "bg-light-green/20 border-light-green text-deep-blue hover:bg-light-green/30" 
-                : "bg-white border-soft-blue/20 text-deep-blue hover:bg-soft-blue/5 hover:border-soft-blue/40"
+                ? "bg-[#7C9A8B]/15 border-[#7C9A8B]/30 text-[#5F7D6E] hover:bg-[#7C9A8B]/25" 
+                : "bg-white border-[#DDE5E1] text-[#2F3A35] hover:bg-[#F4F7F5] hover:border-[#AFC8B8]"
             )}
           >
-            <span className={cn("flex items-center justify-center gap-2", isOptimizing && "opacity-0")}>
+            <span className={cn("flex items-center gap-2", isOptimizing && "opacity-0")}>
               {hasOptimized ? (
                 <>
-                  Schedule Optimized <Check className="w-4 h-4" />
+                  Schedule Balanced <Check className="w-4 h-4" />
                 </>
               ) : (
                 <>
-                  Optimize Schedule
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Balance Schedule
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </>
               )}
             </span>
             
             {isOptimizing && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <Loader2 className="w-5 h-5 animate-spin text-deep-blue" />
+                <Loader2 className="w-5 h-5 animate-spin text-[#7C9A8B]" />
               </div>
             )}
           </Button>

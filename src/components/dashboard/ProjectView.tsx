@@ -23,7 +23,8 @@ import {
   List,
   GripVertical,
   Play,
-  Activity
+  Activity,
+  Loader2
 } from "lucide-react";
 import { PresenceSystem } from "@/components/system/PresenceSystem";
 import { ActivityFeed } from "@/components/system/ActivityFeed";
@@ -281,9 +282,9 @@ export function ProjectView() {
 
   // Board columns config
   const boardColumns = [
-    { id: "pending", title: "To Do", color: "bg-orange-400", lightBg: "bg-orange-50", borderColor: "border-orange-200" },
-    { id: "in-progress", title: "In Progress", color: "bg-blue-500", lightBg: "bg-blue-50", borderColor: "border-blue-200" },
-    { id: "completed", title: "Done", color: "bg-emerald-500", lightBg: "bg-emerald-50", borderColor: "border-emerald-200" },
+    { id: "pending",     title: "Discovery",   color: "bg-[#7C9A8B]/60", lightBg: "bg-[#F4F7F5]", borderColor: "border-[#AFC8B8]" },
+    { id: "in-progress", title: "Flowing",     color: "bg-[#7C9A8B]",    lightBg: "bg-[#E9EFEC]", borderColor: "border-[#7C9A8B]" },
+    { id: "completed",   title: "Harmonized",  color: "bg-[#2F3A35]",    lightBg: "bg-[#AFC8B8]/10", borderColor: "border-[#2F3A35]" },
   ];
 
   const getTasksByStatus = (status: string) => {
@@ -357,67 +358,67 @@ export function ProjectView() {
   };
 
   return (
-    <div className="space-y-8 pb-20 fade-in-up">
-      {/* Editorial Header Block - Refined & Aligned */}
-      <div className="relative overflow-hidden rounded-[40px] bg-linear-to-br from-deep-blue to-deep-blue/90 p-10 lg:p-14 text-cream shadow-2xl ring-1 ring-white/10">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-soft-blue/30 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-light-green/20 blur-[120px] rounded-full" />
+    <div className="space-y-6 pb-20 fade-in-up">
+      {/* ─── Calm Editorial Header ─── */}
+      <div className="relative overflow-hidden  bg-white border border-[#DDE5E1] p-8 lg:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
+        {/* Subtle sage orb */}
+        <div className="absolute top-0 right-0 w-[400px] h-full bg-[#AFC8B8]/10 blur-[100px] pointer-events-none rounded-full" />
         
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex flex-wrap items-center gap-4">
-              <Badge className="bg-light-green/90 backdrop-blur-md text-deep-blue border-none px-3 py-1 font-mono text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-light-green/20">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+          <div className="lg:col-span-8 space-y-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="badge-sage bg-sage/10! text-sage-deep! border-sage/20!">
                 Active Project
-              </Badge>
-              <div className="h-px w-8 bg-white/20" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-60">
+              </span>
+              <div className="h-3.5 w-px bg-[#DDE5E1]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8A9E96]">
                 {projectIdFromUrl ? `ID: ${projectIdFromUrl.slice(0, 8).toUpperCase()}` : "Global Workspace"}
               </span>
             </div>
             
             <div className="space-y-3">
-              <h1 className="font-syne text-5xl lg:text-7xl font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-linear-to-r from-cream via-white to-cream/80">
+              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-[#2F3A35]">
                 {projectName}
               </h1>
-              <p className="text-lg text-cream/70 font-medium leading-relaxed max-w-xl">
+              <p className="text-base text-[#5C6B64] font-light leading-relaxed max-w-xl">
                 {projectDesc}
               </p>
             </div>
 
-            <div className="flex items-center gap-6 pt-2">
+            <div className="flex items-center gap-6 pt-1">
               <PresenceSystem />
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex -space-x-3">
+              <div className="h-4 w-px bg-[#DDE5E1]" />
+              <div className="flex -space-x-2.5">
                  {[1,2,3,4].map(i => (
-                   <div key={i} className="w-8 h-8 rounded-full border-2 border-deep-blue bg-surface-tinted flex items-center justify-center text-[10px] font-bold text-deep-blue">
-                     U{i}
+                   <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-[#E9EFEC] flex items-center justify-center text-[10px] font-bold text-[#7C9A8B]">
+                     {String.fromCharCode(64 + i)}
                    </div>
                  ))}
-                 <div className="w-8 h-8 rounded-full border-2 border-deep-blue bg-deep-blue flex items-center justify-center text-[10px] font-bold text-white">
+                 <div className="w-8 h-8 rounded-full border-2 border-white bg-[#7C9A8B] flex items-center justify-center text-[10px] font-bold text-white">
                    +4
                  </div>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-between h-full gap-6">
-             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 w-full max-w-xs transition-transform hover:scale-[1.02]">
-                <div className="flex items-center gap-3 mb-3">
-                   <div className="p-2 rounded-lg bg-light-green/20 text-light-green">
-                     <Clock className="w-4 h-4" />
+          <div className="lg:col-span-4 flex flex-col items-start lg:items-end gap-6 h-full">
+             <div className="bg-[#F4F7F5]  p-6 border border-[#DDE5E1] w-full max-w-xs transition-all hover:border-[#AFC8B8] shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                   <div className="p-1.5 rounded-lg bg-[#7C9A8B]/12 border border-[#7C9A8B]/20">
+                     <Clock className="w-3.5 h-3.5 text-[#7C9A8B]" />
                    </div>
-                   <span className="text-xs font-bold uppercase tracking-wider text-white/80">Timeline</span>
+                   <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#8A9E96]">Timeline</span>
                 </div>
-                <div className="flex items-baseline gap-2">
-                   <span className="text-3xl font-syne font-bold">14</span>
-                   <span className="text-sm font-medium opacity-60">days remaining</span>
+                <div className="flex items-baseline gap-1.5">
+                   <span className="text-3xl font-bold text-[#2F3A35]">14</span>
+                   <span className="text-xs font-medium text-[#8A9E96]">days remaining</span>
                 </div>
-                <div className="w-full bg-white/10 h-1.5 rounded-full mt-3 overflow-hidden">
-                   <div className="bg-light-green h-full w-[65%] rounded-full" />
+                <div className="w-full bg-[#DDE5E1] h-1.5 rounded-full mt-4 overflow-hidden">
+                   <div className="bg-[#7C9A8B] h-full w-[65%] rounded-full" />
                 </div>
              </div>
              
-             <div className="flex gap-3">
+             <div className="flex gap-2.5">
                 <input 
                   type="file" 
                   ref={fileInputRef} 
@@ -428,28 +429,22 @@ export function ProjectView() {
                 <button 
                   onClick={triggerUpload}
                   disabled={isUploading}
-                  className="h-10 px-5 rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 whitespace-nowrap"
+                  className="h-10 px-5 rounded-full border border-[#DDE5E1] bg-white text-[#5C6B64] text-[11px] font-bold uppercase tracking-wider hover:bg-[#F4F7F5] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  {isUploading ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Upload className="w-3 h-3" />}
-                  {isUploading ? "Uploading..." : "Upload Tasks"}
+                  {isUploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                  Import
                 </button>
                 <button 
                   onClick={handleViewBoard}
                   className={cn(
-                    "h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer whitespace-nowrap",
+                    "h-10 px-5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
                     showBoard 
-                      ? "bg-deep-blue text-cream hover:bg-deep-blue/90 ring-2 ring-light-green/40" 
-                      : "bg-cream text-deep-blue hover:bg-white"
+                      ? "bg-[#2F3A35] text-white hover:bg-[#1E2623]" 
+                      : "bg-[#7C9A8B] text-white hover:bg-sage-deep shadow-md"
                   )}
                 >
-                  {showBoard ? <List className="w-3 h-3" /> : <Layout className="w-3 h-3" />}
-                  {showBoard ? 'List View' : 'View Board'}
-                </button>
-                <button 
-                  onClick={handleMoreActions}
-                  className="h-10 w-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white cursor-pointer"
-                >
-                   <MoreHorizontal className="w-4 h-4" />
+                  {showBoard ? <List className="w-3.5 h-3.5" /> : <Layout className="w-3.5 h-3.5" />}
+                  {showBoard ? 'List' : 'Board'}
                 </button>
              </div>
           </div>
@@ -461,17 +456,17 @@ export function ProjectView() {
         <div className="space-y-6 fade-in-up">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-3">
-              <h2 className="font-syne text-2xl font-bold text-deep-blue">Kanban Board</h2>
-              <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
-                {tasks.length} TASKS
+              <h2 className="text-2xl font-bold text-[#2F3A35]">Board</h2>
+              <Badge variant="outline" className="border-[#DDE5E1] text-[#8A9E96] text-[10px] uppercase font-bold tracking-wider">
+                {tasks.length} Objectives
               </Badge>
             </div>
             <button 
               onClick={handleNewObjective}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-soft hover:bg-deep-blue hover:text-white hover:border-transparent transition-all duration-300 text-xs font-bold text-deep-blue uppercase tracking-widest shadow-sm hover:shadow-md cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#7C9A8B] text-white text-[11px] font-bold uppercase tracking-widest shadow-sm hover:bg-sage-deep transition-all duration-300"
             >
-              <Plus className="w-3 h-3" />
-              New Task
+              <Plus className="w-3.5 h-3.5" />
+              Add Focus
             </button>
           </div>
 
@@ -482,7 +477,7 @@ export function ProjectView() {
                 <div 
                   key={column.id}
                   className={cn(
-                    "rounded-2xl border-2 border-dashed transition-all duration-300 min-h-[400px] flex flex-col",
+                    " border-2 border-dashed transition-all duration-300 min-h-[400px] flex flex-col",
                     dragOverColumn === column.id 
                       ? `${column.borderColor} ${column.lightBg} scale-[1.01] shadow-lg` 
                       : "border-border-soft bg-surface-sunken/30"
@@ -495,9 +490,9 @@ export function ProjectView() {
                   <div className="p-4 pb-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={cn("w-3 h-3 rounded-full", column.color)} />
-                      <h3 className="font-syne text-sm font-bold text-deep-blue uppercase tracking-wider">{column.title}</h3>
+                      <h3 className="font-syne text-sm font-bold text-sage-deep uppercase tracking-wider">{column.title}</h3>
                     </div>
-                    <Badge variant="secondary" className="bg-white text-deep-blue/50 text-[10px] font-mono border border-border-soft">
+                    <Badge variant="secondary" className="bg-white text-sage-deep/50 text-[10px] font-mono border border-border-soft">
                       {columnTasks.length}
                     </Badge>
                   </div>
@@ -511,11 +506,11 @@ export function ProjectView() {
                         draggable
                         onDragStart={(e) => handleDragStart(e, task)}
                         onDragEnd={handleDragEnd}
-                        className="group relative p-4 rounded-xl bg-white border border-white shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-200 cursor-grab active:cursor-grabbing active:shadow-xl active:scale-[1.03]"
+                        className="group relative p-4 rounded-xl bg-white border border-[#DDE5E1] shadow-sm hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:border-[#AFC8B8] transition-all duration-200 cursor-grab active:cursor-grabbing active:scale-[1.02]"
                       >
-                        {/* Drag handle */}
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-40 transition-opacity">
-                          <GripVertical className="w-3 h-3 text-deep-blue" />
+                        {/* Drag handle decoration */}
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <GripVertical className="w-3.5 h-3.5 text-[#AFC8B8]" />
                         </div>
 
                         <div className="flex items-start gap-3">
@@ -524,45 +519,45 @@ export function ProjectView() {
                             className={cn(
                               "w-5 h-5 rounded-full shrink-0 flex items-center justify-center transition-all duration-300 cursor-pointer mt-0.5",
                               task.status === "completed" 
-                                ? "bg-emerald-500 text-white" 
-                                : "border-2 border-border-soft text-transparent hover:border-soft-blue"
+                                ? "bg-[#7C9A8B] text-white" 
+                                : "border-2 border-[#DDE5E1] text-transparent hover:border-[#7C9A8B]"
                             )}
                           >
                             <CheckCircle2 className="w-3 h-3" />
                           </button>
                           <div className="flex-1 min-w-0">
                             <h4 className={cn(
-                              "text-sm font-medium text-deep-blue leading-snug line-clamp-2",
-                              task.status === "completed" && "opacity-50 line-through decoration-deep-blue/20"
+                              "text-[13px] font-semibold text-[#2F3A35] leading-snug line-clamp-2",
+                              task.status === "completed" && "opacity-40 italic"
                             )}>
                               {task.title}
                             </h4>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border-soft/50">
+                        <div className="flex items-center justify-between mt-3.5 pt-3.5 border-t border-[#F4F7F5]">
                           <div className="flex items-center gap-2">
                             <Badge variant="secondary" className={cn(
-                              "text-[8px] font-bold uppercase tracking-wider px-1.5 py-0",
-                              task.priority === 'high' ? "bg-red-50 text-red-600" :
-                              task.priority === 'medium' ? "bg-orange-50 text-orange-600" :
-                              "bg-blue-50 text-blue-600"
+                              "text-[8px] font-bold uppercase tracking-wider px-1.5 py-0 border border-transparent",
+                              task.priority === 'high' ? "bg-red-50 text-red-600 border-red-100" :
+                              task.priority === 'medium' ? "bg-orange-50 text-orange-600 border-orange-100" :
+                              "bg-[#F4F7F5] text-[#7C9A8B] border-[#DDE5E1]"
                             )}>
                               {task.priority}
                             </Badge>
-                            <span className="text-[10px] text-deep-blue/30 font-mono">{task.time}</span>
+                            <span className="text-[9px] text-[#8A9E96] font-bold uppercase tracking-tight">{task.time}</span>
                           </div>
                           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button 
                               onClick={() => startEdit(task)}
-                              className="p-1 rounded hover:bg-surface-tinted text-deep-blue/40 hover:text-deep-blue transition-colors cursor-pointer"
+                              className="p-1 rounded hover:bg-[#F4F7F5] text-[#8A9E96] hover:text-[#5C6B64] transition-colors cursor-pointer"
                               title="Edit"
                             >
                               <Edit2 className="w-3 h-3" />
                             </button>
                             <button 
                               onClick={() => deleteTask(task.id)}
-                              className="p-1 rounded hover:bg-red-50 text-deep-blue/40 hover:text-red-600 transition-colors cursor-pointer"
+                              className="p-1 rounded hover:bg-red-50 text-[#8A9E96] hover:text-red-600 transition-colors cursor-pointer"
                               title="Delete"
                             >
                               <Trash2 className="w-3 h-3" />
@@ -580,12 +575,12 @@ export function ProjectView() {
                           : "border-transparent"
                       )}>
                         <div className="w-10 h-10 rounded-full bg-surface-sunken flex items-center justify-center mb-3">
-                          <Layout className="w-4 h-4 text-deep-blue/20" />
+                          <Layout className="w-4 h-4 text-sage-deep/20" />
                         </div>
-                        <p className="text-xs text-deep-blue/30 font-medium text-center">
+                        <p className="text-xs text-sage-deep/30 font-medium text-center">
                           {dragOverColumn === column.id ? "Drop here" : "No tasks yet"}
                         </p>
-                        <p className="text-[10px] text-deep-blue/20 mt-1">
+                        <p className="text-[10px] text-sage-deep/20 mt-1">
                           Drag tasks here
                         </p>
                       </div>
@@ -608,22 +603,22 @@ export function ProjectView() {
           <section className="space-y-6">
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-3">
-                <h2 className="font-syne text-2xl font-bold text-deep-blue">Strategic Tasks</h2>
+                <h2 className="text-2xl font-bold text-[#2F3A35]">Objectives</h2>
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="border-border-soft text-deep-blue/50 text-[10px]">
-                    {tasks.filter(t => t.status === "pending").length} PENDING
+                  <Badge variant="outline" className="border-[#DDE5E1] text-[#8A9E96] text-[9px] uppercase font-bold tracking-wider">
+                    {tasks.filter(t => t.status === "pending").length} Discovery
                   </Badge>
-                  <Badge variant="secondary" className="bg-blue-50 text-blue-600 border-none text-[10px]">
-                    {tasks.filter(t => t.status === "in-progress").length} IN PROGRESS
+                  <Badge variant="secondary" className="bg-[#7C9A8B]/10 text-[#5F7D6E] border-none text-[9px] uppercase font-bold tracking-wider">
+                    {tasks.filter(t => t.status === "in-progress").length} Flowing
                   </Badge>
                 </div>
               </div>
               <button 
                 onClick={handleNewObjective}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-soft hover:bg-deep-blue hover:text-white hover:border-transparent transition-all duration-300 text-xs font-bold text-deep-blue uppercase tracking-widest shadow-sm hover:shadow-md cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#7C9A8B] text-white text-[11px] font-bold uppercase tracking-widest shadow-sm hover:bg-sage-deep transition-all duration-300"
               >
-                <Plus className="w-3 h-3" />
-                New Objective
+                <Plus className="w-3.5 h-3.5" />
+                Add Objective
               </button>
             </div>
 
@@ -631,22 +626,22 @@ export function ProjectView() {
               {tasks.map((task) => (
                   <div 
                   key={task.id}
-                  className="group relative p-6 rounded-xl bg-white border border-transparent shadow-sm hover:shadow-elevated hover:border-soft-blue/20 transition-all duration-300 hover:-translate-y-1 cursor-default"
+                  className="group relative p-6  bg-white border border-[#DDE5E1] shadow-[0_1px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:border-[#AFC8B8] transition-all duration-300 hover:-translate-y-0.5 cursor-default"
                 >
                   {editingId === task.id ? (
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                         <span className="text-xs font-bold uppercase tracking-wider text-deep-blue/40">Editing Task</span>
+                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A9E96]">Defining Objective</span>
                          <div className="flex gap-2">
                            <button 
                              onClick={() => saveEdit(task.id)}
-                             className="p-1.5 rounded-full bg-light-green text-deep-blue hover:bg-light-green/80 transition-colors"
+                             className="p-2 rounded-full bg-[#7C9A8B] text-white hover:bg-sage-deep transition-colors"
                            >
                              <Check className="w-4 h-4" />
                            </button>
                            <button 
                              onClick={() => cancelEdit(task.id)}
-                             className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+                             className="p-2 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
                            >
                              <X className="w-4 h-4" />
                            </button>
@@ -656,9 +651,9 @@ export function ProjectView() {
                         ref={editInputRef as any}
                         value={editText}
                         onChange={(e) => setEditText(e.target.value)}
-                        className="w-full bg-surface-sunken/50 border-b-2 border-deep-blue/20 text-deep-blue font-medium p-2 focus:outline-none focus:border-deep-blue resize-none rounded-t-lg"
+                        className="w-full bg-[#F4F7F5] border-b-2 border-[#DDE5E1] text-[#2F3A35] font-medium p-3 focus:outline-none focus:border-[#7C9A8B] resize-none rounded-t-xl text-sm"
                         rows={2}
-                        placeholder="Enter task objective..."
+                        placeholder="Enter focus area..."
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
@@ -666,18 +661,16 @@ export function ProjectView() {
                           }
                         }}
                       />
-                      <div className="flex gap-2 pt-2">
+                      <div className="flex gap-2 pt-1">
                          {['high', 'medium', 'low'].map((p) => (
                            <button
                              key={p}
                              onClick={() => setEditPriority(p)}
                              className={cn(
-                               "text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded transition-all border",
+                               "text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full transition-all border",
                                editPriority === p 
-                                 ? (p === 'high' ? "bg-red-100 text-red-700 border-red-200" :
-                                    p === 'medium' ? "bg-orange-100 text-orange-700 border-orange-200" :
-                                    "bg-blue-100 text-blue-700 border-blue-200")
-                                 : "bg-transparent text-deep-blue/40 border-transparent hover:bg-surface-sunken"
+                                 ? "bg-[#7C9A8B] text-white border-[#7C9A8B]"
+                                 : "bg-[#F4F7F5] text-[#8A9E96] border-[#DDE5E1] hover:border-[#AFC8B8]"
                              )}
                            >
                              {p}
@@ -687,15 +680,15 @@ export function ProjectView() {
                     </div>
                   ) : (
                     <>
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-2">
+                      <div className="flex justify-between items-start mb-5">
+                        <div className="flex items-center gap-2.5">
                           <button 
                             onClick={() => toggleTaskCompletion(task.id)}
                             className={cn(
-                              "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
+                              "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer overflow-hidden",
                               task.status === "completed" 
-                                ? "bg-emerald-500 text-white scale-110" 
-                                : "border-2 border-border-soft text-transparent hover:border-soft-blue group-hover:scale-110"
+                                ? "bg-[#7C9A8B] text-white" 
+                                : "border-2 border-[#DDE5E1] text-transparent hover:border-[#7C9A8B]"
                             )}
                           >
                             <CheckCircle2 className="w-4 h-4" />
@@ -704,43 +697,41 @@ export function ProjectView() {
                           {task.status === "pending" && (
                             <button 
                               onClick={() => moveToInProgress(task.id)}
-                              className="w-6 h-6 rounded-full border border-soft-blue/30 flex items-center justify-center text-soft-blue hover:bg-soft-blue hover:text-white transition-all cursor-pointer"
-                              title="Start Task"
+                              className="w-6 h-6 rounded-full border border-[#7C9A8B]/30 flex items-center justify-center text-[#7C9A8B] hover:bg-[#7C9A8B] hover:text-white transition-all cursor-pointer shadow-sm"
+                              title="Begin Flow"
                             >
                               <Play className="w-2.5 h-2.5 fill-current" />
                             </button>
                           )}
 
                           {task.status === "in-progress" && (
-                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 animate-pulse">
-                              <Activity className="w-2.5 h-2.5" />
-                              <span className="text-[8px] font-bold uppercase tracking-wider">Working</span>
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#AFC8B8]/15 text-[#5F7D6E] border border-[#AFC8B8]/30 animate-pulse">
+                              <Activity className="w-3 h-3" />
+                              <span className="text-[9px] font-bold uppercase tracking-wider">Flowing</span>
                             </div>
                           )}
                         </div>
                         
                         <div className="flex items-center gap-2">
-                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
                              <button 
                                onClick={() => startEdit(task)}
-                               className="p-1.5 rounded-full hover:bg-surface-tinted text-deep-blue/60 hover:text-deep-blue transition-colors cursor-pointer"
-                               title="Edit"
+                               className="p-1.5 rounded-lg hover:bg-[#F4F7F5] text-[#8A9E96] hover:text-[#5C6B64] transition-colors cursor-pointer"
                              >
-                                <Edit2 className="w-3 h-3" />
+                                <Edit2 className="w-3.5 h-3.5" />
                              </button>
                              <button 
                                onClick={() => deleteTask(task.id)}
-                               className="p-1.5 rounded-full hover:bg-red-50 text-deep-blue/60 hover:text-red-600 transition-colors cursor-pointer"
-                               title="Delete"
+                               className="p-1.5 rounded-lg hover:bg-red-50 text-[#8A9E96] hover:text-red-600 transition-colors cursor-pointer"
                              >
-                                <Trash2 className="w-3 h-3" />
+                                <Trash2 className="w-3.5 h-3.5" />
                              </button>
                           </div>
                           <Badge variant="secondary" className={cn(
-                            "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5",
-                            task.priority === 'high' ? "bg-red-50 text-red-600" :
-                            task.priority === 'medium' ? "bg-orange-50 text-orange-600" :
-                            "bg-blue-50 text-blue-600"
+                            "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border border-transparent",
+                            task.priority === 'high' ? "bg-red-50 text-red-600 border-red-100" :
+                            task.priority === 'medium' ? "bg-orange-50 text-orange-600 border-orange-100" :
+                            "bg-[#F4F7F5] text-[#7C9A8B] border-[#DDE5E1]"
                           )}>
                             {task.priority}
                           </Badge>
@@ -748,20 +739,18 @@ export function ProjectView() {
                       </div>
                       
                       <h3 className={cn(
-                        "font-medium text-deep-blue leading-snug mb-4 h-12 line-clamp-2",
-                        task.status === "completed" && "opacity-50 line-through decoration-deep-blue/20"
+                        "font-semibold text-base text-[#2F3A35] leading-snug mb-4 h-11 line-clamp-2",
+                        task.status === "completed" && "opacity-40 italic"
                       )}>
                         {task.title}
                       </h3>
                       
-                      <div className="flex items-center justify-between pt-4 border-t border-dashed border-border-soft text-[11px] font-bold text-deep-blue/40 uppercase tracking-wider">
-                        <span className="flex items-center gap-1.5 group-hover:text-soft-blue transition-colors">
-                          <Clock className="w-3 h-3" /> {task.time}
+                      <div className="flex items-center justify-between pt-4 border-t border-dashed border-[#DDE5E1] text-[10px] font-bold text-[#8A9E96] uppercase tracking-[0.12em]">
+                        <span className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-[#AFC8B8]" /> {task.time}
                         </span>
-                        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                          <div className="w-6 h-6 rounded-full bg-surface-tinted flex items-center justify-center text-[9px] text-deep-blue">
-                            {task.assignee[0]}
-                          </div>
+                        <div className="w-6 h-6 rounded-full bg-[#E9EFEC] flex items-center justify-center text-[9px] font-bold text-[#7C9A8B] border border-white">
+                          {task.assignee[0]}
                         </div>
                       </div>
                     </>
@@ -774,36 +763,36 @@ export function ProjectView() {
           {/* Project Roadmap Section - Fills the vertical space */}
           <section className="space-y-6">
             <div className="flex items-center gap-3 px-1">
-                <h2 className="font-syne text-2xl font-bold text-deep-blue">Phase Roadmap</h2>
-                <div className="h-px w-full bg-border-soft/50 flex-1 ml-4" />
+                <h2 className="text-2xl font-bold text-[#2F3A35]">Roadmap</h2>
+                <div className="h-px w-full bg-[#DDE5E1] flex-1 ml-4" />
             </div>
             
-            <div className="rounded-[32px] bg-white border border-border-soft p-8 relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-64 h-full bg-linear-to-l from-surface-tinted/50 to-transparent pointer-events-none" />
+            <div className=" bg-white border border-[#DDE5E1] p-8 relative overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
+               <div className="absolute top-0 right-0 w-64 h-full bg-linear-to-l from-[#F4F7F5]/50 to-transparent pointer-events-none" />
                <div className="relative z-10 space-y-8">
                   {phases.map((phase, i) => (
                     <div key={i} className="group cursor-default">
-                       <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
+                       <div className="flex items-center justify-between mb-2.5">
+                          <div className="flex items-center gap-4">
                              <div className={cn(
-                               "w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-colors",
-                               phase.status === 'completed' ? "bg-deep-blue text-white" : 
-                               phase.status === 'in-progress' ? "bg-light-green text-deep-blue" :
-                               "bg-surface-sunken text-deep-blue/40"
+                               "w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300",
+                               phase.status === 'completed' ? "bg-[#2F3A35] text-white" : 
+                               phase.status === 'in-progress' ? "bg-[#7C9A8B] text-white ring-4 ring-[#7C9A8B]/15" :
+                               "bg-[#E9EFEC] text-[#8A9E96]"
                              )}>
-                               {i + 1}
+                               0{i + 1}
                              </div>
                              <span className={cn(
-                               "font-bold text-sm uppercase tracking-wider",
-                               phase.status === 'pending' ? "text-deep-blue/40" : "text-deep-blue"
+                               "font-bold text-sm uppercase tracking-widest",
+                               phase.status === 'pending' ? "text-[#8A9E96]" : "text-[#2F3A35]"
                              )}>{phase.name}</span>
                           </div>
-                          <span className="font-mono text-xs font-bold text-deep-blue/50">{phase.progress}%</span>
+                          <span className="font-mono text-xs font-bold text-sage-deep/50">{phase.progress}%</span>
                        </div>
                        <div className="w-full bg-surface-sunken h-2 rounded-full overflow-hidden relative">
                           <div 
                              className={cn("h-full rounded-full transition-all duration-1000 ease-out", 
-                               phase.status === 'completed' ? "bg-deep-blue" : 
+                               phase.status === 'completed' ? "bg-sage-deep" : 
                                phase.status === 'in-progress' ? "bg-light-green" : "bg-transparent"
                              )} 
                              style={{ width: `${phase.progress}%` }} 
@@ -824,12 +813,12 @@ export function ProjectView() {
               <div className="p-8 space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-deep-blue flex items-center justify-center shadow-lg shadow-deep-blue/20">
+                    <div className="w-10 h-10 rounded-xl bg-sage-deep flex items-center justify-center shadow-lg shadow-sage-deep/20">
                       <Zap className="w-5 h-5 text-light-green" />
                     </div>
                     <div>
-                      <h3 className="font-syne text-lg font-bold text-deep-blue uppercase tracking-tight">AI Strategies</h3>
-                      <p className="text-[9px] font-mono text-deep-blue/40 uppercase tracking-tighter">Synthesized just now</p>
+                      <h3 className="font-syne text-lg font-bold text-sage-deep uppercase tracking-tight">AI Strategies</h3>
+                      <p className="text-[9px] font-mono text-sage-deep/40 uppercase tracking-tighter">Synthesized just now</p>
                     </div>
                   </div>
                   <div className="animate-pulse w-2 h-2 rounded-full bg-light-green" />
@@ -843,9 +832,9 @@ export function ProjectView() {
                     <div 
                       key={i} 
                       onClick={() => handleApplyStrategy(i)}
-                      className="p-4 rounded-2xl bg-white border border-border-soft/60 hover:border-soft-blue/40 hover:bg-surface-elevated transition-all cursor-pointer group"
+                      className="p-4  bg-white border border-border-soft/60 hover:border-soft-blue/40 hover:bg-surface-elevated transition-all cursor-pointer group"
                     >
-                      <p className="text-xs font-medium text-deep-blue/70 leading-relaxed group-hover:text-deep-blue transition-colors">
+                      <p className="text-xs font-medium text-sage-deep/70 leading-relaxed group-hover:text-sage-deep transition-colors">
                         {suggestion}
                       </p>
                       <div className="mt-2 h-0 overflow-hidden group-hover:h-auto group-hover:mt-3 transition-all">
@@ -858,7 +847,7 @@ export function ProjectView() {
                 </div>
 
                 <div className="pt-2">
-                   <div className="rounded-2xl bg-deep-blue p-6 relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02]">
+                   <div className=" bg-sage-deep p-6 relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02]">
                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                          <BarChart3 className="w-16 h-16 text-white" />
                       </div>
@@ -880,8 +869,8 @@ export function ProjectView() {
             {/* Live Activity Feed */}
             <div className="bg-surface-elevated/50 backdrop-blur-md rounded-[32px] border border-white/50 p-1">
               <div className="p-6 pb-2">
-                 <h3 className="font-syne text-sm font-bold text-deep-blue uppercase tracking-widest flex items-center gap-2">
-                    <Users className="w-4 h-4 text-deep-blue/40" /> Live Activity
+                 <h3 className="font-syne text-sm font-bold text-sage-deep uppercase tracking-widest flex items-center gap-2">
+                    <Users className="w-4 h-4 text-sage-deep/40" /> Live Activity
                  </h3>
               </div>
               <div className="h-[300px] overflow-hidden relative">

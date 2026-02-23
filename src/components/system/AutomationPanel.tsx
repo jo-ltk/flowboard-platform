@@ -123,7 +123,7 @@ export const AutomationPanel = () => {
     <div className="space-y-8 p-6 relative">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-syne font-bold text-deep-blue tracking-tight">
+          <h2 className="text-3xl font-syne font-bold text-sage-deep tracking-tight">
             Workflow Automations
           </h2>
           <p className="text-soft-blue text-sm mt-1 font-medium">
@@ -132,7 +132,7 @@ export const AutomationPanel = () => {
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-deep-blue text-white rounded-xl hover:bg-deep-blue-dark transition-all duration-300 font-bold shadow-lg shadow-deep-blue/10 text-sm"
+          className="flex items-center gap-2 px-6 py-2.5 bg-sage-deep text-white rounded-xl hover:bg-sage-deep-dark transition-all duration-300 font-bold shadow-lg shadow-sage-deep/10 text-sm"
         >
           <Plus className="w-4 h-4" />
           <span>New Automation</span>
@@ -150,11 +150,11 @@ export const AutomationPanel = () => {
                 <div className="w-16 h-16 bg-soft-blue/5 rounded-full flex items-center justify-center mb-4">
                     <Zap className="w-8 h-8 text-soft-blue/20" />
                 </div>
-                <h3 className="font-syne font-bold text-deep-blue text-lg">No active workflows</h3>
+                <h3 className="font-syne font-bold text-sage-deep text-lg">No active workflows</h3>
                 <p className="text-soft-blue text-sm max-w-xs mt-1">Start by adding your first automation rule or let AI suggest patterns.</p>
                 <button 
                   onClick={() => setIsModalOpen(true)}
-                  className="mt-6 px-6 py-3 bg-soft-blue/10 text-deep-blue rounded-xl font-bold text-sm hover:bg-soft-blue/20 transition-all"
+                  className="mt-6 px-6 py-3 bg-soft-blue/10 text-sage-deep rounded-xl font-bold text-sm hover:bg-soft-blue/20 transition-all"
                 >
                     Create Custom Rule
                 </button>
@@ -173,7 +173,7 @@ export const AutomationPanel = () => {
             <div className="flex items-start justify-between mb-6">
               <div className={cn(
                 "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-                rule.isActive ? "bg-light-green/40 text-deep-blue" : "bg-soft-blue/10 text-soft-blue"
+                rule.isActive ? "bg-light-green/40 text-sage-deep" : "bg-soft-blue/10 text-soft-blue"
               )}>
                 <Zap className="w-5 h-5" />
               </div>
@@ -201,14 +201,14 @@ export const AutomationPanel = () => {
 
             <div className="mb-6">
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-1">Trigger</span>
-              <p className="font-syne font-bold text-deep-blue leading-tight text-lg">
+              <p className="font-syne font-bold text-sage-deep leading-tight text-lg">
                 {rule.trigger}
               </p>
             </div>
 
             <div className="space-y-3 mb-8">
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-1">Action</span>
-              <div className="flex items-center gap-3 text-sm text-deep-blue/80 font-bold bg-white border border-soft-blue/5 p-3 rounded-xl shadow-xs">
+              <div className="flex items-center gap-3 text-sm text-sage-deep/80 font-bold bg-white border border-soft-blue/5 p-3 rounded-xl shadow-xs">
                 <div className="w-1.5 h-1.5 rounded-full bg-light-green-dark" />
                 {rule.action}
               </div>
@@ -220,8 +220,8 @@ export const AutomationPanel = () => {
                 <span>OPS_READY</span>
               </div>
               {rule.isActive && (
-                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-light-green text-deep-blue text-[9px] font-black tracking-widest uppercase">
-                  <span className="w-1 h-1 rounded-full bg-deep-blue animate-pulse" />
+                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-light-green text-sage-deep text-[9px] font-black tracking-widest uppercase">
+                  <span className="w-1 h-1 rounded-full bg-sage-deep animate-pulse" />
                   LIVE
                 </span>
               )}
@@ -232,7 +232,7 @@ export const AutomationPanel = () => {
 
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-deep-blue/40 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sage-deep/40 backdrop-blur-md">
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -242,7 +242,7 @@ export const AutomationPanel = () => {
               <div className="p-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-3xl font-syne font-bold text-deep-blue">Architect Workflow</h3>
+                    <h3 className="text-3xl font-syne font-bold text-sage-deep">Architect Workflow</h3>
                     <p className="text-soft-blue text-sm mt-1">Design a core operational automation pattern.</p>
                   </div>
                   <button 
@@ -259,7 +259,7 @@ export const AutomationPanel = () => {
                       <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-2">Initialize Trigger</label>
                       <input 
                         type="text"
-                        className="w-full px-5 py-4 rounded-2xl bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-bold text-deep-blue placeholder:text-deep-blue/20"
+                        className="w-full px-5 py-4  bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-bold text-sage-deep placeholder:text-sage-deep/20"
                         placeholder="e.g. Task completed"
                         value={newRule.trigger}
                         onChange={(e) => setNewRule({ ...newRule, trigger: e.target.value })}
@@ -269,7 +269,7 @@ export const AutomationPanel = () => {
                       <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-soft-blue/60 block mb-2">Execute Action</label>
                       <input 
                         type="text"
-                        className="w-full px-5 py-4 rounded-2xl bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-bold text-deep-blue placeholder:text-deep-blue/20"
+                        className="w-full px-5 py-4  bg-soft-blue/5 border border-soft-blue/10 focus:outline-none focus:ring-2 focus:ring-soft-blue/20 transition-all font-bold text-sage-deep placeholder:text-sage-deep/20"
                         placeholder="e.g. Notify project lead"
                         value={newRule.action}
                         onChange={(e) => setNewRule({ ...newRule, action: e.target.value })}
@@ -278,7 +278,7 @@ export const AutomationPanel = () => {
                     <button 
                       onClick={handleAddRule}
                       disabled={!newRule.trigger || !newRule.action}
-                      className="w-full py-5 bg-deep-blue text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] hover:bg-deep-blue-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-deep-blue/20"
+                      className="w-full py-5 bg-sage-deep text-white  font-black uppercase tracking-[0.2em] text-[11px] hover:bg-sage-deep-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-sage-deep/20"
                     >
                       Deploy Automation
                     </button>
@@ -287,13 +287,13 @@ export const AutomationPanel = () => {
                   <div className="bg-soft-blue/5 rounded-[32px] p-8 border border-soft-blue/10 flex flex-col">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-2">
-                        <Brain className="w-5 h-5 text-deep-blue" />
-                        <span className="font-syne font-bold text-deep-blue">AI Synthesis</span>
+                        <Brain className="w-5 h-5 text-sage-deep" />
+                        <span className="font-syne font-bold text-sage-deep">AI Synthesis</span>
                       </div>
                       {suggestions.length === 0 && !isSuggesting && (
                         <button 
                           onClick={generateSuggestions}
-                          className="text-[10px] font-mono font-bold uppercase text-deep-blue border-b border-deep-blue hover:text-soft-blue hover:border-soft-blue transition-colors"
+                          className="text-[10px] font-mono font-bold uppercase text-sage-deep border-b border-sage-deep hover:text-soft-blue hover:border-soft-blue transition-colors"
                         >
                           Synthesize
                         </button>
@@ -303,7 +303,7 @@ export const AutomationPanel = () => {
                     <div className="flex-1 space-y-4">
                       {isSuggesting ? (
                         <div className="h-full flex flex-col items-center justify-center space-y-4 text-center">
-                          <Loader2 className="w-8 h-8 text-deep-blue animate-spin" />
+                          <Loader2 className="w-8 h-8 text-sage-deep animate-spin" />
                           <p className="text-xs text-soft-blue font-bold font-mono uppercase tracking-widest">Neural Mapping...</p>
                         </div>
                       ) : suggestions.length > 0 ? (
@@ -311,10 +311,10 @@ export const AutomationPanel = () => {
                           <button 
                             key={i}
                             onClick={() => setNewRule({ trigger: s.trigger, action: s.action })}
-                            className="w-full text-left p-4 rounded-2xl bg-white border border-soft-blue/10 hover:border-light-green transition-all group relative overflow-hidden"
+                            className="w-full text-left p-4  bg-white border border-soft-blue/10 hover:border-light-green transition-all group relative overflow-hidden"
                           >
                             <div className="text-[9px] font-black text-light-green-dark mb-1 uppercase tracking-widest">Strategy_Pattern</div>
-                            <div className="text-xs font-bold text-deep-blue leading-tight mb-1">{s.trigger}</div>
+                            <div className="text-xs font-bold text-sage-deep leading-tight mb-1">{s.trigger}</div>
                             <div className="text-[10px] text-soft-blue font-medium italic">{"→ " + s.action}</div>
                           </button>
                         ))

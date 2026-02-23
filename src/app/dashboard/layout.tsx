@@ -4,7 +4,8 @@ import { SidebarProvider } from "@/hooks/use-sidebar";
 import FlowBoardChatbot from "@/components/chat/FlowBoardChatbot";
 
 export const metadata = {
-  title: "Dashboard",
+  title: "Dashboard — FlowBoard",
+  description: "Your calm command center for focused project management.",
 };
 
 import { ActivityProvider } from "@/context/ActivityContext";
@@ -17,7 +18,9 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <ActivityProvider>
-        <div className="flex h-screen overflow-hidden bg-cream">
+        {/* Light sage background for the entire dashboard */}
+        <div className="flex h-screen overflow-hidden bg-[#F4F7F5]">
+
           {/* Sidebar */}
           <Sidebar />
 
@@ -25,9 +28,9 @@ export default function DashboardLayout({
           <div className="flex flex-1 flex-col overflow-hidden">
             <DashboardNavbar />
 
-            {/* Content area */}
-            <main className="flex-1 overflow-y-auto bg-surface-primary/30 p-10 lg:p-16">
-              <div className="mx-auto max-w-[1280px]">
+            {/* Content area — light sage, generous padding */}
+            <main className="flex-1 overflow-y-auto bg-[#F4F7F5] p-6 lg:p-8 xl:p-10">
+              <div className="mx-auto max-w-[1320px]">
                 {children}
               </div>
               <FlowBoardChatbot />

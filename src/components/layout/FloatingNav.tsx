@@ -30,7 +30,7 @@ const FloatingNav = () => {
         {/* Left: Minimal Logo */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
           <img src="/assets/logo.svg" alt="FlowBoard" className="w-6 h-6 object-contain" />
-          <span className="text-lg font-syne font-bold tracking-tight text-deep-blue">FlowBoard</span>
+          <span className="text-lg font-syne font-bold tracking-tight text-sage-deep">FlowBoard</span>
         </Link>
 
         {/* Center: Links */}
@@ -39,7 +39,7 @@ const FloatingNav = () => {
             <Link
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="font-mono text-[10px] uppercase tracking-widest text-deep-blue/50 hover:text-deep-blue transition-colors"
+              className="font-mono text-[10px] uppercase tracking-widest text-sage-deep/50 hover:text-sage-deep transition-colors"
             >
               {item}
             </Link>
@@ -49,7 +49,7 @@ const FloatingNav = () => {
         {/* Right: CTA Button */}
         <div className="magnetic-wrap">
           <Link href="/dashboard">
-            <button className="bg-deep-blue text-cream px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-deep-blue-dark transition-all duration-300 shadow-soft hover:shadow-glow-blue">
+            <button className="bg-sage-deep text-cream px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-sage-deep-dark transition-all duration-300 shadow-soft hover:shadow-glow-blue">
               Initialize
             </button>
           </Link>

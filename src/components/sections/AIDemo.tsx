@@ -1,133 +1,64 @@
 "use client";
 
 import React from "react";
-import { Cpu, CheckCircle, Zap, Activity, MessageSquare } from "lucide-react";
+import { Cpu, CheckCircle2, Leaf, Sparkles, MessageSquare } from "lucide-react";
+import { motion } from "framer-motion";
 
 const AIDemo = () => {
   return (
-    <section id="ai-demo" className="relative min-h-screen w-full bg-surface-tinted overflow-hidden py-16 sm:py-24 px-5 sm:px-6 md:px-12 lg:px-20 flex items-center justify-center">
-      {/* Background Effects */}
-      <div className="absolute top-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-b from-cream to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-t from-cream to-transparent pointer-events-none z-20" />
-      <div className="absolute inset-0 pastel-dots pointer-events-none opacity-20 sm:opacity-30" />
-      <div className="absolute top-[30%] left-[10%] sm:left-[20%] w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-soft-blue/8 blur-2xl sm:blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[5%] sm:right-[15%] w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full bg-light-green/10 blur-2xl sm:blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20 items-center relative z-10">
-        {/* Left Side: Editorial Text Block */}
-        <div className="lg:col-span-5 space-y-6 sm:space-y-8 text-center lg:text-left">
-          <div className="space-y-4 sm:space-y-5">
-            <span className="inline-flex font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-deep-blue/50 bg-deep-blue/5 px-3 py-1.5 rounded-full">
-              Intelligent System
+    <section id="ai-demo" className="relative h-screen w-full bg-white overflow-hidden flex items-center justify-center font-[Poppins]">
+      <div className="absolute inset-0 z-0 flex flex-col md:flex-row">
+        {/* Left Visual Half */}
+        <div className="relative w-full md:w-1/2 h-full bg-[#2F3A35] overflow-hidden">
+          <img 
+            src="https://picsum.photos/id/160/1200/1600" 
+            alt="Natural Intelligence" 
+            className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
+          
+          <div className="absolute bottom-12 left-12 md:bottom-20 md:left-20 max-w-md">
+            <span className="text-[12px] font-bold text-[#8CBA41] uppercase tracking-[0.3em] mb-6 block">
+              Cognitive Architecture
             </span>
-            <h2 className="text-4xl sm:text-5xl md:text-7xl font-syne font-bold leading-[0.9] tracking-tight text-deep-blue">
-              AI THAT <br className="hidden sm:block" />
-              <span className="text-soft-blue">THINKS</span> IN <br className="hidden sm:block" />
-              STRUCTURE.
+            <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-bold leading-[1] tracking-tighter text-white mb-8">
+              Intelligence <br />
+              that feels <br />
+              <span className="text-[#8CBA41]">human.</span>
             </h2>
-          </div>
-
-          <p className="font-serif italic text-lg sm:text-xl md:text-2xl text-deep-blue/50 border-l-3 border-light-green pl-5 sm:pl-6 max-w-md mx-auto lg:mx-0 text-left">
-            &ldquo;The future of design isn&apos;t automated; it&apos;s synthetically augmented.&rdquo;
-          </p>
-
-          <p className="text-sm text-deep-blue/40 leading-relaxed max-w-sm mx-auto lg:mx-0">
-            FlowBoard uses advanced neural mapping to predict your next move. 
-            Real-time heuristic analysis meets thoughtful design for the ultimate creative experience.
-          </p>
-
-          <div className="pt-2 flex justify-center lg:justify-start">
-            <button className="group relative px-8 py-3.5 bg-deep-blue text-cream font-semibold uppercase text-xs tracking-widest overflow-hidden rounded-[var(--radius-md)] transition-all hover:bg-deep-blue-dark min-h-[44px]">
-              <span className="relative z-10 flex items-center gap-2">
-                Deploy Instance
-              </span>
-            </button>
+            <div className="w-20 h-1 bg-[#8CBA41]" />
           </div>
         </div>
 
-        {/* Right Side: Glass AI Panel */}
-        <div className="lg:col-span-7">
-          <div className="relative group">
-            <div className="p-px border border-border-soft rounded-lg">
-              <div className="glass-panel bg-surface-elevated/90 p-5 sm:p-8 min-h-[400px] sm:min-h-[480px] flex flex-col gap-5 sm:gap-7 rounded-lg">
-                {/* Panel Header */}
-                <div className="flex items-center justify-between border-b border-border-soft pb-4 sm:pb-6">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-soft-blue/10 flex items-center justify-center rounded-[var(--radius-md)] border border-soft-blue/20">
-                      <Cpu className="w-4 h-4 sm:w-5 sm:h-5 text-soft-blue" />
-                    </div>
-                    <div>
-                      <h4 className="font-syne font-bold text-[10px] sm:text-xs uppercase tracking-widest text-deep-blue">Core Sentinel</h4>
-                      <p className="font-mono text-[8px] sm:text-[9px] text-deep-blue/35 mt-0.5">Status: Ready</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1.5 sm:gap-2">
-                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-light-green" />
-                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-border-soft" />
-                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-border-soft" />
-                  </div>
-                </div>
+        {/* Right Info Half */}
+        <div className="relative w-full md:w-1/2 h-full bg-[#f8faf9] p-8 md:p-20 flex flex-col justify-center border-l border-[#DDE5E1]">
+          <div className="max-w-xl space-y-12">
+            <div className="space-y-6">
+              <p className="text-2xl md:text-3xl text-[#2F3A35] font-light leading-snug">
+                &ldquo;Flow isn&apos;t just about speed; it&apos;s about removing the noise so clarity can emerge.&rdquo;
+              </p>
+              <p className="text-[#5C6B64] text-lg font-light leading-relaxed">
+                Traditional AI feels clinical. We built FlowBoard to anticipate your needs with a gentle touch, organizing your project rhythm without the friction of automation.
+              </p>
+            </div>
 
-                {/* Task List */}
-                <div className="space-y-2 sm:space-y-3">
-                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-deep-blue/30">Active Tasks</span>
-                  {[
-                    { label: "Refactoring Module-X", progress: 85, color: "soft-blue" },
-                    { label: "Optimizing WebGL Shader", progress: 42, color: "light-green" },
-                    { label: "Synthesizing UI Tokens", progress: 100, color: "deep-blue" }
-                  ].map((task, i) => (
-                    <div 
-                      key={i}
-                      className="group/row flex items-center justify-between p-2.5 sm:p-3 border border-border-soft rounded-md bg-surface-primary/60 transition-colors hover:bg-soft-blue/5"
-                    >
-                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                        {task.progress === 100 ? (
-                          <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light-green-dark shrink-0" />
-                        ) : (
-                          <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-deep-blue/20 shrink-0" />
-                        )}
-                        <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-deep-blue/70 group-hover/row:text-deep-blue transition-colors truncate">
-                          {task.label}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-2">
-                        <div className="w-16 sm:w-24 h-1.5 bg-border-soft rounded-full overflow-hidden">
-                          <div 
-                            style={{ width: `${task.progress}%` }}
-                            className={`h-full rounded-full ${
-                              task.color === 'soft-blue' ? 'bg-soft-blue' : 
-                              task.color === 'light-green' ? 'bg-light-green-dark' : 
-                              'bg-deep-blue'
-                            }`}
-                          />
-                        </div>
-                        <span className="font-mono text-[9px] sm:text-[10px] text-deep-blue/35 w-6 text-right">{task.progress}%</span>
-                      </div>
-                    </div>
-                  ))}
+            {/* Sharp Feature Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { label: "Orchestration", desc: "Adaptive timelines that breathe." },
+                { label: "Predictive Flow", desc: "Anticipating bottlenecks early." }
+              ].map((item, i) => (
+                <div key={i} className="bg-white border border-[#DDE5E1] p-6 rounded-none">
+                  <h4 className="font-bold text-[#2F3A35] mb-2 uppercase tracking-widest text-xs">{item.label}</h4>
+                  <p className="text-sm text-[#8A9E96] font-light">{item.desc}</p>
                 </div>
+              ))}
+            </div>
 
-                {/* AI Suggestion Box */}
-                <div className="mt-auto border-t border-border-soft pt-4 sm:pt-6">
-                  <div className="bg-soft-blue/6 border border-border-blue rounded-[var(--radius-md)] p-4 sm:p-5 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-soft-blue rounded-l-full" />
-                    <div className="flex items-start gap-3 sm:gap-4 pl-2">
-                      <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-soft-blue shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-soft-blue font-bold mb-1 sm:mb-1.5">AI Suggestion</p>
-                        <p className="text-[11px] sm:text-xs text-deep-blue/55 leading-relaxed italic">
-                          &ldquo;I&apos;ve detected a bottleneck in your layout engine. Should I initialize the auto-refactor sequence?&rdquo;
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-3 sm:mt-4 flex gap-3 sm:gap-4 pl-2 flex-wrap">
-                      <button className="text-[10px] font-semibold uppercase tracking-widest text-deep-blue border-b-2 border-light-green hover:text-deep-blue-dark transition-all min-h-[44px] sm:min-h-0 flex items-center">Accept Change</button>
-                      <button className="text-[10px] font-semibold uppercase tracking-widest text-deep-blue/30 hover:text-deep-blue/60 transition-all min-h-[44px] sm:min-h-0 flex items-center">Discard</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="pt-6">
+              <button className="px-12 py-4 bg-[#2F3A35] text-white font-bold rounded-none text-[12px] tracking-[0.2em] uppercase hover:bg-black transition-all">
+                Experience the Flow
+              </button>
             </div>
           </div>
         </div>

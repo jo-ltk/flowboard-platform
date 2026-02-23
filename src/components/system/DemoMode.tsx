@@ -22,7 +22,7 @@ export function DemoMode() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-deep-blue/20 backdrop-blur-[2px]"
+          className="absolute inset-0 bg-sage-deep/20 backdrop-blur-[2px]"
           style={{
             maskImage: "radial-gradient(circle at 50% 50%, transparent 20%, black 100%)",
             WebkitMaskImage: "radial-gradient(circle at 50% 50%, transparent 20%, black 100%)",
@@ -51,7 +51,7 @@ export function DemoMode() {
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-syne font-bold text-deep-blue">Investor Demo</h3>
+                  <h3 className="font-syne font-bold text-sage-deep">Investor Demo</h3>
                   <p className="font-mono text-[10px] uppercase tracking-widest text-soft-blue">
                     Step {demoStep + 1} of {steps.length}
                   </p>
@@ -59,7 +59,7 @@ export function DemoMode() {
               </div>
               <button
                 onClick={toggleDemoMode}
-                className="p-2 hover:bg-surface-sunken rounded-lg transition-colors text-deep-blue/40 hover:text-deep-blue"
+                className="p-2 hover:bg-surface-sunken rounded-lg transition-colors text-sage-deep/40 hover:text-sage-deep"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -73,10 +73,10 @@ export function DemoMode() {
                 exit={{ x: -20, opacity: 0 }}
                 className="space-y-4"
               >
-                <h4 className="text-xl font-syne font-bold text-deep-blue">
+                <h4 className="text-xl font-syne font-bold text-sage-deep">
                   {currentStep.title}
                 </h4>
-                <p className="text-deep-blue/70 leading-relaxed italic">
+                <p className="text-sage-deep/70 leading-relaxed italic">
                   "{currentStep.content}"
                 </p>
               </motion.div>
@@ -96,7 +96,7 @@ export function DemoMode() {
                 {demoStep < steps.length - 1 ? (
                   <Button
                     onClick={nextStep}
-                    className="bg-deep-blue text-white group"
+                    className="bg-sage-deep text-white group"
                   >
                     Next Logic
                     <SkipForward className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -104,7 +104,7 @@ export function DemoMode() {
                 ) : (
                   <Button
                     onClick={toggleDemoMode}
-                    className="bg-light-green text-deep-blue font-bold px-8"
+                    className="bg-light-green text-sage-deep font-bold px-8"
                   >
                     Complete Demo
                   </Button>

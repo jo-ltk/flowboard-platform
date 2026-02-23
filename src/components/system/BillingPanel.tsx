@@ -38,7 +38,7 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
             key="success-banner"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
-            className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-4 text-emerald-800 mb-8"
+            className="bg-emerald-50 border border-emerald-200  p-4 flex items-center gap-4 text-emerald-800 mb-8"
           >
             <div className="bg-emerald-500 text-white p-2 rounded-full">
               <PartyPopper size={20} />
@@ -55,7 +55,7 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
             key="mock-banner"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-4 text-amber-800 mb-8"
+            className="bg-amber-50 border border-amber-200  p-4 flex items-start gap-4 text-amber-800 mb-8"
           >
             <div className="bg-amber-500 text-white p-2 rounded-full mt-0.5 shrink-0">
               <Info size={16} />
@@ -193,7 +193,7 @@ const UsageMeter = ({ icon: Icon, label, used, limit, color }: any) => {
   };
 
   return (
-    <div className="space-y-4 p-5 rounded-2xl bg-stone-50/50 border border-stone-100">
+    <div className="space-y-4 p-5  bg-stone-50/50 border border-stone-100">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className={cn("p-2 rounded-lg bg-white shadow-sm", color === 'blue' ? 'text-blue-600' : color === 'emerald' ? 'text-emerald-600' : 'text-amber-600')}>
@@ -284,7 +284,7 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
           onClick={handleUpgrade}
           disabled={loading || isCurrent}
           className={cn(
-            "w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all",
+            "w-full py-4  font-bold flex items-center justify-center gap-2 transition-all",
             isCurrent 
               ? "bg-stone-200 text-stone-500 cursor-default" 
               : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"

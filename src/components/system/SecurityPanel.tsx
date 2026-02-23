@@ -28,7 +28,7 @@ export default function SecurityPanel() {
       </div>
 
       {/* SSO Configuration */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm">
+      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-8 shadow-sm">
         <div className="flex items-start gap-4 mb-6">
           <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl text-indigo-600 dark:text-indigo-400">
             <Key className="w-6 h-6" />
@@ -97,7 +97,7 @@ export default function SecurityPanel() {
       </section>
 
       {/* Domain Restrictions & Access */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm">
+      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-8 shadow-sm">
         <div className="flex items-start gap-4 mb-6">
           <div className="p-3 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400">
             <Lock className="w-6 h-6" />
@@ -135,7 +135,7 @@ export default function SecurityPanel() {
       </section>
 
       {/* Compliance & Audit Logs */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm">
+      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-8 shadow-sm">
         <div className="flex items-start gap-4 mb-6">
           <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400">
             <FileText className="w-6 h-6" />
@@ -174,7 +174,7 @@ export default function SecurityPanel() {
       </section>
 
       {/* SCIM Stub */}
-      <section className="opacity-75 relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm">
+      <section className="opacity-75 relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  p-8 shadow-sm">
         <div className="absolute top-4 right-4 px-2 py-1 bg-slate-100 dark:bg-slate-800 text-xs font-semibold rounded text-slate-500">COMING SOON</div>
         <div className="flex items-start gap-4 opacity-50">
           <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600 dark:text-purple-400">

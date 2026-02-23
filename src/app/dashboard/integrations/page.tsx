@@ -57,7 +57,7 @@ export default function IntegrationsPage() {
         {AVAILABLE_INTEGRATIONS.map((app) => (
           <div
             key={app.id}
-            className="group flex flex-col p-6 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden"
+            className="group flex flex-col p-6 bg-white border border-slate-200  hover:border-slate-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden"
           >
             {/* Background gradient for connected state */}
             {connected.includes(app.id) && (

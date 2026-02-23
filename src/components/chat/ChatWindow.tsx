@@ -226,8 +226,8 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
         {isDragOver && (
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-soft-blue/10 backdrop-blur-sm pointer-events-none rounded-xl">
             <ImageIcon className="w-10 h-10 text-soft-blue mb-3" />
-            <p className="font-syne font-bold text-deep-blue text-sm">Drop image to analyze</p>
-            <p className="text-xs text-deep-blue/50 mt-1">FlowBoard AI will extract tasks automatically</p>
+            <p className="font-syne font-bold text-sage-deep text-sm">Drop image to analyze</p>
+            <p className="text-xs text-sage-deep/50 mt-1">FlowBoard AI will extract tasks automatically</p>
           </div>
         )}
 
@@ -237,17 +237,17 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
 
         {/* Mobile drag handle */}
         <div className="flex justify-center pt-3 pb-1 sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-deep-blue/15" />
+          <div className="w-10 h-1 rounded-full bg-sage-deep/15" />
         </div>
 
         {/* Header */}
         <div className="shrink-0 px-5 sm:px-6 py-4 sm:py-5 border-b border-border-soft flex items-center justify-between bg-white/40 backdrop-blur-sm">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <h3 className="font-syne font-bold text-deep-blue text-base sm:text-lg tracking-tight">FlowBoard AI</h3>
+              <h3 className="font-syne font-bold text-sage-deep text-base sm:text-lg tracking-tight">FlowBoard AI</h3>
               <div className="w-2 h-2 rounded-full bg-light-green" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-deep-blue/40">
+            <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-sage-deep/40">
               Your Intelligent Workspace Assistant
             </p>
           </div>
@@ -261,7 +261,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 sm:w-auto sm:h-auto sm:p-2 flex items-center justify-center hover:bg-soft-blue/10 rounded-full transition-colors text-deep-blue/60"
+              className="w-10 h-10 sm:w-auto sm:h-auto sm:p-2 flex items-center justify-center hover:bg-soft-blue/10 rounded-full transition-colors text-sage-deep/60"
               aria-label="Close chat"
             >
               <X className="w-5 h-5" />
@@ -276,12 +276,12 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
         >
           {messages.length === 0 ? (
             <div className="h-full flex flex-col justify-center items-center text-center space-y-5 sm:space-y-6">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-surface-tinted flex items-center justify-center border border-soft-blue/10">
+              <div className="w-14 h-14 sm:w-16 sm:h-16  bg-surface-tinted flex items-center justify-center border border-soft-blue/10">
                 <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-soft-blue" />
               </div>
               <div className="space-y-2">
-                <h4 className="font-syne font-bold text-deep-blue text-sm sm:text-base">Strategic Guidance Starts Here</h4>
-                <p className="text-sm text-deep-blue/60 max-w-[260px] sm:max-w-[240px]">
+                <h4 className="font-syne font-bold text-sage-deep text-sm sm:text-base">Strategic Guidance Starts Here</h4>
+                <p className="text-sm text-sage-deep/60 max-w-[260px] sm:max-w-[240px]">
                   Ask me anything, or drop a screenshot to auto-extract tasks.
                 </p>
               </div>
@@ -292,8 +292,8 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
                   <ImageIcon className="w-4 h-4 text-soft-blue" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-deep-blue">Vision Analysis</p>
-                  <p className="text-[11px] text-deep-blue/55 mt-0.5 leading-relaxed">
+                  <p className="text-xs font-bold text-sage-deep">Vision Analysis</p>
+                  <p className="text-[11px] text-sage-deep/55 mt-0.5 leading-relaxed">
                     Drop a screenshot, whiteboard, or mockup — AI will read it and create tasks automatically.
                   </p>
                 </div>
@@ -304,7 +304,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
                   <button
                     key={prompt}
                     onClick={() => handleSend(prompt)}
-                    className="text-left px-4 py-3.5 sm:py-3 text-sm text-deep-blue/80 bg-white/60 border border-border-soft rounded-xl hover:border-soft-blue/40 hover:bg-soft-blue/5 transition-all group min-h-[44px] active:scale-[0.98]"
+                    className="text-left px-4 py-3.5 sm:py-3 text-sm text-sage-deep/80 bg-white/60 border border-border-soft rounded-xl hover:border-soft-blue/40 hover:bg-soft-blue/5 transition-all group min-h-[44px] active:scale-[0.98]"
                   >
                     {prompt}
                   </button>
@@ -320,7 +320,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
                     <div className="flex justify-start pl-4 pb-2">
                       <button
                         onClick={() => router.push("/dashboard/tasks")}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-light-green text-deep-blue text-[10px] font-bold uppercase tracking-wider rounded-full shadow-soft hover:bg-light-green/90 transition-all border border-dark-green/10 min-h-[44px] cursor-pointer hover:scale-105"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-light-green text-sage-deep text-[10px] font-bold uppercase tracking-wider rounded-full shadow-soft hover:bg-light-green/90 transition-all border border-dark-green/10 min-h-[44px] cursor-pointer hover:scale-105"
                       >
                         <ExternalLink className="w-3 h-3" />
                         View Live Task List
@@ -345,7 +345,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
               ))}
               {isTyping && (
                 <div className="flex justify-start mb-4">
-                  <div className="bg-cream-warm border border-border-soft px-4 py-3 rounded-2xl rounded-tl-none">
+                  <div className="bg-cream-warm border border-border-soft px-4 py-3  rounded-tl-none">
                     <div className="flex gap-1.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-soft-blue opacity-50 animate-bounce" style={{ animationDelay: "0ms" }} />
                       <div className="w-1.5 h-1.5 rounded-full bg-soft-blue opacity-50 animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -371,14 +371,14 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
                 />
                 <button
                   onClick={() => removePendingImage(i)}
-                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-deep-blue text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-sage-deep text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label="Remove image"
                 >
                   <X className="w-3 h-3" />
                 </button>
               </div>
             ))}
-            <div className="text-[10px] font-mono text-deep-blue/40 self-center ml-1">
+            <div className="text-[10px] font-mono text-sage-deep/40 self-center ml-1">
               {pendingImages.length} image{pendingImages.length > 1 ? "s" : ""} ready · AI will analyze
             </div>
           </div>
@@ -405,7 +405,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
             {/* Attach image button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl border border-border-soft bg-surface-sunken hover:bg-soft-blue/10 hover:border-soft-blue/30 transition-colors text-deep-blue/50 hover:text-soft-blue"
+              className="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl border border-border-soft bg-surface-sunken hover:bg-soft-blue/10 hover:border-soft-blue/30 transition-colors text-sage-deep/50 hover:text-soft-blue"
               aria-label="Attach image"
               title="Attach image (or drag & drop / paste)"
             >
@@ -419,12 +419,12 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
               onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
               onPaste={handlePaste}
               placeholder={pendingImages.length > 0 ? "Add a note, or send to analyze…" : "Ask FlowBoard AI…"}
-              className="flex-1 bg-surface-sunken border border-border-soft rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-soft-blue/20 text-deep-blue min-h-[44px]"
+              className="flex-1 bg-surface-sunken border border-border-soft rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-soft-blue/20 text-sage-deep min-h-[44px]"
             />
             <button
               onClick={() => handleSend(input)}
               disabled={isTyping}
-              className="w-11 h-11 sm:w-auto sm:h-auto shrink-0 sm:p-3 bg-deep-blue text-cream rounded-xl hover:bg-deep-blue-dark transition-colors shadow-sm flex items-center justify-center disabled:opacity-50"
+              className="w-11 h-11 sm:w-auto sm:h-auto shrink-0 sm:p-3 bg-sage-deep text-cream rounded-xl hover:bg-sage-deep-dark transition-colors shadow-sm flex items-center justify-center disabled:opacity-50"
               aria-label="Send message"
             >
               <Send className="w-5 h-5" />
@@ -433,12 +433,12 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
           <div className="flex items-center justify-between px-1">
             <button
               onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-1.5 text-[10px] font-mono text-deep-blue/40 hover:text-deep-blue transition-colors uppercase tracking-widest min-h-[44px] cursor-pointer"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-sage-deep/40 hover:text-sage-deep transition-colors uppercase tracking-widest min-h-[44px] cursor-pointer"
             >
               <ExternalLink className="w-3 h-3" />
               Open Dashboard
             </button>
-            <span className="text-[9px] sm:text-[10px] font-mono text-deep-blue/20 hidden sm:block">
+            <span className="text-[9px] sm:text-[10px] font-mono text-sage-deep/20 hidden sm:block">
               DROP IMAGE · PASTE · CTRL+/
             </span>
           </div>

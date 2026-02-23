@@ -43,7 +43,7 @@ export const OnboardingStep2: React.FC<Step2Props> = ({ data, updateData, onNext
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => updateData({ workflowStyle: style.id })}
-            className={`flex items-start gap-6 p-6 rounded-2xl border text-left transition-all relative overflow-hidden group ${
+            className={`flex items-start gap-6 p-6  border text-left transition-all relative overflow-hidden group ${
               data.workflowStyle === style.id
                 ? 'border-soft-blue bg-soft-blue/5 shadow-medium'
                 : 'border-border-soft bg-surface-elevated hover:border-soft-blue/40'
@@ -51,13 +51,13 @@ export const OnboardingStep2: React.FC<Step2Props> = ({ data, updateData, onNext
           >
             <div className={`w-24 h-24 rounded-lg shrink-0 overflow-hidden relative border border-border-soft ${style.preview}`}>
                <div className="absolute inset-0 editorial-grid opacity-10" />
-               <div className="w-full h-full flex items-center justify-center font-serif text- deep-blue/20 text-4xl">
+               <div className="w-full h-full flex items-center justify-center font-serif text- sage-deep/20 text-4xl">
                  {style.id[0].toUpperCase()}
                </div>
             </div>
             
             <div className="flex-1 pt-1">
-              <h3 className="font-syne font-bold text-deep-blue text-xl mb-2 flex items-center justify-between">
+              <h3 className="font-syne font-bold text-sage-deep text-xl mb-2 flex items-center justify-between">
                 {style.name}
                 {data.workflowStyle === style.id && (
                   <motion.span 
@@ -71,7 +71,7 @@ export const OnboardingStep2: React.FC<Step2Props> = ({ data, updateData, onNext
                   </motion.span>
                 )}
               </h3>
-              <p className="font-mono text-[12px] text-deep-blue/50 leading-relaxed">
+              <p className="font-mono text-[12px] text-sage-deep/50 leading-relaxed">
                 {style.desc}
               </p>
             </div>

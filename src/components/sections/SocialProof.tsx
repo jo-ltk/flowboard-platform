@@ -1,84 +1,96 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 
-const BRAND_LOGOS = [
-  { name: "Lumina", id: "lumina" },
-  { name: "Vertex", id: "vertex" },
-  { name: "Aether", id: "aether" },
-  { name: "Nexus", id: "nexus" },
-  { name: "Vantage", id: "vantage" },
+const testimonials = [
+  {
+    quote:
+      "FlowBoard didn't just organize our projects — it changed the velocity of how we think and build together. Our delivery time dropped by 40% in the first month.",
+    name: "Alex Sterling",
+    role: "Founder & CEO",
+    company: "Aether Systems",
+    initials: "AS",
+    color: "#7C9A8B",
+  },
+  {
+    quote:
+      "The calm, structured flow of this tool is unlike anything we've used before. It feels like it was designed for humans, not just for task lists.",
+    name: "Maya Chen",
+    role: "Head of Product",
+    company: "Lumina Studio",
+    initials: "MC",
+    color: "#5F7D6E",
+  },
 ];
+
+const BRAND_LOGOS = ["Lumina", "Vertex", "Aether", "Nexus", "Vantage"];
 
 export default function SocialProof() {
   return (
-    <section id="about" className="relative py-16 sm:py-24 md:py-32 px-5 sm:px-6 md:px-12 lg:px-20 bg-cream overflow-hidden">
-      {/* Layered Pastel Shapes — smaller on mobile */}
-      <div className="absolute top-0 right-0 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-soft-blue/5 rounded-full blur-2xl sm:blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] bg-light-green/10 rounded-full blur-2xl sm:blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-center">
-          {/* Left Side: Massive Pull-quote */}
-          <div className="lg:col-span-8 relative z-10">
-            {/* Decorative soft blue block — hidden on mobile to avoid clutter */}
-            <div 
-              className="absolute -top-8 -left-4 sm:-top-12 sm:-left-12 w-32 sm:w-64 h-32 sm:h-64 bg-soft-blue/10 rounded-[var(--radius-xl)] -z-10 hidden sm:block"
-            />
-            
-            <div>
-              <h2 className="font-serif italic text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-[1.15] sm:leading-[1.1] text-deep-blue">
-                &ldquo;FlowBoard didn&apos;t just organize our tasks; it changed the very velocity of how we think and build.&rdquo;
-              </h2>
-              
-              <div className="mt-8 sm:mt-12 flex flex-col gap-1">
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-deep-blue font-bold">
-                  Alex Sterling
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-deep-blue/40">
-                  Founder & CEO, Aether Systems
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side: Founder Image Placeholder Panel */}
-          <div className="lg:col-span-4 relative group">
-            <div
-              className="relative aspect-[4/5] sm:aspect-4/5 w-full max-w-[320px] mx-auto lg:max-w-none bg-surface-sunken rounded-[var(--radius-lg)] overflow-hidden shadow-medium border border-border-soft"
-            >
-              {/* Image Placeholder with Soft Tint */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-soft-blue/20 to-transparent mix-blend-multiply opacity-60 pointer-events-none z-10" />
-              
-              <Image
-                src="/assets/founder-portrait.jpg"
-                alt="Alex Sterling — Founder & CEO, Aether Systems"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 320px, 25vw"
-                priority
-              />
-            </div>
-            
-            {/* Accent shape overlapping image — smaller on mobile */}
-            <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-16 sm:w-24 h-16 sm:h-24 bg-light-green rounded-[var(--radius-md)] -z-10 shadow-soft" />
-          </div>
+    <section
+      id="about"
+      className="relative w-full bg-white py-24 sm:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden font-[Poppins]"
+    >
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section header */}
+        <div className="flex flex-col mb-20 max-w-2xl">
+          <span className="text-sm font-bold text-[#8A9E96] uppercase tracking-[0.2em] mb-4">
+            Stories
+          </span>
+          <h2 className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium text-[#2F3A35] leading-[1.1] tracking-tight">
+            Teams that found <br />
+            <span className="text-[#8CBA41]">clarity & comfort.</span>
+          </h2>
         </div>
 
-        {/* Brand Logo Strip */}
-        <div className="mt-16 sm:mt-24 md:mt-32 pt-10 sm:pt-16 border-t border-deep-blue/5">
-          {/* Mobile: scrollable row | Desktop: flex-wrap */}
-          <div className="flex items-center gap-8 sm:gap-12 md:gap-16 overflow-x-auto sm:overflow-visible sm:flex-wrap sm:justify-between pb-4 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 opacity-50 grayscale sm:hover:grayscale-0 transition-all duration-500 scrollbar-hide">
-            {BRAND_LOGOS.map((logo) => (
-              <div
-                key={logo.id}
-                className="shrink-0 sm:shrink cursor-default"
-              >
-                <span className="font-syne text-lg sm:text-xl md:text-2xl font-bold text-deep-blue/60 tracking-tight whitespace-nowrap">
-                  {logo.name}
-                </span>
+        {/* Testimonial cards — Architectural layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#DDE5E1] border border-[#DDE5E1]">
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className="bg-white p-10 sm:p-14 lg:p-16 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-1 bg-[#8CBA41] mb-10" />
+                <blockquote className="text-xl sm:text-2xl text-[#2F3A35] leading-relaxed font-light mb-12 italic">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
               </div>
+
+              {/* Attribution */}
+              <div className="flex items-center gap-5 pt-8 border-t border-[#F4F7F5]">
+                <div
+                  className="w-12 h-12 rounded-none flex items-center justify-center text-white text-sm font-bold shrink-0"
+                  style={{ background: t.color }}
+                >
+                  {t.initials}
+                </div>
+                <div>
+                  <p className="font-bold text-[#2F3A35] text-[13px] uppercase tracking-widest leading-none">
+                    {t.name}
+                  </p>
+                  <p className="text-[#8A9E96] text-[11px] mt-1.5 font-medium uppercase tracking-wider">
+                    {t.role} · {t.company}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Brand logo strip */}
+        <div className="mt-24">
+          <p className="text-left text-[11px] font-bold uppercase tracking-[0.25em] text-[#8A9E96] mb-12">
+            Trusted Partners
+          </p>
+          <div className="flex items-center justify-between flex-wrap gap-x-12 gap-y-8">
+            {BRAND_LOGOS.map((logo) => (
+              <span
+                key={logo}
+                className="text-2xl sm:text-3xl font-bold text-[#2F3A35]/20 hover:text-[#2F3A35] transition-colors duration-500 cursor-default tracking-tighter uppercase"
+              >
+                {logo}
+              </span>
             ))}
           </div>
         </div>

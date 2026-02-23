@@ -17,7 +17,8 @@ import {
   X,
   Trash2,
   Play,
-  Activity
+  Activity,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -59,8 +60,7 @@ export function TaskManagement() {
 
   useEffect(() => {
     if (activeWorkspace?.id) {
-      console.log("[TaskManagement] Initial fetch for workspace:", activeWorkspace.id);
-      setTasks([]); // Clear state for new workspace
+      setTasks([]);
       fetchTasks();
       fetchProjects();
     }
@@ -68,7 +68,6 @@ export function TaskManagement() {
 
   useEffect(() => {
     const handleRefresh = () => {
-      console.log("[TaskManagement] Refreshing tasks due to external event...");
       fetchTasks();
     };
     window.addEventListener("refresh-tasks", handleRefresh);
@@ -78,10 +77,7 @@ export function TaskManagement() {
   const fetchProjects = async () => {
     try {
       const res = await fetch(`/api/projects?workspaceId=${activeWorkspace.id}`);
-      if (!res.ok) {
-        console.warn("Projects API returned", res.status);
-        return;
-      }
+      if (!res.ok) return;
       const data = await res.json();
       if (Array.isArray(data)) {
         setProjects(data);
@@ -94,22 +90,17 @@ export function TaskManagement() {
   const fetchTasks = async () => {
     try {
       setIsLoading(true);
-      console.log("[TaskManagement] Fetching tasks from real DB...");
       const res = await fetch(`/api/dashboard/tasks?workspaceId=${activeWorkspace.id}`);
       if (!res.ok) {
-        console.error("Tasks API returned", res.status);
-        toast.error("Failed to load tasks (server error)");
+        toast.error("Failed to load tasks");
         return;
       }
       const data = await res.json();
       if (Array.isArray(data)) {
         setTasks(data);
-      } else {
-        console.error("Failed to fetch tasks:", data);
       }
     } catch (error) {
-      console.error("Error fetching tasks:", error);
-      toast.error("Failed to connect to task database");
+      toast.error("Failed to connect to database");
     } finally {
       setIsLoading(false);
     }
@@ -126,7 +117,6 @@ export function TaskManagement() {
   }, [tasks, searchQuery, statusFilter, priorityFilter]);
 
   const toggleTaskStatus = async (id: string) => {
-    // Optimistic update
     let nextStatus: any = "";
     setTasks(prev => prev.map(task => {
       if (task.id === id) {
@@ -142,10 +132,10 @@ export function TaskManagement() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status: nextStatus })
       });
-      toast.success(`Task marked as ${nextStatus}`);
+      toast.success(nextStatus === "COMPLETED" ? "Focus Area Harmonized" : "Discovery Reopened");
     } catch (err) {
-      toast.error("Failed to update status");
-      fetchTasks(); // Revert
+      toast.error("Status update failed");
+      fetchTasks();
     }
   };
 
@@ -158,9 +148,9 @@ export function TaskManagement() {
         body: JSON.stringify({ id, status: "IN_PROGRESS" })
       });
       if (!res.ok) throw new Error();
-      toast.success("Task is now in progress");
+      toast.success("Begin your flow");
     } catch (err) {
-      toast.error("Failed to update status");
+      toast.error("Status update failed");
       fetchTasks();
     }
   };
@@ -175,8 +165,6 @@ export function TaskManagement() {
   }) => {
     try {
       const isEditing = !!editingTask;
-      toast.info(isEditing ? "Updating task..." : "Creating task...");
-      
       const res = await fetch("/api/dashboard/tasks", {
         method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -184,14 +172,14 @@ export function TaskManagement() {
       });
 
       if (res.ok) {
-        toast.success(isEditing ? "Task updated!" : "Task created in database!");
+        toast.success(isEditing ? "Updated" : "Created");
         setEditingTask(null);
-        fetchTasks(); // Refresh
+        fetchTasks();
       } else {
-        throw new Error("Failed to process task");
+        throw new Error();
       }
     } catch (error) {
-      toast.error("Could not save changes to database");
+      toast.error("Could not save focus area");
       throw error;
     }
   };
@@ -201,22 +189,14 @@ export function TaskManagement() {
 
     try {
       const id = taskToDelete.id;
-      // Optimistic update
       setTasks(prev => prev.filter(t => t.id !== id));
-      toast.info("Deleting task...");
+      const res = await fetch(`/api/dashboard/tasks?id=${id}`, { method: "DELETE" });
 
-      const res = await fetch(`/api/dashboard/tasks?id=${id}`, {
-        method: "DELETE"
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to delete task");
-      }
-      toast.success("Task deleted successfully");
+      if (!res.ok) throw new Error();
+      toast.success("Removed successfully");
     } catch (error) {
-      console.error("Error deleting task:", error);
-      toast.error("Failed to delete task");
-      fetchTasks(); // Revert
+      toast.error("Failed to remove");
+      fetchTasks();
     } finally {
       setIsDeleteModalOpen(false);
       setTaskToDelete(null);
@@ -242,194 +222,190 @@ export function TaskManagement() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-40 space-y-4">
-        <Loader2 className="w-10 h-10 text-soft-blue animate-spin" />
-        <p className="font-mono text-xs font-bold text-deep-blue/40 uppercase tracking-widest">Synchronizing Telemetry...</p>
+        <Loader2 className="w-8 h-8 text-[#7C9A8B] animate-spin" />
+        <p className="text-[10px] font-bold text-[#8A9E96] uppercase tracking-[0.2em]">Gathering Flow...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 h-full">
+    <div className="space-y-6 h-full pb-10">
       {/* Search & Filter Bar */}
-      <div className="flex flex-col xl:flex-row gap-6 items-stretch xl:items-center justify-between pb-8 border-b border-border-soft">
-        {/* Search Input - Full width on small/medium, fixed max-width on XL */}
+      <div className="flex flex-col xl:flex-row gap-5 items-stretch xl:items-center justify-between pb-6 border-b border-[#DDE5E1]">
+        {/* Search Input */}
         <div className="relative w-full xl:max-w-md group">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-deep-blue/20 group-focus-within:text-soft-blue transition-colors" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#AFC8B8] group-focus-within:text-[#7C9A8B] transition-colors" />
           <input 
             type="text"
-            placeholder="SEARCH ALL TASKS..."
+            placeholder="Search objectives..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-14 pr-4 h-14 rounded-2xl bg-surface-sunken/40 border-2 border-transparent focus:border-soft-blue/20 focus:bg-white transition-all outline-hidden text-sm font-bold shadow-[inset_0_2px_4px_rgba(54,76,132,0.03)] placeholder:text-deep-blue/20 placeholder:font-black placeholder:uppercase placeholder:tracking-[0.2em]"
+            className="w-full pl-11 pr-4 h-11 rounded-xl bg-white border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 transition-all outline-hidden text-sm font-medium placeholder:text-[#AFC8B8] placeholder:font-light"
           />
         </div>
         
         {/* Filters and CTA Group */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full xl:w-auto">
-          {/* Filters Grid - 2 columns on mobile/tablet */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-1 xl:flex xl:items-center">
-            {/* Status Filter Button */}
-            <div className="relative h-14 bg-white border-2 border-border-soft rounded-2xl px-4 sm:px-5 shadow-soft hover:shadow-medium hover:border-soft-blue/30 transition-all duration-300 flex items-center group cursor-pointer xl:min-w-[180px]">
-              <Filter className="shrink-0 w-4 h-4 text-deep-blue/20 mr-2 sm:mr-3 group-hover:text-soft-blue transition-colors" />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full xl:w-auto">
+          <div className="grid grid-cols-2 gap-3 flex-1 xl:flex xl:items-center">
+            {/* Status Filter */}
+            <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer xl:min-w-[170px]">
+              <Filter className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
               <select 
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="appearance-none bg-transparent text-[10px] sm:text-[11px] font-black text-deep-blue/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] outline-hidden cursor-pointer pr-6 sm:pr-8 w-full"
+                className="appearance-none bg-transparent text-[11px] font-bold text-[#5C6B64] uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
               >
-                <option value="ALL">ALL STATUS</option>
-                <option value="TODO">TO DO</option>
-                <option value="IN_PROGRESS">IN PROGRESS</option>
-                <option value="COMPLETED">COMPLETED</option>
+                <option value="ALL">Status</option>
+                <option value="TODO">Discovery</option>
+                <option value="IN_PROGRESS">Flowing</option>
+                <option value="COMPLETED">Harmonized</option>
               </select>
-              <ChevronDown className="absolute right-4 sm:right-5 w-4 h-4 text-deep-blue/10 group-hover:text-deep-blue/30 transition-colors pointer-events-none" />
+              <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-[#AFC8B8] pointer-events-none" />
             </div>
 
-            {/* Priority Filter Button */}
-            <div className="relative h-14 bg-white border-2 border-border-soft rounded-2xl px-4 sm:px-5 shadow-soft hover:shadow-medium hover:border-soft-blue/30 transition-all duration-300 flex items-center group cursor-pointer xl:min-w-[180px]">
-              <Tag className="shrink-0 w-4 h-4 text-deep-blue/20 mr-2 sm:mr-3 group-hover:text-soft-blue transition-colors" />
+            {/* Priority Filter */}
+            <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer xl:min-w-[170px]">
+              <Tag className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
               <select 
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="appearance-none bg-transparent text-[10px] sm:text-[11px] font-black text-deep-blue/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] outline-hidden cursor-pointer pr-6 sm:pr-8 w-full"
+                className="appearance-none bg-transparent text-[11px] font-bold text-[#5C6B64] uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
               >
-                <option value="ALL">ALL PRIORITY</option>
-                <option value="HIGH">HIGH</option>
-                <option value="MEDIUM">MEDIUM</option>
-                <option value="LOW">LOW</option>
+                <option value="ALL">Priority</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
               </select>
-              <ChevronDown className="absolute right-4 sm:right-5 w-4 h-4 text-deep-blue/10 group-hover:text-deep-blue/30 transition-colors pointer-events-none" />
+              <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-[#AFC8B8] pointer-events-none" />
             </div>
           </div>
 
-          {/* New Task Button - Full width on mobile, auto on desktop */}
           <button 
             onClick={addTask}
-            className="sm:w-auto h-14 px-8 rounded-2xl bg-deep-blue text-cream hover:bg-deep-blue-dark transition-all duration-500 shadow-glow-blue hover:shadow-elevated hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer group"
+            className="sm:w-auto h-11 px-6 rounded-xl bg-[#7C9A8B] text-white hover:bg-[#5F7D6E] transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <Plus className="w-5 h-5 text-light-green group-hover:rotate-90 transition-transform duration-500" />
-            <span className="text-[11px] font-black uppercase tracking-[0.2em]">New Task</span>
+            <Plus className="w-4 h-4" />
+            <span className="text-[11px] font-bold uppercase tracking-widest">New Focus</span>
           </button>
         </div>
       </div>
 
       {/* Task List */}
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         {filteredTasks.length > 0 ? (
           filteredTasks.map((task) => (
             <div 
               key={task.id}
               className={cn(
-                "group relative bg-white border border-border-soft rounded-2xl p-6 transition-all duration-300 hover:shadow-elevated hover:border-soft-blue/20 flex flex-col md:flex-row md:items-center gap-6",
-                task.status === "COMPLETED" && "opacity-60 grayscale-[0.5]"
+                "group relative bg-white border border-[#DDE5E1]  p-5 transition-all duration-300 hover:shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:border-[#AFC8B8] flex flex-col md:flex-row md:items-center gap-5",
+                task.status === "COMPLETED" && "opacity-50"
               )}
             >
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex md:flex-col items-center gap-2">
                 <button 
                   onClick={() => toggleTaskStatus(task.id)}
-                  className="shrink-0 cursor-pointer"
+                  className="shrink-0 cursor-pointer overflow-hidden transition-transform active:scale-95"
                 >
                   {task.status === "COMPLETED" ? (
-                    <CheckCircle2 className="w-6 h-6 text-light-green fill-light-green/10" />
+                    <CheckCircle2 className="w-6 h-6 text-[#7C9A8B]" />
                   ) : (
-                    <Circle className="w-6 h-6 text-deep-blue/10 group-hover:text-soft-blue transition-colors" />
+                    <Circle className="w-6 h-6 text-[#DDE5E1] group-hover:text-[#AFC8B8]" />
                   )}
                 </button>
                 {task.status === "TODO" && (
                   <button 
                     onClick={() => setInProgress(task.id)}
-                    className="shrink-0 w-6 h-6 rounded-full border border-blue-100 flex items-center justify-center text-blue-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer"
-                    title="Start Working"
+                    className="shrink-0 w-6 h-6 rounded-full border border-[#7C9A8B]/20 flex items-center justify-center text-[#7C9A8B] hover:bg-[#7C9A8B] hover:text-white transition-all cursor-pointer"
+                    title="Begin Flow"
                   >
                     <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                   </button>
                 )}
               </div>
 
-              <div className="flex-1 space-y-1">
+              <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-3">
                   <h3 className={cn(
-                    "font-syne text-lg font-bold text-deep-blue leading-none",
-                    task.status === "COMPLETED" && "line-through text-deep-blue/40"
+                    "text-base font-bold text-[#2F3A35] leading-tight",
+                    task.status === "COMPLETED" && "italic text-[#8A9E96]"
                   )}>
                     {task.title}
                   </h3>
                   <Badge className={cn(
-                    "text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full border-none shadow-sm",
-                    task.priority === "HIGH" ? "bg-red-100 text-red-600" :
-                    task.priority === "MEDIUM" ? "bg-amber-100 text-amber-600" :
-                    "bg-blue-100 text-blue-600"
+                    "text-[8px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border border-transparent",
+                    task.priority === "HIGH" ? "bg-red-50 text-red-600 border-red-100" :
+                    task.priority === "MEDIUM" ? "bg-orange-50 text-orange-600 border-orange-100" :
+                    "bg-[#F4F7F5] text-[#7C9A8B] border-[#DDE5E1]"
                   )}>
                     {task.priority}
                   </Badge>
                   {task.status === "IN_PROGRESS" && (
-                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 animate-pulse">
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#AFC8B8]/15 text-[#5F7D6E] border border-[#AFC8B8]/30 animate-pulse">
                       <Activity className="w-2.5 h-2.5" />
-                      <span className="text-[8px] font-black uppercase tracking-wider">Working</span>
+                      <span className="text-[8px] font-bold uppercase tracking-wider">Flowing</span>
                     </div>
                   )}
                 </div>
                 {task.description && (
-                  <p className="text-sm text-deep-blue/50 font-medium line-clamp-1 max-w-2xl">
+                  <p className="text-[13px] text-[#8A9E96] font-light leading-relaxed line-clamp-1 max-w-2xl">
                     {task.description}
                   </p>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-6">
+              <div className="flex flex-wrap items-center gap-5">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-soft-blue/10 flex items-center justify-center border border-soft-blue/5">
-                    <User className="w-3.5 h-3.5 text-soft-blue" />
+                  <div className="w-8 h-8 rounded-full bg-[#E9EFEC] flex items-center justify-center border border-white text-[10px] font-bold text-[#7C9A8B]">
+                    {task.assignee[0]}
                   </div>
-                  <span className="text-xs font-bold text-deep-blue/60">{task.assignee}</span>
+                  <span className="text-xs font-semibold text-[#5C6B64]">{task.assignee}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-cream flex items-center justify-center border border-border-soft">
-                    <Calendar className="w-3.5 h-3.5 text-deep-blue/30" />
-                  </div>
-                  <span className="text-xs font-bold text-deep-blue/60">{task.dueDate}</span>
+                   <Calendar className="w-3.5 h-3.5 text-[#AFC8B8]" />
+                   <span className="text-xs font-semibold text-[#8A9E96]">{task.dueDate}</span>
                 </div>
 
-                <Badge variant="outline" className="h-8 border-border-soft text-[10px] font-bold text-deep-blue/40 uppercase tracking-widest bg-surface-primary/20 backdrop-blur-sm">
+                <Badge variant="outline" className="h-7 border-[#DDE5E1] text-[9px] font-bold text-[#8A9E96] uppercase tracking-wider bg-[#F4F7F5]/30">
                   {task.project}
                 </Badge>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5">
                   <button 
                     onClick={() => editTask(task)}
-                    className="h-10 px-4 rounded-xl bg-surface-sunken/50 hover:bg-soft-blue/10 text-deep-blue/40 hover:text-soft-blue border border-transparent hover:border-soft-blue/20 transition-all duration-300 cursor-pointer flex items-center gap-2 group/edit"
+                    className="h-9 px-3.5 rounded-lg bg-white hover:bg-[#F4F7F5] text-[#8A9E96] hover:text-[#5C6B64] border border-[#DDE5E1] transition-all cursor-pointer flex items-center gap-2 group/edit"
                   >
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover/edit:translate-x-0.5 group-hover/edit:-translate-y-0.5 transition-transform" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Edit</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Edit</span>
                   </button>
                   
                   <button 
                     onClick={(e) => openDeleteModal(task, e)}
-                    className="h-10 w-10 rounded-xl bg-surface-sunken/50 hover:bg-red-50 text-deep-blue/40 hover:text-red-500 border border-transparent hover:border-red-200 transition-all duration-300 cursor-pointer flex items-center justify-center group/delete"
-                    title="Delete Task"
+                    className="h-9 w-9 rounded-lg bg-white hover:bg-red-50 text-[#8A9E96] hover:text-red-500 border border-[#DDE5E1] hover:border-red-100 transition-all cursor-pointer flex items-center justify-center group/delete"
+                    title="Remove"
                   >
-                    <Trash2 className="w-4 h-4 group-hover/delete:scale-110 transition-transform" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4 bg-surface-sunken/20 rounded-[40px] border border-dashed border-border-soft">
-            <div className="p-6 rounded-full bg-white shadow-soft">
-              <Search className="w-8 h-8 text-deep-blue/10" />
+          <div className="flex flex-col items-center justify-center py-24 text-center space-y-5 bg-[#F4F7F5]/50 rounded-3xl border border-dashed border-[#AFC8B8]">
+            <div className="p-6 rounded-full bg-white shadow-sm border border-[#DDE5E1]">
+              <Sparkles className="w-8 h-8 text-[#AFC8B8]" />
             </div>
-            <div className="space-y-1">
-              <h3 className="font-syne text-xl font-bold text-deep-blue">Pulse flatlining...</h3>
-              <p className="text-deep-blue/40 text-sm max-w-xs mx-auto">
-                Your filters are too restrictive. Try broadening your horizon.
+            <div className="space-y-1.5">
+              <h3 className="text-xl font-bold text-[#2F3A35]">Perfectly Clear</h3>
+              <p className="text-[#8A9E96] text-sm font-light max-w-xs mx-auto">
+                No focus areas found. Enjoy the clarity or refine your search.
               </p>
             </div>
             <button 
               onClick={() => {setSearchQuery(""); setStatusFilter("ALL"); setPriorityFilter("ALL");}}
-              className="text-xs font-bold text-soft-blue uppercase tracking-widest hover:underline cursor-pointer"
+              className="text-xs font-bold text-[#7C9A8B] uppercase tracking-widest hover:text-[#5F7D6E] transition-colors cursor-pointer"
             >
-              Reset filters
+              Reset Filters
             </button>
           </div>
         )}

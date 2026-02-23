@@ -60,7 +60,7 @@ export default function DeveloperPortal() {
           
           {activeTab === "api-keys" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="bg-white p-8  border border-slate-200 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h3 className="text-xl font-medium mb-1 flex items-center gap-2">
@@ -91,7 +91,7 @@ export default function DeveloperPortal() {
 
               <div className="space-y-4">
                 <h3 className="text-lg font-serif">Quick Start</h3>
-                <div className="bg-[#1E1E1E] p-6 rounded-2xl text-slate-300 font-mono text-xs overflow-x-auto shadow-xl">
+                <div className="bg-[#1E1E1E] p-6  text-slate-300 font-mono text-xs overflow-x-auto shadow-xl">
                   <div className="flex gap-2 mb-4 border-b border-white/10 pb-4">
                     <span className="text-emerald-400">cURL</span>
                     <span className="text-slate-500">Node.js</span>
@@ -111,7 +111,7 @@ export default function DeveloperPortal() {
 
           {activeTab === "usage" && (
             <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="p-6 bg-white border border-slate-200 rounded-2xl">
+              <div className="p-6 bg-white border border-slate-200 ">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
                     <BarChart3 className="w-6 h-6" />
@@ -150,7 +150,7 @@ export default function DeveloperPortal() {
 
         {/* Sidebar Info */}
         <div className="space-y-8">
-          <div className="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-100">
+          <div className="bg-emerald-50/50 p-6  border border-emerald-100">
             <h4 className="font-medium text-emerald-900 mb-2 flex items-center gap-2">
               <Shield className="w-4 h-4" />
               Security First

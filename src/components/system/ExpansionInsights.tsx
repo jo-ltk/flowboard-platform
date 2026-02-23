@@ -20,7 +20,7 @@ export function ExpansionInsights({ signals }: ExpansionInsightsProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-6 md:p-8"
+      className=" border border-indigo-100 bg-indigo-50/50 p-6 md:p-8"
     >
       <div className="flex items-center gap-3 mb-6">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-200">

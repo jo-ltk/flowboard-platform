@@ -1,45 +1,122 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+
+const METRICS = [
+  {
+    value: "2,400+",
+    label: "Teams using FlowBoard",
+    sub: "across 60+ countries",
+  },
+  {
+    value: "94.2%",
+    label: "Average team velocity",
+    sub: "measured by FlowScore™",
+  },
+  {
+    value: "3×",
+    label: "Faster project delivery",
+    sub: "vs. traditional tooling",
+  },
+];
 
 export default function Statement() {
+  const cards = [
+    {
+      title: "Intelligent Scheduling",
+      description: "FlowBoard removes friction with AI that adapts to your team's unique rhythm.",
+      image: "https://picsum.photos/id/180/1000/1250",
+    },
+    {
+      title: "Calm by Design",
+      description: "Traditional tools create noise. We built FlowBoard for focus and clarity.",
+      image: "https://picsum.photos/id/201/1000/1250",
+    },
+    {
+      title: "Team-Centric AI",
+      description: "AI that works with your team — not against it, driving order from chaos.",
+      image: "https://picsum.photos/id/20/1000/1250",
+    },
+  ];
+
   return (
-    <section id="services" className="relative min-h-[70vh] sm:min-h-[90vh] w-full flex flex-col items-center justify-center overflow-hidden bg-surface-tinted">
-      {/* Soft overlapping shapes */}
-      <div className="absolute top-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-b from-cream to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-t from-cream to-transparent pointer-events-none z-20" />
-
-      {/* Decorative circles — smaller on mobile */}
-      <div className="absolute top-[20%] right-[5%] sm:right-[15%] w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full bg-soft-blue/8 blur-2xl sm:blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[20%] left-[5%] sm:left-[10%] w-[200px] sm:w-[350px] h-[200px] sm:h-[350px] rounded-full bg-light-green/10 blur-2xl sm:blur-3xl pointer-events-none" />
-
-      {/* Pastel dots pattern — reduced opacity on mobile */}
-      <div className="absolute inset-0 pastel-dots opacity-20 sm:opacity-40 pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col items-center text-center px-5 sm:px-6 max-w-5xl">
-        {/* Micro-label */}
-        <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-soft-blue mb-6 sm:mb-8 bg-soft-blue/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
-          Why FlowBoard
-        </span>
-
-        {/* Headline */}
-        <div className="flex flex-col items-center">
-          <h2 className="font-syne text-clamp-statement font-extrabold uppercase leading-[0.88] tracking-tight text-deep-blue">
-            Work is broken.
-          </h2>
-          <h2 className="font-syne text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-deep-blue/30 mt-3 sm:mt-4">
-            We rewrite the system.
-          </h2>
+    <section
+      id="why-flowboard"
+      className="relative w-full bg-white py-24 sm:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden font-[Poppins]"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row items-baseline justify-between gap-8 mb-20">
+          <div className="max-w-3xl">
+            <h2 className="text-[clamp(2.2rem,5vw,4rem)] font-medium text-[#2F3A35] leading-[1.05] tracking-tight mb-8">
+              Work is chaotic. <br />
+              <span className="text-[#8CBA41]">FlowBoard brings order.</span>
+            </h2>
+            <p className="text-[#5C6B64] text-lg sm:text-xl leading-relaxed max-w-2xl font-light">
+              Traditional project tools create noise. FlowBoard removes friction with 
+              intelligent scheduling, calm design, and AI that works with your team.
+            </p>
+          </div>
+          <div className="lg:max-w-xs">
+            <p className="text-sm text-[#8A9E96] leading-relaxed uppercase tracking-wider font-semibold">
+              Designed for clarity
+            </p>
+            <div className="w-12 h-1 bg-[#8CBA41] mt-3" />
+          </div>
         </div>
 
-        {/* Divider & Supporting Text */}
-        <div className="mt-12 sm:mt-20 w-full max-w-2xl flex flex-col items-center">
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-deep-blue/15 to-transparent mb-6 sm:mb-8 origin-center" />
-          <p className="text-sm sm:text-base text-deep-blue/50 leading-relaxed max-w-lg tracking-wide px-2">
-            Traditional tooling creates friction. FlowBoard removes it. 
-            A thoughtful approach to productivity — designed for teams that value clarity. 
-            No noise. Just flow.
-          </p>
+        {/* 3-Column Image Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {cards.map((card, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="relative aspect-4/5 rounded-none overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 border border-[#DDE5E1]/30"
+            >
+              <img
+                src={card.image}
+                alt={card.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              {/* Gradient Overlay - slightly more neutral for a premium feel */}
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-100 transition-opacity duration-500" />
+              
+              {/* Content Overlay - Always Visible */}
+              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end items-start text-left">
+                <div className="w-full">
+                  <h3 className="text-2xl sm:text-3xl font-bold mb-3 tracking-tight text-white drop-shadow-lg">
+                    {card.title}
+                  </h3>
+                  <div className="w-12 h-0.5 bg-[#8CBA41] mb-4" />
+                  <p className="text-sm sm:text-base text-white/90 leading-relaxed font-light max-w-xs">
+                    {card.description}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom Metrics (Subtle Integration) */}
+        <div className="mt-24 pt-12 border-t border-[#DDE5E1] grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24">
+          {METRICS.map((m, i) => (
+            <div key={i} className="flex flex-col">
+              <span className="text-4xl lg:text-5xl font-bold text-[#2F3A35] mb-2 tracking-tighter">
+                {m.value}
+              </span>
+              <span className="text-sm font-bold text-[#2F3A35] uppercase tracking-wide">
+                {m.label}
+              </span>
+              <span className="text-xs text-[#8A9E96] mt-1 font-medium italic">
+                {m.sub}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

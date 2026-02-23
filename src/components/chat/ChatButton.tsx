@@ -14,7 +14,7 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
       onClick={onClick}
       className={`relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-300 hover:-translate-y-1 ${
         isOpen 
-          ? "bg-deep-blue text-cream shadow-md" 
+          ? "bg-sage-deep text-cream shadow-md" 
           : "bg-surface-elevated text-soft-blue border border-soft-blue/20 shadow-md"
       }`}
     >

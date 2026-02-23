@@ -21,7 +21,7 @@ export const OnboardingStep1: React.FC<Step1Props> = ({ data, updateData, onNext
     <div className="space-y-10">
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className="font-mono text-[10px] uppercase tracking-widest text-deep-blue/40 px-1">
+          <label className="font-mono text-[10px] uppercase tracking-widest text-sage-deep/40 px-1">
             Workspace Name
           </label>
           <input
@@ -29,12 +29,12 @@ export const OnboardingStep1: React.FC<Step1Props> = ({ data, updateData, onNext
             value={data.workspaceName}
             onChange={(e) => updateData({ workspaceName: e.target.value })}
             placeholder="e.g. Studio Editorial"
-            className="w-full bg-surface-elevated border border-border-soft px-5 py-4 rounded-xl font-syne text-deep-blue placeholder:text-deep-blue/20 focus:outline-none focus:border-soft-blue focus:ring-4 focus:ring-soft-blue/5 transition-all text-lg"
+            className="w-full bg-surface-elevated border border-border-soft px-5 py-4 rounded-xl font-syne text-sage-deep placeholder:text-sage-deep/20 focus:outline-none focus:border-soft-blue focus:ring-4 focus:ring-soft-blue/5 transition-all text-lg"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="font-mono text-[10px] uppercase tracking-widest text-deep-blue/40 px-1">
+          <label className="font-mono text-[10px] uppercase tracking-widest text-sage-deep/40 px-1">
             Industry
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -44,8 +44,8 @@ export const OnboardingStep1: React.FC<Step1Props> = ({ data, updateData, onNext
                 onClick={() => updateData({ industry: ind })}
                 className={`text-left px-4 py-3 rounded-xl border font-mono text-[11px] transition-all ${
                   data.industry === ind
-                    ? 'border-soft-blue bg-soft-blue/5 text-deep-blue shadow-glow-blue'
-                    : 'border-border-soft bg-surface-elevated text-deep-blue/60 hover:border-soft-blue/30'
+                    ? 'border-soft-blue bg-soft-blue/5 text-sage-deep shadow-glow-blue'
+                    : 'border-border-soft bg-surface-elevated text-sage-deep/60 hover:border-soft-blue/30'
                 }`}
               >
                 {ind}
@@ -55,7 +55,7 @@ export const OnboardingStep1: React.FC<Step1Props> = ({ data, updateData, onNext
         </div>
 
         <div className="space-y-2">
-          <label className="font-mono text-[10px] uppercase tracking-widest text-deep-blue/40 px-1">
+          <label className="font-mono text-[10px] uppercase tracking-widest text-sage-deep/40 px-1">
             Team Size
           </label>
           <div className="flex flex-wrap gap-2">
@@ -65,8 +65,8 @@ export const OnboardingStep1: React.FC<Step1Props> = ({ data, updateData, onNext
                 onClick={() => updateData({ teamSize: size })}
                 className={`px-4 py-2 rounded-full border font-mono text-[11px] transition-all ${
                   data.teamSize === size
-                    ? 'border-light-green bg-light-green/10 text-deep-blue shadow-glow-green'
-                    : 'border-border-soft bg-surface-elevated text-deep-blue/60 hover:border-light-green/30'
+                    ? 'border-light-green bg-light-green/10 text-sage-deep shadow-glow-green'
+                    : 'border-border-soft bg-surface-elevated text-sage-deep/60 hover:border-light-green/30'
                 }`}
               >
                 {size}

@@ -21,35 +21,49 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-soft bg-cream-warm py-12 sm:py-16 md:py-20">
-      <Container>
-        <div className="grid grid-cols-2 gap-8 sm:gap-12 py-8 sm:py-12 md:grid-cols-4 lg:gap-20">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center">
-                <img src="/assets/logo.svg" alt="FlowBoard Logo" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-lg font-syne font-bold text-deep-blue tracking-tight">
+    <footer className="relative w-full bg-white border-t border-[#DDE5E1] pt-24 pb-12 px-6 sm:px-12 lg:px-20 font-[Poppins]">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8 mb-24">
+          
+          {/* Brand & Mission */}
+          <div className="border-l-4 border-[#8CBA41] pl-8">
+            <Link href="/" className="inline-block mb-10">
+              <span className="text-2xl font-bold text-[#2F3A35] tracking-tighter uppercase">
                 {siteConfig.name}
               </span>
             </Link>
-            <p className="mt-4 sm:mt-6 max-w-xs text-sm leading-relaxed text-deep-blue/45">
-              The modern productivity platform for teams who value design, clarity, and speed.
+            <p className="text-[#5C6B64] text-sm font-light leading-relaxed max-w-xs mb-10">
+              A thoughtful platform built for teams who value clarity over complexity. We orchestrate flow so you can focus on building what matters.
             </p>
+            
+            {/* Social - Sharp Style */}
+            <div className="flex flex-col gap-3">
+              <span className="text-[10px] font-bold text-[#8A9E96] uppercase tracking-[0.3em] mb-2">Connect</span>
+              <div className="flex gap-6">
+                {["Twitter", "GitHub", "Dribbble"].map((s) => (
+                  <Link
+                    key={s}
+                    href="#"
+                    className="text-[11px] font-bold uppercase tracking-widest text-[#2F3A35] hover:text-[#8CBA41] transition-colors"
+                  >
+                    {s}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-deep-blue/40">
-              Product
+          {/* Product Links */}
+          <div className="lg:pl-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#8A9E96] mb-8">
+              Capabilities
             </h4>
-            <ul className="mt-5 sm:mt-8 flex flex-col gap-3 sm:gap-4">
+            <ul className="space-y-4">
               {footerLinks.product.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm font-medium text-deep-blue/60 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center"
+                    className="text-[13px] font-medium text-[#2F3A35] hover:text-[#8CBA41] transition-all"
                   >
                     {link.label}
                   </Link>
@@ -58,17 +72,17 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-deep-blue/40">
-              Company
+          {/* Company Links */}
+          <div className="lg:pl-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#8A9E96] mb-8">
+              Organization
             </h4>
-            <ul className="mt-5 sm:mt-8 flex flex-col gap-3 sm:gap-4">
+            <ul className="space-y-4">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm font-medium text-deep-blue/60 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center"
+                    className="text-[13px] font-medium text-[#2F3A35] hover:text-[#8CBA41] transition-all"
                   >
                     {link.label}
                   </Link>
@@ -77,44 +91,53 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-deep-blue/40">
-              Legal
+          {/* Newsletter / CTA */}
+          <div className="lg:pl-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#8A9E96] mb-8">
+              Newsletter
             </h4>
-            <ul className="mt-5 sm:mt-8 flex flex-col gap-3 sm:gap-4">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm font-medium text-deep-blue/60 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <p className="text-[12px] text-[#5C6B64] font-light mb-6">
+              Stay updated with our latest releases and notes on productivity.
+            </p>
+            <div className="flex flex-col gap-2">
+              <input 
+                type="email" 
+                placeholder="name@company.com"
+                className="w-full bg-[#f8faf9] border border-[#DDE5E1] px-4 py-3 text-xs rounded-none focus:outline-none focus:border-[#8CBA41]"
+              />
+              <button className="w-full bg-[#2F3A35] text-white px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] rounded-none hover:bg-black transition-all">
+                Join
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-8 sm:mt-12 flex flex-col items-center justify-between gap-4 sm:gap-6 border-t border-deep-blue/5 py-8 sm:py-10 sm:flex-row">
-          <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-deep-blue/30 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6 sm:gap-8 flex-wrap justify-center">
-            <Link href="#" className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-deep-blue/30 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center">
-              Twitter
-            </Link>
-            <Link href="#" className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-deep-blue/30 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center">
-              GitHub
-            </Link>
-            <Link href="#" className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-deep-blue/30 transition-colors hover:text-deep-blue min-h-[44px] sm:min-h-0 inline-flex items-center">
-              Dribbble
-            </Link>
+        {/* Bottom Bar - Architectural Divider */}
+        <div className="pt-12 border-t border-[#DDE5E1] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-12">
+            <p className="text-[10px] text-[#8A9E96] font-bold uppercase tracking-[0.2em]">
+              © {new Date().getFullYear()} {siteConfig.name} Platform
+            </p>
+            <div className="hidden md:flex gap-8">
+              {footerLinks.legal.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A9E96] hover:text-[#2F3A35]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-[1px] bg-[#DDE5E1]" />
+            <span className="text-[10px] text-[#8A9E96] font-bold uppercase tracking-[0.4em]">
+              Crafted in NYC · 2026
+            </span>
           </div>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }

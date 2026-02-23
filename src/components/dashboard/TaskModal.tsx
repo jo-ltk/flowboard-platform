@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Plus, Type, AlignLeft, Flag, CheckCircle2, Circle, Loader2, Target } from "lucide-react";
+import { X, Plus, Type, AlignLeft, Flag, CheckCircle2, Circle, Loader2, Target, ChevronDown, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 
@@ -36,7 +36,6 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
   const [projectId, setProjectId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Sync state with initialData when modal opens
   useEffect(() => {
     if (isOpen) {
       setTitle(initialData?.title || "");
@@ -48,7 +47,6 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
     }
   }, [isOpen, initialData, projects]);
 
-  // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -82,11 +80,11 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto">
       {/* Backdrop */}
       <div 
         className={cn(
-          "fixed inset-0 bg-deep-blue/20 backdrop-blur-md transition-opacity duration-500 ease-out",
+          "fixed inset-0 bg-[#2F3A35]/20 backdrop-blur-sm transition-opacity duration-500",
           isOpen ? "opacity-100" : "opacity-0"
         )}
         onClick={onClose}
@@ -94,73 +92,73 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
 
       {/* Modal Container */}
       <div className={cn(
-        "relative w-full max-w-lg bg-white rounded-[32px] shadow-elevated border border-border-soft overflow-hidden transition-all duration-500 ease-out transform",
+        "relative w-full max-w-lg bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-[#DDE5E1] overflow-hidden transition-all duration-500 transform",
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4"
       )}>
         {/* Header */}
         <div className="px-8 pt-8 pb-4 flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="font-syne text-2xl font-bold text-deep-blue">
-              {initialData ? "Refine Strategic Pulse" : "New Strategic Pulse"}
+            <h2 className="text-2xl font-bold text-[#2F3A35]">
+              {initialData ? "Refine Intent" : "New Focus Area"}
             </h2>
-            <p className="text-deep-blue/40 text-sm font-medium">
-              {initialData ? "Update the details of your objective." : "Define a new objective for your workspace."}
+            <p className="text-[#8A9E96] text-sm font-light">
+              {initialData ? "Adjust the details of this objective." : "Define a new area of focus for your workspace."}
             </p>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 rounded-2xl hover:bg-surface-sunken text-deep-blue/20 hover:text-deep-blue transition-colors cursor-pointer"
+            className="p-2 rounded-xl hover:bg-[#F4F7F5] text-[#AFC8B8] hover:text-[#7C9A8B] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-6">
+        <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-5">
           {/* Title Input */}
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-              <Type className="w-3 h-3" />
-              Task Title
+            <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+              <Type className="w-3 h-3 text-[#7C9A8B]" />
+              Objective Title
             </label>
             <input 
               autoFocus
               required
               type="text"
-              placeholder="e.g., Finalize Q1 Roadmap"
+              placeholder="e.g., Spring Launch Strategy"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-4 text-deep-blue font-medium outline-hidden transition-all text-lg placeholder:text-deep-blue/20 shadow-inner"
+              className="w-full bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-3.5 text-[#2F3A35] font-medium outline-hidden transition-all text-base placeholder:text-[#AFC8B8]"
             />
           </div>
 
           {/* Description Textarea */}
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-              <AlignLeft className="w-3 h-3" />
-              Description
+            <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+              <AlignLeft className="w-3 h-3 text-[#7C9A8B]" />
+              Context & Details
             </label>
             <textarea 
-              placeholder="What needs to be done? Add relevant context..."
+              placeholder="Add relevant notes or sub-tasks..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-4 text-deep-blue font-medium outline-hidden transition-all text-sm placeholder:text-deep-blue/20 shadow-inner resize-none"
+              className="w-full bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-3.5 text-[#2F3A35] font-medium outline-hidden transition-all text-sm placeholder:text-[#AFC8B8] resize-none"
             />
           </div>
 
           {/* Project Selection */}
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-              <Target className="w-3 h-3" />
-              Target Project
+            <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+              <Target className="w-3 h-3 text-[#7C9A8B]" />
+              Project Integration
             </label>
             <div className="relative">
               <select 
                 required
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-                className="w-full appearance-none bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-4 text-deep-blue font-medium outline-hidden transition-all text-sm cursor-pointer shadow-inner"
+                className="w-full appearance-none bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-3 text-[#2F3A35] font-medium outline-hidden transition-all text-sm cursor-pointer"
               >
                 <option value="" disabled>Select a project...</option>
                 {projects.map((project) => (
@@ -169,8 +167,8 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
                   </option>
                 ))}
               </select>
-              <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-deep-blue/20">
-                <Plus className="w-4 h-4 rotate-45" />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#AFC8B8]">
+                <ChevronDown className="w-4 h-4" />
               </div>
             </div>
           </div>
@@ -178,44 +176,44 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
           <div className="grid grid-cols-2 gap-4">
             {/* Status Selector */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-                <CheckCircle2 className="w-3 h-3" />
-                Initial Status
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+                <CheckCircle2 className="w-3 h-3 text-[#7C9A8B]" />
+                Current State
               </label>
               <div className="relative">
                 <select 
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full appearance-none bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-3 text-deep-blue text-xs font-bold uppercase tracking-widest outline-hidden transition-all cursor-pointer"
+                  className="w-full appearance-none bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-2.5 text-[#2F3A35] text-[11px] font-bold uppercase tracking-wider outline-hidden transition-all cursor-pointer"
                 >
-                  <option value="TODO">To Do</option>
-                  <option value="IN_PROGRESS">In Progress</option>
-                  <option value="COMPLETED">Completed</option>
+                  <option value="TODO">Discovery</option>
+                  <option value="IN_PROGRESS">Flowing</option>
+                  <option value="COMPLETED">Harmonized</option>
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-deep-blue/20">
-                  <Plus className="w-3 h-3 rotate-45" />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#AFC8B8]">
+                  <ChevronDown className="w-3.5 h-3.5" />
                 </div>
               </div>
             </div>
 
             {/* Priority Selector */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-                <Flag className="w-3 h-3" />
-                Priority Level
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+                <Flag className="w-3 h-3 text-[#7C9A8B]" />
+                Intensity
               </label>
               <div className="relative">
                 <select 
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
-                  className="w-full appearance-none bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-3 text-deep-blue text-xs font-bold uppercase tracking-widest outline-hidden transition-all cursor-pointer"
+                  className="w-full appearance-none bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-2.5 text-[#2F3A35] text-[11px] font-bold uppercase tracking-wider outline-hidden transition-all cursor-pointer"
                 >
-                  <option value="LOW">Low Pulse</option>
-                  <option value="MEDIUM">Medium Pulse</option>
-                  <option value="HIGH">High Pulse</option>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="HIGH">High</option>
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-deep-blue/20">
-                  <Plus className="w-3 h-3 rotate-45" />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#AFC8B8]">
+                  <ChevronDown className="w-3.5 h-3.5" />
                 </div>
               </div>
             </div>
@@ -223,15 +221,15 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
 
           {/* Due Date Input */}
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-deep-blue/40 ml-1 flex items-center gap-2">
-              <Plus className="w-3 h-3" />
-              Target Completion Date
+            <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
+              <Calendar className="w-3 h-3 text-[#7C9A8B]" />
+              Target Horizon
             </label>
             <input 
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full bg-surface-sunken/50 border border-transparent focus:border-soft-blue/30 focus:bg-white rounded-2xl px-5 py-3 text-deep-blue text-xs font-bold uppercase tracking-widest outline-hidden transition-all cursor-pointer shadow-inner"
+              className="w-full bg-[#F4F7F5] border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 rounded-xl px-5 py-2.5 text-[#2F3A35] text-[11px] font-bold uppercase tracking-wider outline-hidden transition-all cursor-pointer"
             />
           </div>
 
@@ -240,23 +238,23 @@ export function TaskModal({ isOpen, onClose, onConfirm, initialData, projects = 
             <button 
               type="button"
               onClick={onClose}
-              className="flex-1 bg-surface-sunken text-deep-blue/60 hover:text-deep-blue py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer"
+              className="flex-1 bg-[#F4F7F5] text-[#8A9E96] hover:text-[#5C6B64] py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all cursor-pointer"
             >
               Cancel
             </button>
             <button 
               disabled={isSubmitting || !title.trim()}
               type="submit"
-              className="flex-2 bg-deep-blue text-cream hover:bg-deep-blue-dark py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-lg shadow-deep-blue/10 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex-2 bg-[#7C9A8B] text-white hover:bg-[#5F7D6E] py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-sm flex items-center justify-center gap-2 group disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : initialData ? (
-                <>Update Pulse</>
+                <>Update Intent</>
               ) : (
                 <>
-                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                  Initiate Task
+                  <Plus className="w-4 h-4" />
+                  Initiate Flow
                 </>
               )}
             </button>

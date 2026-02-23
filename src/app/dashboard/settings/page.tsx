@@ -45,14 +45,14 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 pb-20 fade-in-up">
       {/* Editorial Header Block */}
-      <div className="relative overflow-hidden rounded-[40px] bg-linear-to-br from-deep-blue to-deep-blue/90 p-10 lg:p-14 text-cream shadow-2xl ring-1 ring-white/10">
+      <div className="relative overflow-hidden rounded-[40px] bg-linear-to-br from-sage-deep to-sage-deep/90 p-10 lg:p-14 text-cream shadow-2xl ring-1 ring-white/10">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-soft-blue/30 via-transparent to-transparent pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-light-green/20 blur-[120px] rounded-full" />
         
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-8 space-y-6">
             <div className="flex flex-wrap items-center gap-4">
-              <Badge className="bg-light-green/90 backdrop-blur-md text-deep-blue border-none px-3 py-1 font-mono text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-light-green/20">
+              <Badge className="bg-light-green/90 backdrop-blur-md text-sage-deep border-none px-3 py-1 font-mono text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-light-green/20">
                 Configuration
               </Badge>
               <div className="h-px w-8 bg-white/20" />
@@ -86,13 +86,13 @@ export default function SettingsPage() {
                       className={cn(
                         "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 group relative overflow-hidden cursor-pointer",
                         activeTab === tab.id 
-                          ? "bg-deep-blue text-cream shadow-md" 
-                          : "text-deep-blue/60 hover:bg-soft-blue/10 hover:text-deep-blue"
+                          ? "bg-sage-deep text-cream shadow-md" 
+                          : "text-sage-deep/60 hover:bg-soft-blue/10 hover:text-sage-deep"
                       )}
                     >
                       <tab.icon className={cn(
                         "w-4 h-4 transition-colors",
-                         activeTab === tab.id ? "text-light-green" : "text-deep-blue/40 group-hover:text-deep-blue"
+                         activeTab === tab.id ? "text-light-green" : "text-sage-deep/40 group-hover:text-sage-deep"
                       )} />
                       <span className="tracking-wide">{tab.label}</span>
                       {activeTab === tab.id && (
@@ -105,7 +105,7 @@ export default function SettingsPage() {
              
              {/* Admin / Footer Links could go here */}
              <div className="mt-6 px-4">
-                 <p className="text-[10px] font-mono text-deep-blue/30 uppercase tracking-widest text-center">
+                 <p className="text-[10px] font-mono text-sage-deep/30 uppercase tracking-widest text-center">
                     FlowBoard Systems v2.4.0
                  </p>
              </div>

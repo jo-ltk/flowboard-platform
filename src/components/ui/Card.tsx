@@ -39,7 +39,7 @@ interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
 export function CardTitle({ className, children, ...props }: CardTitleProps) {
   return (
     <h3
-      className={cn("text-xl font-syne font-bold text-deep-blue leading-none tracking-tight", className)}
+      className={cn("text-xl font-syne font-bold text-sage-deep leading-none tracking-tight", className)}
       {...props}
     >
       {children}
@@ -52,7 +52,7 @@ interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement
 export function CardDescription({ className, children, ...props }: CardDescriptionProps) {
   return (
     <p
-      className={cn("text-sm text-deep-blue/45 leading-relaxed", className)}
+      className={cn("text-sm text-sage-deep/45 leading-relaxed", className)}
       {...props}
     >
       {children}
