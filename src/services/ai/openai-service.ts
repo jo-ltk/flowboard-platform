@@ -25,11 +25,30 @@ const MODELS = {
    */
   SMART: "nvidia/nemotron-nano-12b-v2-vl:free",
   /**
-   * Best free text-only model: Llama 3.3 70B Instruct.
-   * Used for standard chat messages without images.
+   * Using the same great model for FAST as requested.
    */
-  FAST: "stepfun/step-3.5-flash:free",
+  FAST: "nvidia/nemotron-nano-12b-v2-vl:free",
 } as const;
+
+/** Helper to robustly extract and parse JSON from AI responses */
+function extractJson(content: string | null) {
+  if (!content) return null;
+  try {
+    return JSON.parse(content);
+  } catch (e) {
+    const match = content.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (match) {
+      return JSON.parse(match[1]);
+    }
+    // Try finding the first '{' and last '}'
+    const firstBrace = content.indexOf('{');
+    const lastBrace = content.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      return JSON.parse(content.substring(firstBrace, lastBrace + 1));
+    }
+    throw new Error(`Failed to parse AI response as JSON.`);
+  }
+}
 
 /** A chat message part — either plain text or a base64 image. */
 export interface MessageContentPart {
@@ -64,11 +83,10 @@ export const aiService = {
             content: `Analyze this project data: ${JSON.stringify(context)}`,
           },
         ],
-        response_format: { type: "json_object" },
       });
 
       const content = response.choices[0].message.content;
-      return content ? JSON.parse(content) : null;
+      return extractJson(content);
     } catch (error: any) {
       console.error("AI Insight Error:", error);
       throw new Error(`Failed to generate AI insight: ${error.message}`);
@@ -105,11 +123,10 @@ export const aiService = {
             content: `Generate a narrative report for this workspace context: ${JSON.stringify(context)}`,
           },
         ],
-        response_format: { type: "json_object" },
       });
 
       const content = response.choices[0].message.content;
-      return content ? JSON.parse(content) : null;
+      return extractJson(content);
     } catch (error: any) {
       console.error("Narrative Report Error:", error);
       throw new Error(`Failed to generate narrative report: ${error.message}`);
@@ -134,11 +151,10 @@ export const aiService = {
             content: `Task: ${taskTitle}\nContext: ${description}`,
           },
         ],
-        response_format: { type: "json_object" },
       });
 
       const content = response.choices[0].message.content;
-      return content ? JSON.parse(content) : { subtasks: [] };
+      return extractJson(content) || { subtasks: [] };
     } catch (error: any) {
       console.error("AI Task Breakdown Error:", error);
       return { subtasks: [] };
