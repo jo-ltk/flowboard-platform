@@ -26,61 +26,82 @@ export default function MarketingPage() {
 
       <FlowBoardChatbot />
 
-      {/* Final CTA Section - Architectural Redesign */}
+      {/* Final CTA Section - High-End Redesign */}
       <section
         id="contact"
-        className="relative h-screen w-full bg-[#2F3A35] overflow-hidden flex items-center font-[Poppins]"
+        className="relative min-h-[90vh] w-full bg-[#1A1F1D] overflow-hidden flex items-center font-[Poppins]"
         style={{ scrollMarginTop: "5rem" }}
       >
-        {/* Background Image - Cinematic Overlay */}
+        {/* Background Layer */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://picsum.photos/id/1015/1920/1080" 
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
             alt="Ready to Flow" 
-            className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
+            className="w-full h-full object-cover opacity-30 grayscale brightness-50"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-[#2F3A35] via-[#2F3A35]/80 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#1A1F1D] via-[#1A1F1D]/90 to-transparent" />
+          
+          {/* Subtle Technical Grid */}
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none" 
+               style={{ backgroundImage: 'radial-gradient(#8CBA41 0.5px, transparent 0.5px)', backgroundSize: '32px 32px' }} />
         </div>
 
-        <div className="relative z-10 w-full px-8 sm:px-14 lg:px-20">
-          <div className="max-w-4xl">
-            <span className="text-[12px] font-bold text-[#8CBA41] uppercase tracking-[0.4em] mb-8 block">
-              The Path to Clarity
-            </span>
+        <div className="relative z-10 w-full px-8 sm:px-14 lg:px-20 py-20">
+          <div className="max-w-5xl">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-px bg-[#8CBA41]" />
+              <span className="text-[11px] font-black text-[#8CBA41] uppercase tracking-[0.4em]">
+                DEPLOYMENT PROTOCOL
+              </span>
+            </div>
             
-            <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] font-bold text-white leading-[1] tracking-tighter mb-10">
-              Ready to <span className="text-[#8CBA41]">flow?</span> <br />
+            <h2 className="text-[clamp(2.5rem,8vw,6.5rem)] font-black text-white leading-[0.9] tracking-tighter mb-12">
+              Ready to <span className="text-[#8CBA41] italic">flow?</span> <br />
               Your clarity starts here.
             </h2>
             
-            <p className="text-[#AFC8B8] text-lg sm:text-xl font-light max-w-xl mb-12 leading-relaxed italic border-l-2 border-[#8CBA41] pl-8">
-              Join 2,400+ world-class teams who found their focus. <br className="hidden sm:block" />
-              Free to start, no credit card required.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <Link href="/dashboard" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-12 py-5 bg-[#8CBA41] text-white font-bold rounded-none text-[12px] tracking-[0.25em] uppercase hover:bg-white hover:text-[#2F3A35] transition-all duration-300 flex items-center justify-center gap-3">
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </Link>
+            <div className="flex flex-col lg:flex-row lg:items-center gap-16 mb-16">
+              <p className="text-[#AFC8B8] text-lg sm:text-xl font-light max-w-xl leading-relaxed">
+                Join 2,400+ world-class teams who found their focus. 
+                Experience a platform designed for the <span className="text-white font-medium uppercase tracking-widest text-sm">Architectural Pace</span> of modern work.
+              </p>
               
-              <Link
-                href="#features"
-                className="text-[11px] font-bold text-white/60 hover:text-[#8CBA41] transition-all uppercase tracking-[0.2em] border-b border-white/20 pb-1"
-              >
-                Explore Capabilities
-              </Link>
+              <div className="flex flex-col sm:flex-row items-center gap-8">
+                <Link href="/dashboard" className="w-full sm:w-auto">
+                  <button className="group relative w-full sm:w-auto px-16 py-6 bg-[#8CBA41] text-white font-black rounded-none text-[11px] tracking-[0.4em] uppercase hover:bg-white hover:text-[#1A1F1D] transition-all duration-500 overflow-hidden flex items-center justify-center gap-4">
+                    <span className="relative z-10">Get Started Free</span>
+                    <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-2 transition-transform duration-500" />
+                  </button>
+                </Link>
+                
+                <Link
+                  href="#features"
+                  className="group flex items-center gap-4 text-[10px] font-black text-white/50 hover:text-[#8CBA41] transition-all uppercase tracking-[0.3em]"
+                >
+                  <span className="border-b border-white/20 group-hover:border-[#8CBA41]/50 pb-1 transition-all">Explore Capabilities</span>
+                </Link>
+              </div>
             </div>
             
-            <div className="mt-24 pt-12 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 max-w-2xl">
-              <p className="text-[11px] font-medium text-[#8A9E96] uppercase tracking-[0.2em]">
-                FlowBoard Platform · 2026
-              </p>
-              <div className="flex items-center gap-8">
-                <span className="text-[11px] font-bold text-[#AFC8B8] uppercase tracking-[0.1em]">SOC2 Compliant</span>
-                <span className="text-[11px] font-bold text-[#AFC8B8] uppercase tracking-[0.1em]">SAML Ready</span>
+            <div className="pt-16 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-10">
+              <div className="flex flex-col gap-2">
+                <p className="text-[10px] font-black text-[#8A9E96] uppercase tracking-[0.4em]">
+                  FLOWBOARD PLATFORM 0.4
+                </p>
+                <p className="text-[9px] font-bold text-[#5C6B64] uppercase tracking-[0.1em]">
+                  © 2026 Architectural Productivity Systems Inc.
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-12">
+                <div className="flex flex-col gap-1 items-end">
+                  <span className="text-[9px] font-black text-[#AFC8B8] uppercase tracking-[0.2em]">SOC2 COMPLIANT</span>
+                  <div className="w-8 h-px bg-[#8CBA41]/30" />
+                </div>
+                <div className="flex flex-col gap-1 items-end">
+                  <span className="text-[9px] font-black text-[#AFC8B8] uppercase tracking-[0.2em]">SAML READY</span>
+                  <div className="w-8 h-px bg-[#8CBA41]/30" />
+                </div>
               </div>
             </div>
           </div>

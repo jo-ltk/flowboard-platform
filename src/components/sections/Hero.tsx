@@ -20,50 +20,52 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black font-[Poppins]">
       {/* ─── Background Image ─── */}
-      <div className="absolute inset-0 z-0 bg-[#2F3A35]">
+      <div className="absolute inset-0 z-0 bg-black">
         <img
-          src="https://picsum.photos/id/1018/1920/1080"
-          alt="Meditation — FlowBoard"
-          className="w-full h-full object-cover opacity-90"
+          src="/assets/hero/Gemini_2.png"
+          alt="Modern Architecture — FlowBoard"
+          className="w-full h-full object-cover"
           loading="eager"
         />
-        {/* Soft shadow/gradient for text readability */}
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/20" />
       </div>
-
       <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 sm:px-14 lg:px-20 pb-12 sm:pb-16 lg:pb-24">
         <div className="flex flex-col lg:flex-row items-end justify-between w-full">
           
           {/* LEFT — Headline & CTAs */}
           <div className="max-w-4xl mb-8 sm:mb-12 lg:mb-0">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-[clamp(2rem,8vw,5rem)] font-medium leading-[1.1] tracking-tight text-white mb-8 sm:mb-10"
-            >
-              Tune out the noise, <br className="hidden sm:block" />
-              Tune into yourself with <br className="hidden sm:block" />
-              only FlowBoard.
-            </motion.h1>
+           <motion.h1
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="text-[2rem] sm:text-[3rem] lg:text-[4rem] font-medium leading-[1.15] tracking-tight text-white mb-8 sm:mb-10"
+>
+  Master your workflow. <br className="hidden sm:block" />
+  Streamline with FlowBoard.
+</motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
-            >
-              <button className="w-full sm:w-auto px-8 py-3.5 border border-white/40 text-white rounded-full text-[12px] font-bold tracking-widest hover:bg-white/10 transition-all uppercase">
-                Products
-              </button>
-              <button className="w-full sm:w-auto group flex items-center justify-between sm:justify-center gap-4 px-8 py-3.5 bg-white text-[#2F3A35] rounded-full text-[12px] font-bold tracking-widest hover:bg-white/90 transition-all uppercase">
-                Get Started
-                <div className="w-7 h-7 bg-[#8CBA41] rounded-full flex items-center justify-center text-white transition-transform group-hover:rotate-45">
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </button>
-            </motion.div>
+           <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+  className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+>
+ <Link
+  href="#features"
+  className="w-full sm:w-auto px-8 py-[15px] bg-black/20 backdrop-blur-md border border-white/30 text-white text-[13px] font-semibold tracking-wide hover:bg-white hover:text-black transition-all uppercase text-center"
+>
+  Learn More
+</Link>
+
+  <Link
+    href="/login"
+    className="w-full sm:w-auto group flex items-center justify-between gap-6 pl-8 pr-[6px] py-[6px] bg-white text-black text-[13px] font-semibold tracking-wide hover:bg-gray-200 transition-all uppercase"
+  >
+    Initialize Flow
+    <div className="w-10 h-10 bg-[#8CBA41] flex items-center justify-center text-white transition-transform group-hover:bg-[#7ba335]">
+      <ArrowRight className="w-5 h-5 -rotate-45" />
+    </div>
+  </Link>
+</motion.div>
           </div>
 
         </div>

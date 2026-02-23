@@ -2,27 +2,28 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 const features = [
   {
-    title: "AI Scheduler",
+    title: "AI SCHEDULER",
     description: "Intelligently orchestrate timelines with predictive scheduling that adapts in real-time.",
-    image: "https://picsum.photos/id/1/1000/1250",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Report Engine",
+    title: "REPORT ENGINE",
     description: "Deep analytics, beautifully presented. Transform complex metrics into clear insights.",
-    image: "https://picsum.photos/id/20/1000/1250",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop",
   },
   {
-    title: "Client Portal",
+    title: "CLIENT PORTAL",
     description: "Secure, refined experience for stakeholders with zero friction tracking.",
-    image: "https://picsum.photos/id/160/1000/1250",
+    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=2069&auto=format&fit=crop",
   },
   {
-    title: "Enterprise Security",
+    title: "ENTERPRISE PRIVACY",
     description: "SOC2 compliant. SAML/SSO ready. Your data stays yours — always private.",
-    image: "https://picsum.photos/id/2/1000/1250",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
   },
 ];
 
@@ -30,54 +31,55 @@ export default function FeatureGrid() {
   return (
     <section
       id="features"
-      className="relative w-full bg-[#F4F7F5] py-24 sm:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden font-[Poppins]"
+      className="relative w-full bg-[#f8faf9] py-24 sm:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden font-[Poppins]"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="flex flex-col mb-16 max-w-2xl">
-          <span className="text-sm font-bold text-[#8A9E96] uppercase tracking-[0.2em] mb-4">
+        <div className="flex flex-col mb-20 max-w-2xl">
+          <span className="text-[11px] font-bold text-[#8CBA41] uppercase tracking-[0.4em] mb-4">
             Capabilities
           </span>
-          <h2 className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium text-[#2F3A35] leading-[1.1] tracking-tight">
-            Everything your team needs to <br />
-            <span className="text-[#8CBA41]">flow.</span>
+          <h2 className="text-[clamp(2.2rem,5vw,3.5rem)] font-black text-[#2F3A35] leading-none tracking-tighter">
+            Everything your team <br />
+            needs to <span className="text-[#8CBA41] italic">flow.</span>
           </h2>
-          <p className="mt-6 text-[#5C6B64] text-lg font-light leading-relaxed">
-            A thoughtful platform built for teams that value clarity over complexity.
-          </p>
         </div>
 
-        {/* Image Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Simplified Premium Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="relative aspect-4/5 rounded-none overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 border border-[#DDE5E1]/30"
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="group cursor-pointer"
             >
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-500" />
-              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-100 transition-opacity duration-500" />
-              
-              {/* Content Overlay - Always Visible */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <div className="w-full">
-                  <h3 className="text-lg font-bold mb-2 tracking-tight text-white drop-shadow-md">
-                    {feature.title}
-                  </h3>
-                  <div className="w-8 h-0.5 bg-[#8CBA41] mb-3" />
-                  <p className="text-[12px] text-white/90 leading-relaxed font-light">
-                    {feature.description}
-                  </p>
+              {/* Image Container */}
+              <div className="relative aspect-[4/3] overflow-hidden mb-8 border border-[#DDE5E1]">
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 border border-[#DDE5E1] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="w-4 h-4 text-[#2F3A35]" />
                 </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-bold text-[#8CBA41] uppercase tracking-widest">0{i + 1}</span>
+                  <div className="h-px grow bg-[#DDE5E1]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#2F3A35] tracking-tight group-hover:text-[#8CBA41] transition-colors uppercase">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-[#5C6B64] leading-relaxed font-light">
+                  {feature.description}
+                </p>
               </div>
             </motion.div>
           ))}

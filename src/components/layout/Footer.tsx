@@ -131,7 +131,7 @@ export function Footer() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-[1px] bg-[#DDE5E1]" />
+            <div className="w-10 h-px bg-[#DDE5E1]" />
             <span className="text-[10px] text-[#8A9E96] font-bold uppercase tracking-[0.4em]">
               Crafted in NYC · 2026
             </span>

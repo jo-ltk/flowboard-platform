@@ -61,29 +61,29 @@ export const WorkspaceSwitcher = () => {
 
 
   return (
-    <div className="relative w-full px-4 mb-8">
+    <div className="relative w-full mb-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center justify-between p-2 rounded-[32px] transition-all duration-500",
-          "bg-white border border-soft-blue/10 shadow-lg shadow-sage-deep/5 hover:shadow-xl",
-          isOpen ? "ring-2 ring-light-green/20" : ""
+          "w-full flex items-center justify-between p-3 rounded-none transition-all duration-500",
+          "bg-white border border-[#DDE5E1] hover:border-[#2F3A35]",
+          isOpen ? "bg-[#f8faf9]" : ""
         )}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-soft-blue/10 flex items-center justify-center text-sage-deep">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-none bg-[#2F3A35] flex items-center justify-center text-white">
             <LayoutGrid size={18} strokeWidth={2.5} />
           </div>
           <div className="text-left">
-            <p className="text-[9px] font-bold text-sage-deep/40 uppercase tracking-[0.2em] leading-tight">Workspace</p>
-            <p className="text-[15px] font-bold text-sage-deep tracking-tight">
+            <p className="text-[9px] font-bold text-[#8A9E96] uppercase tracking-[0.2em] leading-tight">Workspace</p>
+            <p className="text-[14px] font-black text-[#2F3A35] uppercase tracking-tight">
               {activeWorkspace.name}
             </p>
           </div>
         </div>
         <ChevronDown 
           size={18} 
-          className={cn("text-sage-deep/30 transition-transform duration-500 mr-2", isOpen && "rotate-180")} 
+          className={cn("text-[#2F3A35]/30 transition-transform duration-500 mr-2", isOpen && "rotate-180")} 
         />
       </button>
 
@@ -91,15 +91,14 @@ export const WorkspaceSwitcher = () => {
         {isOpen && (
           <>
             <div 
-              className="fixed inset-0 z-40 bg-transparent" 
+              className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[2px]" 
               onClick={() => setIsOpen(false)} 
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="absolute left-0 right-0 top-full mt-3 z-50 bg-white border border-soft-blue/10 rounded-[28px] shadow-2xl overflow-hidden p-2"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              className="absolute left-0 right-0 top-full mt-2 z-50 bg-white border border-[#DDE5E1] rounded-none shadow-2xl p-2"
             >
               <div className="space-y-1">
                 <p className="px-4 py-3 text-[10px] font-bold text-sage-deep/30 uppercase tracking-[0.2em]">
@@ -122,26 +121,26 @@ export const WorkspaceSwitcher = () => {
                         }
                       }}
                       className={cn(
-                        "w-full flex items-center justify-between p-3.5 rounded-[20px] transition-all duration-300 group cursor-pointer outline-none",
+                        "w-full flex items-center justify-between p-4 rounded-none transition-all duration-300 group cursor-pointer outline-none",
                         activeWorkspace.id === ws.id 
-                          ? "bg-soft-blue/5 text-sage-deep" 
-                          : "hover:bg-soft-blue/5 text-sage-deep/60 hover:text-sage-deep"
+                          ? "bg-[#2F3A35] text-white" 
+                          : "hover:bg-[#f8faf9] text-[#2F3A35] border border-transparent hover:border-[#DDE5E1]"
                       )}
                     >
                       <div className="flex items-center gap-4">
                         {activeWorkspace.id === ws.id ? (
-                          <div className="relative flex items-center justify-center">
-                            <div className="absolute w-5 h-5 rounded-full bg-light-green/30 animate-pulse" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-light-green ring-2 ring-white z-10" />
-                          </div>
+                          <div className="w-1 h-8 bg-[#8CBA41]" />
                         ) : (
-                          <div className="w-2.5 h-2.5 rounded-full bg-sage-deep/10 border border-sage-deep/5" />
+                          <div className="w-1 h-8 bg-transparent" />
                         )}
                         
                         <div className="text-left">
-                          <p className="text-sm font-bold tracking-tight leading-tight">{ws.name}</p>
-                          <p className="text-[10px] font-medium text-sage-deep/40 mt-0.5">
-                            {ws.memberCount} members • {ws.plan.type}
+                          <p className="text-[13px] font-bold uppercase tracking-wider leading-tight">{ws.name}</p>
+                          <p className={cn(
+                            "text-[9px] font-bold uppercase tracking-widest mt-1",
+                            activeWorkspace.id === ws.id ? "text-white/60" : "text-[#8A9E96]"
+                          )}>
+                            {ws.memberCount} MEMBERS • {ws.plan.type}
                           </p>
                         </div>
                       </div>
@@ -166,10 +165,10 @@ export const WorkspaceSwitcher = () => {
               <div className="mt-1 pt-1 border-t border-soft-blue/5">
                 <button 
                   onClick={() => setIsCreating(true)}
-                  className="w-full flex items-center gap-3 px-4 py-4 rounded-[20px] text-sage-deep/60 hover:text-sage-deep hover:bg-soft-blue/5 transition-all text-xs font-bold"
+                  className="w-full flex items-center justify-center gap-4 px-4 py-5 rounded-none text-[#2F3A35] hover:bg-[#2F3A35] hover:text-white transition-all text-[11px] font-bold uppercase tracking-[0.2em] border border-dashed border-[#DDE5E1] mt-2"
                 >
-                  <Plus size={18} strokeWidth={2.5} className="text-sage-deep/40" />
-                  <span>Create Workspace</span>
+                  <Plus size={16} strokeWidth={3} />
+                  <span>Deploy Hub</span>
                 </button>
               </div>
 

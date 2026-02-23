@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
+import { siteConfig } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -17,12 +18,24 @@ const NAV_LINKS = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
+    
+    // Check simulated auth state
+    const authStatus = typeof window !== 'undefined' && localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(authStatus);
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    window.location.reload();
+  };
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -33,71 +46,114 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-300",
+          "fixed top-0 z-50 w-full transition-all duration-500",
           scrolled
-            ? "bg-white/90 backdrop-blur-md border-b border-[#DDE5E1] shadow-[0_2px_16px_rgba(0,0,0,0.05)]"
-            : "bg-transparent border-b border-white/12"
+            ? "bg-white/95 backdrop-blur-sm border-b border-[#DDE5E1] py-4"
+            : "bg-transparent border-b border-white/10 py-6"
         )}
       >
         <Container>
-          <div className="flex h-16 sm:h-20 items-center justify-between">
+          <div className="flex items-center justify-between">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group shrink-0">
-              <div className="w-9 h-9 flex items-center justify-center bg-white rounded-[10px] shadow-sm">
-                <div className="w-5 h-5 flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-[#2F3A35]" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                </div>
+            <Link href="/" className="flex items-center gap-4 group shrink-0">
+              <div className={cn(
+                "w-10 h-10 flex items-center justify-center transition-all duration-500 rounded-none border",
+                scrolled ? "bg-[#2F3A35] border-[#2F3A35] text-white" : "bg-white border-white text-[#2F3A35]"
+              )}>
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
               </div>
               <span
                 className={cn(
-                  "text-[1.15rem] font-bold tracking-tight transition-colors hidden sm:block",
+                  "text-[14px] font-black tracking-[0.3em] uppercase transition-colors hidden sm:block",
                   scrolled ? "text-[#2F3A35]" : "text-white"
                 )}
               >
-                FlowBoard
+                {siteConfig.name}
               </span>
             </Link>
 
             {/* Center Nav (Desktop) */}
-            <nav className="hidden lg:flex items-center gap-10">
+            <nav className="hidden lg:flex items-center gap-12">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    "text-[13px] font-medium transition-opacity",
+                    "text-[10px] font-bold uppercase tracking-[0.25em] transition-all relative group",
                     scrolled
-                      ? "text-[#2F3A35] hover:opacity-100 opacity-80"
-                      : "text-white/80 hover:opacity-100"
+                      ? "text-[#2F3A35] hover:text-[#8CBA41]"
+                      : "text-white/70 hover:text-white"
                   )}
                 >
                   {link.label}
+                  <span className={cn(
+                    "absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full",
+                    scrolled ? "bg-[#8CBA41]" : "bg-white"
+                  )} />
                 </Link>
               ))}
             </nav>
 
             {/* CTA (Desktop) */}
-            <div className="hidden lg:flex items-center">
-              <Link href="/dashboard">
-                <button className="flex items-center gap-2 bg-white text-[#2F3A35] px-6 py-2.5 rounded-full text-[12px] font-bold tracking-wider hover:bg-white/90 active:scale-[0.98] transition-all duration-200">
-                  GET A DEMO
-                </button>
-              </Link>
+            <div className="hidden lg:flex items-center gap-8">
+              {!isLoggedIn ? (
+                <>
+                  <Link href="/login" className={cn(
+                    "text-[10px] font-bold uppercase tracking-[0.25em] transition-colors relative group",
+                    scrolled ? "text-[#8A9E96] hover:text-[#2F3A35]" : "text-white/60 hover:text-white"
+                  )}>
+                    Sign In
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                  <Link href="/dashboard">
+                    <button className={cn(
+                      "px-8 py-4 rounded-none text-[10px] font-black tracking-[0.25em] uppercase transition-all duration-500 border",
+                      scrolled
+                        ? "bg-[#2F3A35] text-white border-[#2F3A35] hover:bg-black"
+                        : "bg-white text-[#2F3A35] border-white hover:bg-transparent hover:text-white"
+                    )}>
+                      Get Started
+                    </button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <button 
+                    onClick={handleLogout}
+                    className={cn(
+                      "text-[10px] font-bold uppercase tracking-[0.25em] transition-colors relative group",
+                      scrolled ? "text-[#8A9E96] hover:text-[#2F3A35]" : "text-white/60 hover:text-white"
+                    )}
+                  >
+                    Sign Out
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all duration-300 group-hover:w-full" />
+                  </button>
+                  <Link href="/dashboard">
+                    <button className={cn(
+                      "px-8 py-4 rounded-none text-[10px] font-black tracking-[0.25em] uppercase transition-all duration-500 border",
+                      scrolled
+                        ? "bg-[#8CBA41] text-[#2F3A35] border-[#8CBA41] hover:bg-[#2F3A35] hover:text-white"
+                        : "bg-[#8CBA41] text-[#2F3A35] border-[#8CBA41] hover:bg-white hover:border-white"
+                    )}>
+                      Dashboard
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className={cn(
-                "lg:hidden w-11 h-11 flex items-center justify-center rounded-xl transition-colors",
+                "lg:hidden w-12 h-12 flex items-center justify-center rounded-none border transition-all",
                 scrolled
-                  ? "text-[#2F3A35] hover:bg-[#E9EFEC]"
-                  : "text-white hover:bg-white/10"
+                  ? "text-[#2F3A35] border-[#DDE5E1] hover:bg-[#f8faf9]"
+                  : "text-white border-white/20 hover:bg-white/10"
               )}
-              aria-label="Toggle menu"
             >
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -105,59 +161,82 @@ export function Navbar() {
         </Container>
       </header>
 
-      {/* Mobile backdrop */}
-      <div
-        className={cn(
-          "fixed inset-0 z-60 bg-[#2F3A35]/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-        onClick={() => setMobileOpen(false)}
-      />
-
       {/* Mobile drawer */}
       <div
         className={cn(
-          "fixed top-0 right-0 z-70 h-dvh w-[min(85vw,340px)] bg-white shadow-[0_0_60px_rgba(0,0,0,0.15)] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] lg:hidden",
+          "fixed top-0 right-0 z-70 h-dvh w-full sm:w-[400px] bg-white flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
           mobileOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between px-6 h-16 border-b border-[#DDE5E1] shrink-0">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#8A9E96]">
-            Menu
+        <div className="flex items-center justify-between px-8 h-24 border-b border-[#DDE5E1] bg-[#f8faf9]">
+          <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#8A9E96]">
+            Protocols
           </span>
           <button
             onClick={() => setMobileOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl text-[#2F3A35] hover:bg-[#E9EFEC] transition-colors"
+            className="w-12 h-12 flex items-center justify-center border border-[#DDE5E1] text-[#2F3A35] hover:bg-white transition-all"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-6">
-          {NAV_LINKS.map((link) => (
+        <nav className="flex-1 px-8 py-12 flex flex-col gap-8">
+          {NAV_LINKS.map((link, i) => (
             <Link
               key={link.label}
               href={link.href}
-              className="flex items-center h-12 px-4 text-[#5C6B64] font-medium hover:text-[#2F3A35] hover:bg-[#E9EFEC] rounded-xl transition-colors"
+              className="group flex items-center justify-between"
               onClick={() => setMobileOpen(false)}
             >
-              {link.label}
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-[#8A9E96] mb-1">0{i + 1}</span>
+                <span className="text-3xl font-bold uppercase tracking-tighter text-[#2F3A35] group-hover:text-[#8CBA41] transition-colors">
+                  {link.label}
+                </span>
+              </div>
+              <ArrowRight className="w-6 h-6 text-[#DDE5E1] group-hover:text-[#8CBA41] group-hover:translate-x-2 transition-all" />
             </Link>
           ))}
         </nav>
 
-        <div className="px-6 pb-8 pt-4 border-t border-[#DDE5E1] shrink-0 space-y-3">
-          <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
-            <button className="w-full flex items-center justify-center gap-2 bg-[#7C9A8B] text-white py-3.5 rounded-full font-semibold text-sm hover:bg-[#5F7D6E] transition-colors">
-              Open Dashboard
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </Link>
-          <p className="text-center text-[10px] text-[#8A9E96] uppercase tracking-[0.15em]">
-            FlowBoard © 2026
-          </p>
+        <div className="p-8 border-t border-[#DDE5E1] bg-[#f8faf9] flex flex-col gap-4">
+          {!isLoggedIn ? (
+            <>
+              <Link href="/login" onClick={() => setMobileOpen(false)}>
+                <button className="w-full bg-white border border-[#DDE5E1] text-[#2F3A35] py-5 rounded-none font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-[#2F3A35] hover:text-white transition-all">
+                  Sign In to Account
+                </button>
+              </Link>
+              <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                <button className="w-full bg-[#2F3A35] text-white py-5 rounded-none font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-black transition-all flex items-center justify-center gap-3">
+                  Initialize Dashboard
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <button 
+                onClick={handleLogout}
+                className="w-full bg-white border border-[#DDE5E1] text-[#2F3A35] py-5 rounded-none font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all border-dashed"
+              >
+                Sign Out from Session
+              </button>
+              <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                <button className="w-full bg-[#8CBA41] text-[#2F3A35] py-5 rounded-none font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-[#2F3A35] hover:text-white transition-all flex items-center justify-center gap-3">
+                  Pulse Dashboard
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+            </>
+          )}
+          <div className="flex justify-between items-center pt-2">
+            <span className="text-[10px] font-bold text-[#8A9E96] uppercase tracking-[0.2em]">SECURE ACCESS 2026</span>
+            <div className="h-px w-12 bg-[#8CBA41]" />
+          </div>
         </div>
       </div>
+
     </>
   );
 }

@@ -38,23 +38,23 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "hidden h-screen flex-col bg-white border-r border-[#DDE5E1] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] md:flex relative z-50 shadow-[2px_0_16px_rgba(0,0,0,0.03)]",
-        collapsed ? "w-[80px]" : "w-[240px]"
+        "hidden h-screen flex-col bg-white border-r border-[#DDE5E1] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] md:flex relative z-50",
+        collapsed ? "w-[80px]" : "w-[260px]"
       )}
     >
       {/* Logo area */}
       <Link
         href="/"
         className={cn(
-          "flex h-18 items-center px-5 shrink-0 group hover:opacity-80 transition-opacity border-b border-[#DDE5E1]",
-          collapsed ? "justify-center py-5" : "gap-3 py-5"
+          "flex h-16 items-center px-6 shrink-0 group transition-all border-b border-[#DDE5E1]",
+          collapsed ? "justify-center" : "gap-4"
         )}
       >
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#7C9A8B]/10 border border-[#7C9A8B]/20">
-          <img src="/assets/logo.svg" alt="FlowBoard" className="w-5 h-5 object-contain" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-[#2F3A35] text-white">
+          <img src="/assets/logo.svg" alt="FlowBoard" className="w-5 h-5 object-contain invert" />
         </div>
         {!collapsed && (
-          <span className="text-[15px] font-semibold text-[#2F3A35] tracking-tight">
+          <span className="text-[14px] font-black text-[#2F3A35] uppercase tracking-[0.3em]">
             {siteConfig.name}
           </span>
         )}
@@ -62,16 +62,16 @@ export function Sidebar() {
 
       {/* Workspace Switcher */}
       {!collapsed && (
-        <div className="px-3 py-3 border-b border-[#DDE5E1]">
+        <div className="px-6 py-8 border-b border-[#DDE5E1] bg-[#f8faf9]">
           <WorkspaceSwitcher />
         </div>
       )}
 
       {/* Navigation */}
-      <nav className="flex flex-1 flex-col gap-1 p-3 overflow-y-auto scrollbar-hide">
+      <nav className="flex flex-1 flex-col p-4 overflow-y-auto scrollbar-hide">
         {!collapsed && (
-          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8A9E96] px-3 mb-2 mt-1">
-            Navigation
+          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8A9E96] px-4 mb-4 mt-2">
+            Protocols
           </p>
         )}
         {navItems.map((item) => {
@@ -85,79 +85,79 @@ export function Sidebar() {
               href={item.href}
               title={collapsed ? item.label : undefined}
               className={cn(
-                "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                collapsed && "justify-center px-2",
+                "group flex items-center gap-4 rounded-none px-4 py-3.5 text-sm transition-all duration-300",
+                collapsed && "justify-center px-0",
                 isActive
-                  ? "bg-[#7C9A8B]/12 text-[#5F7D6E] border border-[#7C9A8B]/20"
-                  : "text-[#8A9E96] hover:bg-[#F4F7F5] hover:text-[#5C6B64]"
+                  ? "bg-[#2F3A35] text-white"
+                  : "text-[#8A9E96] hover:bg-[#F4F7F5] hover:text-[#2F3A35]"
               )}
             >
               <item.icon
                 className={cn(
-                  "h-4.5 w-4.5 shrink-0 transition-all duration-200",
-                  isActive ? "text-[#7C9A8B]" : "group-hover:text-[#7C9A8B]"
+                  "h-4.5 w-4.5 shrink-0 transition-all",
+                  isActive ? "text-[#8CBA41]" : "group-hover:text-[#2F3A35]"
                 )}
               />
               {!collapsed && (
-                <span className="text-[13px]">{item.label}</span>
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em]">{item.label}</span>
               )}
               {isActive && !collapsed && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#7C9A8B]" />
+                <div className="ml-auto w-1 h-4 bg-[#8CBA41]" />
               )}
             </Link>
           );
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="p-3 border-t border-[#DDE5E1] shrink-0">
+      {/* Footer / Performance */}
+      <div className="p-4 border-t border-[#DDE5E1] bg-[#f8faf9] shrink-0">
         {!collapsed && (
-          <div className="mb-3 p-4 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1]">
-            <div className="flex items-center justify-between mb-2.5">
-              <div className="flex items-center gap-1.5">
-                <Leaf className="w-3 h-3 text-[#7C9A8B]" />
-                <p className="text-[10px] font-semibold text-[#8A9E96] uppercase tracking-[0.1em]">
-                  Flow Score
+          <div className="mb-4 p-5 rounded-none bg-white border border-[#DDE5E1]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Leaf className="w-3.5 h-3.5 text-[#8CBA41]" />
+                <p className="text-[10px] font-bold text-[#2F3A35] uppercase tracking-[0.2em]">
+                  Performance
                 </p>
               </div>
-              <RoleBadge role={activeWs.role} className="scale-75 origin-right" />
             </div>
-            <div className="h-1.5 w-full bg-[#DDE5E1] rounded-full overflow-hidden">
-              <div className="h-full bg-[#7C9A8B] rounded-full w-3/4 transition-all duration-700" />
+            <div className="h-1 w-full bg-[#DDE5E1] rounded-none overflow-hidden">
+              <div className="h-full bg-[#8CBA41] w-3/4" />
             </div>
-            <p className="text-[10px] text-[#8A9E96] mt-1.5 font-medium">75% — Great progress</p>
+            <p className="text-[9px] text-[#8A9E96] mt-2 font-bold uppercase tracking-widest">Efficiency: 75%</p>
           </div>
         )}
 
-        {/* Landing link */}
-        <Link
-          href="/"
-          className={cn(
-            "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[12px] font-medium text-[#8A9E96] transition-all duration-200 hover:bg-[#F4F7F5] hover:text-[#5C6B64] group mb-1",
-            collapsed && "justify-center px-2"
-          )}
-        >
-          <Home className="h-4 w-4 shrink-0" />
-          {!collapsed && <span>Visit Site</span>}
-        </Link>
+        {/* Action Links */}
+        <div className="space-y-1">
+          <Link
+            href="/"
+            className={cn(
+              "flex w-full items-center gap-4 rounded-none px-4 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A9E96] transition-all hover:bg-white hover:text-[#2F3A35] border border-transparent hover:border-[#DDE5E1]",
+              collapsed && "justify-center"
+            )}
+          >
+            <Home className="h-4 w-4 shrink-0" />
+            {!collapsed && <span>Portal Home</span>}
+          </Link>
 
-        {/* Collapse Toggle */}
-        <button
-          onClick={toggle}
-          className={cn(
-            "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[12px] font-medium text-[#8A9E96] transition-all duration-200 hover:bg-[#F4F7F5] hover:text-[#5C6B64] group",
-            collapsed && "justify-center px-2"
-          )}
-        >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <>
-              <ChevronLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
-              <span>Collapse</span>
-            </>
-          )}
-        </button>
+          <button
+            onClick={toggle}
+            className={cn(
+              "flex w-full items-center gap-4 rounded-none px-4 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A9E96] transition-all hover:bg-white hover:text-[#2F3A35] border border-transparent hover:border-[#DDE5E1]",
+              collapsed && "justify-center"
+            )}
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <>
+                <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                <span>Secure Collapse</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </aside>
   );
