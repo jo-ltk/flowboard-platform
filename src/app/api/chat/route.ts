@@ -117,9 +117,21 @@ export async function POST(req: NextRequest) {
               if (project) {
                 console.log(`[AI Assistant] target_project_id: ${project.id} (${project.name})`);
                 
-                // Validate date
-                const dateVal = args.dueDate ? new Date(args.dueDate) : null;
-                const finalDueDate = dateVal && !isNaN(dateVal.getTime()) ? dateVal : null;
+                // Validate date - default to today if not specified
+                let finalDueDate = null;
+                if (args.dueDate) {
+                  const dateVal = new Date(args.dueDate);
+                  if (!isNaN(dateVal.getTime())) {
+                    finalDueDate = dateVal;
+                  }
+                }
+                // If no date provided, default to today
+                if (!finalDueDate) {
+                  const today = new Date();
+                  today.setHours(23, 59, 59, 999); // End of today
+                  finalDueDate = today;
+                  console.log("[AI Assistant] No date specified, defaulting to today:", finalDueDate);
+                }
 
                 // Handle assignment
                 let assigneeId = undefined;
@@ -157,8 +169,9 @@ export async function POST(req: NextRequest) {
                 });
                 console.log("[AI Assistant] SUCCESS: Task persisted with ID:", newTask.id);
                 
-                // Final confirmation injected into the chat stream
-                controller.enqueue(new TextEncoder().encode(`\n\n**System Update:** Task successfully synchronized to project "${project.name}" in your active workspace.`));
+                // Final confirmation injected into the chat stream with navigation link
+                const taskUrl = `/dashboard/tasks?project=${project.id}`;
+                controller.enqueue(new TextEncoder().encode(`\n\n**System Update:** Task successfully synchronized to project "${project.name}" in your active workspace.\n\n[Click here to view your tasks](${taskUrl})`));
               } else {
                 console.error("[AI Assistant] FATAL: No project found in system.");
                 controller.enqueue(new TextEncoder().encode("\n\n**System Error:** Communication breakdown. No workspace projects found to house this task."));
