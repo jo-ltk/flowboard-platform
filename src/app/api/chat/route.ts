@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         let fullToolCallArguments = "";
         let toolCallName = "";
         let hasSentContent = false;
+        let allContent = ""; // Store all content for analysis
 
         try {
           // @ts-ignore - OpenAI stream iteration
@@ -33,10 +34,11 @@ export async function POST(req: NextRequest) {
 
             const delta = choice.delta;
             
-            // Handle content
+            // Handle content - also store it
             const chunkText = (delta as any)?.content || "";
             if (chunkText) {
               hasSentContent = true;
+              allContent += chunkText;
               controller.enqueue(new TextEncoder().encode(chunkText));
             }
 
@@ -51,16 +53,22 @@ export async function POST(req: NextRequest) {
               const toolCall = toolCalls[0];
               if (toolCall.function?.name) {
                 toolCallName = toolCall.function.name;
+                console.log("[AI] Tool call detected:", toolCallName);
               }
               if (toolCall.function?.arguments) {
                 fullToolCallArguments += toolCall.function.arguments;
+                console.log("[AI] Tool args so far:", fullToolCallArguments.substring(0, 50));
               }
             }
           }
 
           // Debug: Log what we received
-          console.log("[AI Assistant] Stream complete. Tool call name:", toolCallName, "Arguments:", fullToolCallArguments ? fullToolCallArguments.substring(0, 100) + "..." : "(empty)", "Has content:", hasSentContent);
-
+          console.log("[AI Assistant] Stream complete.");
+          console.log("- Tool call name:", toolCallName);
+          console.log("- Arguments:", fullToolCallArguments ? fullToolCallArguments.substring(0, 100) + "..." : "(empty)");
+          console.log("- Has content:", hasSentContent);
+          console.log("- Full content length:", allContent.length);
+          
           // If a tool call was made, execute it after the stream chunks are processed
           if (toolCallName === "create_task" && fullToolCallArguments) {
             // If the AI didn't say anything, send a status update
@@ -69,22 +77,47 @@ export async function POST(req: NextRequest) {
             }
 
             try {
-              // Try to parse the JSON, with fallback handling for incomplete chunks
+              // Try to parse the JSON, with aggressive fallback handling for malformed JSON
               let args;
+              let jsonStr = fullToolCallArguments.trim();
+              
+              // First, try direct parse
               try {
-                args = JSON.parse(fullToolCallArguments);
+                args = JSON.parse(jsonStr);
               } catch (parseErr) {
-                // Try to find and extract JSON from the string if direct parsing fails
-                console.warn("[AI Assistant] Direct parse failed, attempting extraction:", fullToolCallArguments.substring(0, 200));
-                const jsonMatch = fullToolCallArguments.match(/\{[\s\S]*\}/);
-                if (jsonMatch) {
-                  args = JSON.parse(jsonMatch[0]);
+                // Find the FIRST complete JSON object by counting braces
+                let braceCount = 0;
+                let jsonEnd = -1;
+                
+                for (let i = 0; i < jsonStr.length; i++) {
+                  if (jsonStr[i] === '{') braceCount++;
+                  if (jsonStr[i] === '}') {
+                    braceCount--;
+                    if (braceCount === 0) {
+                      jsonEnd = i + 1;
+                      break;
+                    }
+                  }
+                }
+                
+                if (jsonEnd > 0) {
+                  // Extract just the complete JSON part
+                  jsonStr = jsonStr.substring(0, jsonEnd);
+                  console.warn("[AI Assistant] Extracted complete JSON:", jsonStr.substring(0, 100));
+                  
+                  try {
+                    args = JSON.parse(jsonStr);
+                  } catch (innerErr) {
+                    // Last resort: regex match
+                    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                      args = JSON.parse(jsonMatch[0]);
+                    } else {
+                      throw new Error("Cannot parse JSON");
+                    }
+                  }
                 } else {
-                  // Even if we can't parse, try to create a basic task with what we have
-                  console.error("[AI Assistant] Failed to parse JSON, raw args:", fullToolCallArguments);
-                  controller.enqueue(new TextEncoder().encode("\n\n**System Notice:** AI response received but couldn't parse task data. Please try again or create the task manually."));
-                  controller.close();
-                  return;
+                  throw new Error("No valid JSON found in response");
                 }
               }
               
@@ -176,9 +209,11 @@ export async function POST(req: NextRequest) {
                 console.error("[AI Assistant] FATAL: No project found in system.");
                 controller.enqueue(new TextEncoder().encode("\n\n**System Error:** Communication breakdown. No workspace projects found to house this task."));
               }
-            } catch (err) {
+            } catch (err: any) {
               console.error("[AI Assistant] Tool execution error:", err);
-              controller.enqueue(new TextEncoder().encode("\n\n**System Error:** Failed to architect task metadata."));
+              const errorMessage = err?.message || err?.toString() || "Unknown error";
+              console.error("[AI Assistant] Detailed error:", errorMessage);
+              controller.enqueue(new TextEncoder().encode(`\n\n**System Error:** Failed to architect task metadata. (${errorMessage})`));
             }
           }
 
