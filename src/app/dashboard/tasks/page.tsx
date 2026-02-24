@@ -1,37 +1,73 @@
 import { TaskManagement } from "@/components/dashboard/TaskManagement";
 
 export const metadata = {
-  title: "Tasks | FlowBoard",
-  description: "View and manage all your tasks.",
+  title: "Task Pipeline | FlowBoard",
+  description: "Manage your tasks through a structured pipeline workflow.",
 };
 
 export default function TasksPage() {
   return (
-    <div className="space-y-12 pb-20 fade-in-up">
-      {/* Editorial Header Block */}
-      <div className="relative overflow-hidden rounded-[40px] bg-linear-to-br from-sage-deep to-sage-deep/90 p-10 lg:p-14 text-cream shadow-2xl ring-1 ring-white/10">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-soft-blue/30 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-light-green/20 blur-[120px] rounded-full" />
-        
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex flex-wrap items-center gap-4">
-              <div className="bg-light-green/90 backdrop-blur-md text-sage-deep px-3 py-1 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-light-green/20">
-                Operations
-              </div>
-              <div className="h-px w-8 bg-white/20" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-60">
-                Workspace Telemetry
+    <div className="space-y-8 pb-20">
+      {/* Header */}
+      <div className="relative overflow-hidden bg-white border border-[#DDE5E1] p-8 lg:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.05)] fade-in-up">
+        <div className="absolute top-0 right-0 w-[300px] h-[200px] bg-[#AFC8B8]/12 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[200px] h-[150px] bg-[#7C9A8B]/8 blur-[60px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#7C9A8B]/10 border border-[#7C9A8B]/20 text-[#5F7D6E] text-[11px] font-semibold uppercase tracking-[0.08em]">
+                Task Pipeline
+              </span>
+              <div className="h-3.5 w-px bg-[#DDE5E1]" />
+              <span className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">
+                Workflow Manager
               </span>
             </div>
-            
-            <div className="space-y-3">
-              <h1 className="font-syne text-5xl lg:text-7xl font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-linear-to-r from-cream via-white to-cream/80">
-                Tasks
+
+            <div>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-[#2F3A35]">
+                Task Pipeline
               </h1>
-              <p className="text-lg text-cream/70 font-medium leading-relaxed max-w-xl">
-                The centralized command center for all your strategic pulses and project milestones.
+              <p className="mt-2 text-base text-[#5C6B64] font-light leading-relaxed max-w-lg">
+                Track every task through a clear, step-by-step workflow — from start to finish.
               </p>
+            </div>
+          </div>
+
+          {/* Pipeline Steps Preview */}
+          <div className="lg:col-span-5">
+            <div className="bg-[#F4F7F5] rounded-xl p-5 border border-[#DDE5E1]">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] mb-3">
+                Pipeline Flow
+              </p>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {[
+                  { label: "Not Started", color: "#8A9E96" },
+                  { label: "On Hold", color: "#D97706" },
+                  { label: "In Progress", color: "#2563EB" },
+                  { label: "Completed", color: "#059669" },
+                  { label: "Suspended", color: "#9333EA" },
+                  { label: "Cancelled", color: "#DC2626" },
+                ].map((step, i) => (
+                  <div key={i} className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white border border-[#DDE5E1]">
+                      <div
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{ backgroundColor: step.color }}
+                      />
+                      <span className="text-[8px] font-semibold text-[#5C6B64]">
+                        {step.label}
+                      </span>
+                    </div>
+                    {i < 5 && (
+                      <svg className="w-3 h-3 text-[#DDE5E1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

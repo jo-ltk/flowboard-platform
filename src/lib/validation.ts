@@ -14,7 +14,7 @@ export const projectSchema = z.object({
 export const taskSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().max(1000).optional(),
-  status: z.enum(["TODO", "IN_PROGRESS", "DONE", "CANCELLED"]),
+  status: z.enum(["NOT_STARTED", "ON_HOLD", "IN_PROGRESS", "COMPLETED", "SUSPENDED", "CANCELLED"]),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
 });
 

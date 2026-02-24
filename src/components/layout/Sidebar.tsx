@@ -12,6 +12,7 @@ import {
   CreditCard,
   Home,
   Leaf,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/use-sidebar";
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/dashboard",           icon: LayoutDashboard, label: "Overview"  },
   { href: "/dashboard/projects",  icon: FolderKanban,    label: "Projects"  },
   { href: "/dashboard/tasks",     icon: CheckSquare,     label: "Tasks"     },
+  { href: "/dashboard/team",      icon: Users,           label: "Team"      },
   { href: "/dashboard/billing",   icon: CreditCard,      label: "Billing"   },
   { href: "/dashboard/settings",  icon: Settings,        label: "Settings"  },
 ];

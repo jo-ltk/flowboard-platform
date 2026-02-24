@@ -18,18 +18,30 @@ export async function GET(req: Request) {
       },
       include: {
         project: true,
-        // (Optional) assignee relation if exists in Prisma schema
-        // assignee: true 
+        assignee: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+          }
+        },
+        subtasks: {
+          orderBy: { order: 'asc' }
+        },
+        _count: {
+          select: {
+            comments: true,
+            subtasks: true,
+          }
+        }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: [
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ]
     });
 
-    // Note: Since 'assignee' might not be fully linked in all parts of the app yet, 
-    // we fetch it separately or rely on the include if possible.
-    // Fixed: Returning mapped data with whatever assignee info is available.
-    
     return NextResponse.json(tasks.map(t => ({
       id: t.id,
       title: t.title,
@@ -37,19 +49,29 @@ export async function GET(req: Request) {
       status: t.status,
       priority: t.priority,
       dueDate: t.dueDate ? new Date(t.dueDate).toISOString().split('T')[0] : "No date",
-      assignee: t.assigneeId ? "Assigned" : "You", 
+      assignee: t.assignee?.name || "Unassigned",
+      assigneeId: t.assigneeId || null,
+      assigneeEmail: t.assignee?.email || null,
+      assigneeImage: t.assignee?.image || null,
       project: t.project.name,
-      projectId: t.projectId
+      projectId: t.projectId,
+      order: t.order,
+      subtasks: t.subtasks,
+      subtaskTotal: t._count.subtasks,
+      subtaskCompleted: t.subtasks.filter(s => s.completed).length,
+      commentCount: t._count.comments,
+      createdAt: t.createdAt,
+      updatedAt: t.updatedAt,
     })));
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, description, status, priority, dueDate, projectId } = body;
+    const { title, description, status, priority, dueDate, projectId, assigneeId } = body;
 
     // Default to the first project if not provided
     let targetProjectId = projectId;
@@ -62,42 +84,57 @@ export async function POST(req: Request) {
     const task = await db.task.create({
       data: {
         title,
-        description: description || "Added from dashboard",
-        status: status || "TODO",
+        description: description || "",
+        status: status || "NOT_STARTED",
         priority: priority || "MEDIUM",
         dueDate: dueDate ? new Date(dueDate) : null,
         projectId: targetProjectId,
+        assigneeId: assigneeId || null,
+      },
+      include: {
+        assignee: {
+          select: { id: true, name: true, email: true, image: true }
+        }
       }
     });
 
     return NextResponse.json(task);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 });
   }
 }
 
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { id, title, description, status, priority, dueDate, projectId } = body;
+    const { id, title, description, status, priority, dueDate, projectId, assigneeId, order } = body;
 
     if (!id) throw new Error("Task ID is required for updates");
 
+    // Build update payload — only include fields that are provided
+    const updateData: any = {};
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (status !== undefined) updateData.status = status;
+    if (priority !== undefined) updateData.priority = priority;
+    if (dueDate !== undefined) updateData.dueDate = dueDate ? new Date(dueDate) : null;
+    if (projectId !== undefined) updateData.projectId = projectId;
+    if (assigneeId !== undefined) updateData.assigneeId = assigneeId || null;
+    if (order !== undefined) updateData.order = order;
+
     const task = await db.task.update({
       where: { id },
-      data: {
-        title,
-        description,
-        status,
-        priority,
-        dueDate: dueDate ? new Date(dueDate) : null,
-        projectId
+      data: updateData,
+      include: {
+        assignee: {
+          select: { id: true, name: true, email: true, image: true }
+        }
       }
     });
 
     return NextResponse.json(task);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 });
   }
 }
 
@@ -115,7 +152,7 @@ export async function DELETE(req: Request) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 });
   }
 }
