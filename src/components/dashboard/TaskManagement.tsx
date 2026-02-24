@@ -1056,9 +1056,9 @@ export function TaskManagement() {
       <SummaryBar />
 
       {/* Search & Filter Bar */}
-      <div className="flex flex-col xl:flex-row gap-4 items-stretch xl:items-center justify-between">
+      <div className="flex flex-wrap items-center gap-4 bg-white/40 p-2.5 rounded-2xl border border-[#DDE5E1] shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
         {/* Search */}
-        <div className="relative w-full xl:max-w-md group">
+        <div className="relative flex-1 min-w-[280px] group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#AFC8B8] group-focus-within:text-[#7C9A8B] transition-colors" />
           <input
             type="text"
@@ -1069,9 +1069,10 @@ export function TaskManagement() {
           />
         </div>
 
+        {/* Filters Group */}
         <div className="flex flex-wrap items-center gap-3">
           {/* Priority Filter */}
-          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[140px]">
+          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[130px]">
             <Tag className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
             <select
               value={priorityFilter}
@@ -1087,7 +1088,7 @@ export function TaskManagement() {
           </div>
 
           {/* Assignee Filter */}
-          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[140px]">
+          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[130px]">
             <UserCircle className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
             <select
               value={assigneeFilter}
@@ -1105,50 +1106,52 @@ export function TaskManagement() {
             <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-[#AFC8B8] pointer-events-none" />
           </div>
 
-          {/* View Mode & Archive Toggle */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center bg-white border border-[#DDE5E1] rounded-xl overflow-hidden h-11 shadow-sm">
-              <button
-                onClick={() => setViewMode("pipeline")}
-                className={cn(
-                  "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer border-r border-[#DDE5E1]/50 last:border-0",
-                  viewMode === "pipeline"
-                    ? "bg-[#2F3A35] text-white"
-                    : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
-                )}
-              >
-                Pipeline
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={cn(
-                  "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer",
-                  viewMode === "list"
-                    ? "bg-[#2F3A35] text-white"
-                    : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
-                )}
-              >
-                List
-              </button>
-            </div>
-
+          {/* View Mode */}
+          <div className="flex items-center bg-white border border-[#DDE5E1] rounded-xl overflow-hidden h-11 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
             <button
-              onClick={() => setShowHiddenStages(!showHiddenStages)}
+              onClick={() => setViewMode("pipeline")}
               className={cn(
-                "h-11 px-4 border rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 shadow-sm",
-                showHiddenStages 
-                  ? "bg-[#D97706] text-white border-transparent" 
-                  : "bg-white text-[#8A9E96] border-[#DDE5E1] hover:border-[#AFC8B8] hover:text-[#5C6B64]"
+                "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer border-r border-[#DDE5E1]/50 last:border-0",
+                viewMode === "pipeline"
+                  ? "bg-[#2F3A35] text-white"
+                  : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
               )}
             >
-              <Ban className={cn("w-3.5 h-3.5", showHiddenStages ? "text-white" : "text-[#AFC8B8]")} />
-              Hold & Dropped
+              Pipeline
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={cn(
+                "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer",
+                viewMode === "list"
+                  ? "bg-[#2F3A35] text-white"
+                  : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
+              )}
+            >
+              List
             </button>
           </div>
 
           <button
+            onClick={() => setShowHiddenStages(!showHiddenStages)}
+            className={cn(
+              "h-11 px-4 border rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2",
+              showHiddenStages 
+                ? "bg-[#D97706] text-white border-transparent shadow-md" 
+                : "bg-white text-[#8A9E96] border-[#DDE5E1] hover:border-[#AFC8B8] hover:text-[#5C6B64]"
+            )}
+          >
+            <Ban className={cn("w-3.5 h-3.5", showHiddenStages ? "text-white" : "text-[#AFC8B8]")} />
+            <span className="hidden sm:inline">Hold & Dropped</span>
+            <span className="sm:hidden">Hold</span>
+          </button>
+        </div>
+
+        {/* Global Action */}
+        <div className="xl:ml-auto">
+          <button
             onClick={addTask}
-            className="h-11 px-6 rounded-xl bg-[#7C9A8B] text-white hover:bg-sage-mid transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 cursor-pointer group"
+            className="h-11 px-6 rounded-xl bg-[#7C9A8B] text-white hover:bg-sage-mid transition-all shadow-sm hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer group whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             <span className="text-[11px] font-bold uppercase tracking-widest">New Task</span>
