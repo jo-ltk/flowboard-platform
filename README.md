@@ -1,37 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FlowBoard Platform
 
-## Getting Started
+**FlowBoard** is an elite, AI-powered architectural workspace designed for calm and focused project management. It synthesizes complex project telemetry into strategic narrative intelligence, helping leadership maintain clarity and momentum.
 
-First, run the development server:
+## ✨ Core Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **AI Narrative Synthesis**: Executive-level strategic reports generated automatically.
+- **Intelligent Orchestration**: AI-driven task breakdowns and priority predictions.
+- **Editorial UI**: A premium, design-forward interface optimized for focused work.
+- **Multimodal Intelligence**: Chatbot with vision capabilities for image-to-task conversion.
+- **Enterprise Ready**: Multi-tenancy, Stripe/Google Pay integration, and full audit logging.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📚 Documentation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For a detailed breakdown of the architecture, folder structure, and setup guide, please refer to:
+👉 **[DOCUMENTATION.md](./DOCUMENTATION.md)**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Quick Start
 
-## Learn More
+1. **Install Dependencies**:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Database Setup**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-## Deploy on Vercel
+3. **Run Dev Server**:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# flowboard-platform
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4 + Framer Motion
+- **Database**: PostgreSQL + Prisma 6
+- **AI**: OpenRouter (Arcee-Trinity, Nvidia Nemotron)
+- **Payments**: Stripe & Google Pay
+
+---
+
+Built with focus by the FlowBoard Team.
