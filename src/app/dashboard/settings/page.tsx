@@ -60,9 +60,10 @@ export default function SettingsPage() {
             </div>
         </div>;
       case "billing":
+        if (!activeWs) return <div className="p-10 text-center animate-pulse text-sage-deep/40 italic">Initializing workspace context...</div>;
         return <BillingPanel workspace={activeWs} />;
       default:
-        return <BillingPanel workspace={activeWs} />;
+        return activeWs ? <BillingPanel workspace={activeWs} /> : null;
     }
   };
 

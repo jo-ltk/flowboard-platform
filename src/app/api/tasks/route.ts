@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       data: {
         title,
         priority: (priority?.toUpperCase() as 'HIGH' | 'MEDIUM' | 'LOW') || 'MEDIUM',
-        status: status === 'completed' ? 'DONE' : 'TODO',
+        status: status || 'NOT_STARTED',
         projectId: project.id,
         assigneeId: 'user-id-placeholder'
       },
@@ -59,7 +59,7 @@ export async function GET(req: Request) {
         const formattedTasks = tasks.map((task: Task) => ({
             id: task.id,
             title: task.title,
-            status: task.status === 'DONE' ? 'completed' : 'pending',
+            status: task.status,
             priority: task.priority.toLowerCase(),
             time: 'Just now', // TODO: Format createdAt relative time
             assignee: 'You' // Placeholder
@@ -106,7 +106,7 @@ export async function PUT(req: Request) {
             data: {
                 title,
                 priority: priority ? priority.toUpperCase() : undefined,
-                status: status === 'completed' ? 'DONE' : 'TODO'
+                status: status
             },
             include: {
                 project: true

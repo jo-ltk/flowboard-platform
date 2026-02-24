@@ -77,7 +77,7 @@ export const WorkspaceSwitcher = () => {
           <div className="text-left">
             <p className="text-[9px] font-bold text-[#8A9E96] uppercase tracking-[0.2em] leading-tight">Workspace</p>
             <p className="text-[14px] font-black text-[#2F3A35] uppercase tracking-tight">
-              {activeWorkspace.name}
+              {activeWorkspace?.name || "Select Workspace"}
             </p>
           </div>
         </div>
@@ -122,13 +122,13 @@ export const WorkspaceSwitcher = () => {
                       }}
                       className={cn(
                         "w-full flex items-center justify-between p-4 rounded-none transition-all duration-300 group cursor-pointer outline-none",
-                        activeWorkspace.id === ws.id 
+                        activeWorkspace?.id === ws.id 
                           ? "bg-[#2F3A35] text-white" 
                           : "hover:bg-[#f8faf9] text-[#2F3A35] border border-transparent hover:border-[#DDE5E1]"
                       )}
                     >
                       <div className="flex items-center gap-4">
-                        {activeWorkspace.id === ws.id ? (
+                        {activeWorkspace?.id === ws.id ? (
                           <div className="w-1 h-8 bg-[#8CBA41]" />
                         ) : (
                           <div className="w-1 h-8 bg-transparent" />
@@ -138,14 +138,14 @@ export const WorkspaceSwitcher = () => {
                           <p className="text-[13px] font-bold uppercase tracking-wider leading-tight">{ws.name}</p>
                           <p className={cn(
                             "text-[9px] font-bold uppercase tracking-widest mt-1",
-                            activeWorkspace.id === ws.id ? "text-white/60" : "text-[#8A9E96]"
+                            activeWorkspace?.id === ws.id ? "text-white/60" : "text-[#8A9E96]"
                           )}>
                             {ws.memberCount} MEMBERS • {ws.plan.type}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {activeWorkspace.id === ws.id && (
+                        {activeWorkspace?.id === ws.id && (
                           <Check size={16} className="text-light-green-dark stroke-[3px]" />
                         )}
                         {workspaces.length > 1 && (

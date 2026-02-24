@@ -38,8 +38,8 @@ export const PresenceSystem: React.FC = () => {
               </div>
               
               {/* Active Indicator */}
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#EBF5FF] border-2 border-white rounded-full flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#F4F7F5] border-2 border-white rounded-full flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-[#7C9A8B] rounded-full animate-pulse" />
               </div>
 
               {/* Typing Indicator */}
@@ -49,10 +49,10 @@ export const PresenceSystem: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute -top-1 -right-1"
                 >
-                  <span className="flex gap-0.5 bg-white px-1 py-0.5 rounded-full shadow-sm border border-blue-100">
-                    <span className="w-1 h-1 bg-blue-400 rounded-full animate-bounce" />
-                    <span className="w-1 h-1 bg-blue-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                    <span className="w-1 h-1 bg-blue-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                  <span className="flex gap-0.5 bg-white px-1 py-0.5 rounded-full shadow-sm border border-[#DDE5E1]">
+                    <span className="w-1 h-1 bg-[#7C9A8B] rounded-full animate-bounce" />
+                    <span className="w-1 h-1 bg-[#7C9A8B] rounded-full animate-bounce [animation-delay:0.2s]" />
+                    <span className="w-1 h-1 bg-[#7C9A8B] rounded-full animate-bounce [animation-delay:0.4s]" />
                   </span>
                 </motion.div>
               )}
@@ -64,37 +64,37 @@ export const PresenceSystem: React.FC = () => {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                    className="absolute top-12 right-0 w-48 bg-[#FFFDF9] border border-[#E0E7FF] rounded-[16px] shadow-xl p-4 z-50 pointer-events-none"
+                    className="absolute top-12 right-0 w-48 bg-white border border-[#DDE5E1] rounded-lg shadow-xl p-4 z-50 pointer-events-none"
                   >
                     <div className="flex items-center gap-3 mb-2">
                        <div 
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm"
                         style={{ backgroundColor: user.color }}
                       >
                         {user.avatar}
                       </div>
                       <div>
-                        <div className="text-[13px] font-semibold text-[#1E293B] leading-none">
+                        <div className="text-[13px] font-semibold text-[#2F3A35] leading-none">
                           {user.name}
                         </div>
-                        <div className="text-[10px] text-[#64748B] mt-1 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />
+                        <div className="text-[10px] text-[#8A9E96] mt-1 flex items-center gap-1 font-bold uppercase tracking-tight">
+                          <span className="w-1.5 h-1.5 bg-[#7C9A8B] rounded-full" />
                           Active now
                         </div>
                       </div>
                     </div>
                     
                     {user.isTyping && (
-                      <div className="text-[10px] italic text-blue-500 font-medium">
+                      <div className="text-[10px] italic text-[#7C9A8B] font-medium">
                         Typing in Task Descriptions...
                       </div>
                     )}
                     
-                    <div className="mt-3 pt-3 border-t border-[#F1F5F9]">
-                      <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] font-bold">
+                    <div className="mt-3 pt-3 border-t border-[#F4F7F5]">
+                      <div className="text-[10px] uppercase tracking-wider text-[#8A9E96] font-bold">
                         Current Workspace
                       </div>
-                      <div className="text-[11px] text-[#475569] mt-1">
+                      <div className="text-[11px] text-[#5C6B64] mt-1 font-medium">
                         FlowBoard Headquarters
                       </div>
                     </div>
@@ -106,7 +106,7 @@ export const PresenceSystem: React.FC = () => {
         </AnimatePresence>
         
         {/* Extra Users Indicator */}
-        <div className="w-9 h-9 rounded-full bg-[#F8FAFC] border-2 border-white flex items-center justify-center text-[10px] font-medium text-[#64748B] shadow-sm">
+        <div className="w-9 h-9 rounded-full bg-[#F4F7F5] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[#7C9A8B] shadow-sm">
           +2
         </div>
       </div>

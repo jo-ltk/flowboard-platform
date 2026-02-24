@@ -38,7 +38,7 @@ export function DashboardOverview() {
   
   const fetchData = async () => {
     try {
-      const res = await fetch(`/api/dashboard/overview?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/dashboard/overview?workspaceId=${activeWorkspace?.id}`);
       const json = await res.json();
       setData(json);
     } catch (err) {
@@ -97,7 +97,7 @@ export function DashboardOverview() {
           <div className="lg:col-span-8 space-y-4">
             <div className="flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#7C9A8B]/10 border border-[#7C9A8B]/20 text-[#5F7D6E] text-[11px] font-semibold uppercase tracking-[0.08em]">
-                {activeWorkspace.name}
+                {activeWorkspace?.name || "Initializing..."}
               </span>
               <div className="h-3.5 w-px bg-[#DDE5E1]" />
               <span className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">

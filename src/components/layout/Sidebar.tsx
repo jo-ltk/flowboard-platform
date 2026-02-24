@@ -35,7 +35,7 @@ export function Sidebar() {
   const { collapsed, toggle } = useSidebar();
   const { activeWorkspace: activeWs } = useWorkspaces();
 
-  console.log("[Sidebar] Render. Active Workspace:", activeWs.name);
+  console.log("[Sidebar] Render. Active Workspace:", activeWs?.name || "None");
 
   return (
     <aside

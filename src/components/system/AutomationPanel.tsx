@@ -48,7 +48,7 @@ export const AutomationPanel = () => {
   const fetchRules = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/workflows?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/workflows?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setRules(data);
@@ -83,7 +83,7 @@ export const AutomationPanel = () => {
         body: JSON.stringify({
           trigger: newRule.trigger,
           action: newRule.action,
-          workspaceId: activeWorkspace.id
+          workspaceId: activeWorkspace?.id
         })
       });
       const data = await res.json();
@@ -127,7 +127,7 @@ export const AutomationPanel = () => {
             Workflow Automations
           </h2>
           <p className="text-soft-blue text-sm mt-1 font-medium">
-            Define intelligent rules for {activeWorkspace.name}.
+            Define intelligent rules for {activeWorkspace?.name || 'this workspace'}.
           </p>
         </div>
         <button 

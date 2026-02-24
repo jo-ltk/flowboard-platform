@@ -217,7 +217,7 @@ export function TaskManagement() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch(`/api/projects?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/projects?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) return;
       const data = await res.json();
       if (Array.isArray(data)) setProjects(data);
@@ -228,7 +228,7 @@ export function TaskManagement() {
 
   const fetchMembers = async () => {
     try {
-      const res = await fetch(`/api/team?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/team?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) return;
       const data = await res.json();
       if (Array.isArray(data)) setMembers(data);
@@ -240,7 +240,7 @@ export function TaskManagement() {
   const fetchTasks = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/dashboard/tasks?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/dashboard/tasks?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) {
         toast.error("Failed to load tasks");
         return;

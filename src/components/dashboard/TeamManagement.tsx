@@ -75,7 +75,7 @@ export function TeamManagement() {
   const fetchMembers = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/team?workspaceId=${activeWorkspace.id}`);
+      const res = await fetch(`/api/team?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       if (Array.isArray(data)) setMembers(data);
@@ -93,7 +93,7 @@ export function TeamManagement() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          workspaceId: activeWorkspace.id,
+          workspaceId: activeWorkspace?.id,
           ...data,
         }),
       });

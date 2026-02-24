@@ -33,16 +33,19 @@ import { toast } from "sonner";
 import { Upload, FileText, CheckCircle, Trash2 as LucideTrash2 } from "lucide-react";
 import { useActivity } from "@/context/ActivityContext";
 import { useSearchParams } from "next/navigation";
+import { useWorkspaces } from "@/context/WorkspaceContext";
 
 export function ProjectView() {
   const searchParams = useSearchParams();
   const { addEvent } = useActivity();
+  const { activeWorkspace } = useWorkspaces();
   
   const projectIdFromUrl = searchParams.get('id');
   const projectName = searchParams.get('name') || "Design System";
   const projectDesc = searchParams.get('description') || "Core architectural tokens, component library, and brand identity refactor.";
 
   const [tasks, setTasks] = useState<any[]>([]);
+  const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -78,6 +81,21 @@ export function ProjectView() {
   useEffect(() => {
     fetchTasks();
   }, [projectIdFromUrl]);
+
+  const fetchMembers = async () => {
+    if (!activeWorkspace?.id) return;
+    try {
+      const res = await fetch(`/api/team?workspaceId=${activeWorkspace.id}`);
+      const data = await res.json();
+      setMembers(data);
+    } catch (err) {
+      console.error("Failed to fetch team members", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, [activeWorkspace?.id]);
 
   useEffect(() => {
     const handleRefresh = () => {
@@ -156,7 +174,7 @@ export function ProjectView() {
     const newTask = {
       id: newId,
       title: "",
-      status: "pending",
+      status: "NOT_STARTED",
       priority: "medium",
       time: "Just now",
       assignee: "You"
@@ -268,12 +286,12 @@ export function ProjectView() {
   const toggleTaskCompletion = async (id: any) => {
     const task = tasks.find(t => t.id === id);
     if (!task) return;
-    const newStatus = task.status === "completed" ? "pending" : "completed";
+    const newStatus = task.status === "COMPLETED" ? "NOT_STARTED" : "COMPLETED";
     await updateTaskStatus(id, newStatus);
   };
 
   const moveToInProgress = async (id: any) => {
-    await updateTaskStatus(id, "in-progress");
+    await updateTaskStatus(id, "IN_PROGRESS");
   };
 
   const handleViewBoard = () => {
@@ -282,9 +300,9 @@ export function ProjectView() {
 
   // Board columns config
   const boardColumns = [
-    { id: "pending",     title: "Discovery",   color: "bg-[#7C9A8B]/60", lightBg: "bg-[#F4F7F5]", borderColor: "border-[#AFC8B8]" },
-    { id: "in-progress", title: "Flowing",     color: "bg-[#7C9A8B]",    lightBg: "bg-[#E9EFEC]", borderColor: "border-[#7C9A8B]" },
-    { id: "completed",   title: "Harmonized",  color: "bg-[#2F3A35]",    lightBg: "bg-[#AFC8B8]/10", borderColor: "border-[#2F3A35]" },
+    { id: "NOT_STARTED",     title: "Not Started",   color: "bg-[#7C9A8B]/60", lightBg: "bg-[#F4F7F5]", borderColor: "border-[#AFC8B8]" },
+    { id: "IN_PROGRESS", title: "In Progress",     color: "bg-[#7C9A8B]",    lightBg: "bg-[#E9EFEC]", borderColor: "border-[#7C9A8B]" },
+    { id: "COMPLETED",   title: "Completed",  color: "bg-[#2F3A35]",    lightBg: "bg-[#AFC8B8]/10", borderColor: "border-[#2F3A35]" },
   ];
 
   const getTasksByStatus = (status: string) => {
@@ -389,14 +407,35 @@ export function ProjectView() {
               <PresenceSystem />
               <div className="h-4 w-px bg-[#DDE5E1]" />
               <div className="flex -space-x-2.5">
-                 {[1,2,3,4].map(i => (
-                   <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-[#E9EFEC] flex items-center justify-center text-[10px] font-bold text-[#7C9A8B]">
-                     {String.fromCharCode(64 + i)}
+                 {members.slice(0, 4).map((member, i) => (
+                   <div key={member.id} className="group relative">
+                     {member.image ? (
+                        <img 
+                          src={member.image} 
+                          alt={member.name}
+                          className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                        />
+                     ) : (
+                        <div className="w-8 h-8 rounded-full border-2 border-white bg-[#E9EFEC] flex items-center justify-center text-[10px] font-bold text-[#7C9A8B]">
+                          {member.name.split(' ').map((n: string) => n[0]).join('').toUpperCase()}
+                        </div>
+                     )}
+                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#2F3A35] text-white text-[9px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                        {member.name}
+                     </div>
                    </div>
                  ))}
-                 <div className="w-8 h-8 rounded-full border-2 border-white bg-[#7C9A8B] flex items-center justify-center text-[10px] font-bold text-white">
-                   +4
-                 </div>
+                 {members.length > 4 && (
+                   <div className="w-8 h-8 rounded-full border-2 border-white bg-[#7C9A8B] flex items-center justify-center text-[10px] font-bold text-white relative group">
+                     +{members.length - 4}
+                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#2F3A35] text-white text-[9px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                        {members.length - 4} more members
+                     </div>
+                   </div>
+                 )}
+                 {members.length === 0 && [1,2,3,4].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-[#E9EFEC] flex items-center justify-center text-[10px] font-bold text-white animate-pulse" />
+                 ))}
               </div>
             </div>
           </div>
@@ -518,7 +557,7 @@ export function ProjectView() {
                             onClick={() => toggleTaskCompletion(task.id)}
                             className={cn(
                               "w-5 h-5 rounded-full shrink-0 flex items-center justify-center transition-all duration-300 cursor-pointer mt-0.5",
-                              task.status === "completed" 
+                              task.status === "COMPLETED" 
                                 ? "bg-[#7C9A8B] text-white" 
                                 : "border-2 border-[#DDE5E1] text-transparent hover:border-[#7C9A8B]"
                             )}
@@ -528,7 +567,7 @@ export function ProjectView() {
                           <div className="flex-1 min-w-0">
                             <h4 className={cn(
                               "text-[13px] font-semibold text-[#2F3A35] leading-snug line-clamp-2",
-                              task.status === "completed" && "opacity-40 italic"
+                              task.status === "COMPLETED" && "opacity-40 italic"
                             )}>
                               {task.title}
                             </h4>
@@ -606,10 +645,10 @@ export function ProjectView() {
                 <h2 className="text-2xl font-bold text-[#2F3A35]">Objectives</h2>
                 <div className="flex gap-2">
                   <Badge variant="outline" className="border-[#DDE5E1] text-[#8A9E96] text-[9px] uppercase font-bold tracking-wider">
-                    {tasks.filter(t => t.status === "pending").length} Discovery
+                    {tasks.filter(t => t.status === "NOT_STARTED").length} To Do
                   </Badge>
-                  <Badge variant="secondary" className="bg-[#7C9A8B]/10 text-[#5F7D6E] border-none text-[9px] uppercase font-bold tracking-wider">
-                    {tasks.filter(t => t.status === "in-progress").length} Flowing
+                  <Badge variant="secondary" className="bg-[#7C9A8B]/10 text-sage-mid border-none text-[9px] uppercase font-bold tracking-wider">
+                    {tasks.filter(t => t.status === "IN_PROGRESS").length} In Progress
                   </Badge>
                 </div>
               </div>
@@ -704,10 +743,10 @@ export function ProjectView() {
                             </button>
                           )}
 
-                          {task.status === "in-progress" && (
-                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#AFC8B8]/15 text-[#5F7D6E] border border-[#AFC8B8]/30 animate-pulse">
+                          {task.status === "IN_PROGRESS" && (
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#AFC8B8]/15 text-sage-mid border border-[#AFC8B8]/30 animate-pulse">
                               <Activity className="w-3 h-3" />
-                              <span className="text-[9px] font-bold uppercase tracking-wider">Flowing</span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider">Active</span>
                             </div>
                           )}
                         </div>
@@ -740,7 +779,7 @@ export function ProjectView() {
                       
                       <h3 className={cn(
                         "font-semibold text-base text-[#2F3A35] leading-snug mb-4 h-11 line-clamp-2",
-                        task.status === "completed" && "opacity-40 italic"
+                        task.status === "COMPLETED" && "opacity-40 italic"
                       )}>
                         {task.title}
                       </h3>

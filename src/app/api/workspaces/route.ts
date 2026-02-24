@@ -4,56 +4,59 @@ import { db } from "@/lib/db";
 
 export async function GET() {
   try {
-    let workspaces = await db.workspace.findMany({
-      include: {
+    const workspaces = await db.workspace.findMany({
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        planType: true,
+        aiTokenUsage: true,
+        automationUsage: true,
+        subscriptionStatus: true,
+        subscriptionEndsAt: true,
         _count: {
-          select: { projects: true }
+          select: { memberships: true }
         }
       }
     });
 
-    // Seed if empty or only one (for demo purposes as requested by user's frustration)
-    if (workspaces.length < 3) {
+    // Seed if empty (extremely optimized)
+    if (workspaces.length === 0) {
       const seeds = [
         { name: "Design Studio", slug: "design-studio", planType: "starter" },
         { name: "Marketing Engine", slug: "marketing-engine", planType: "starter" },
         { name: "Global Enterprise", slug: "global-enterprise", planType: "enterprise" },
       ];
 
-      for (const seed of seeds) {
-        const exists = workspaces.find(w => w.slug === seed.slug);
-        if (!exists) {
-          const newWs = await db.workspace.create({
+      const createdWorkspaces = await Promise.all(
+        seeds.map(seed => 
+          db.workspace.create({
             data: {
               name: seed.name,
               slug: seed.slug,
               planType: seed.planType,
+              projects: {
+                create: {
+                  name: `${seed.name} Project`,
+                  description: `Initial project for ${seed.name}`
+                }
+              }
+            },
+            include: {
+              _count: {
+                select: { projects: true }
+              }
             }
-          });
-          
-          // Add a dummy project to each new workspace
-          await db.project.create({
-            data: {
-              name: `${seed.name} Project`,
-              workspaceId: newWs.id,
-              description: `Initial project for ${seed.name}`
-            }
-          });
-        }
-      }
-      
-      // Re-fetch with counts
-      workspaces = await db.workspace.findMany({
-        include: {
-          _count: {
-            select: { projects: true }
-          }
-        }
-      });
+          })
+        )
+      );
+
+      return NextResponse.json(createdWorkspaces);
     }
 
     return NextResponse.json(workspaces);
   } catch (error: any) {
+    console.error('[API Workspaces] Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
