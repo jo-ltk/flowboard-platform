@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { WorkspaceMetadata } from '@/types/workspace';
+import { WorkspaceMetadata, PLAN_CONFIGS, PlanType } from '@/types/workspace';
 import { getWorkspaces, getActiveWorkspace } from '@/lib/workspace-engine';
 import { toast } from 'sonner';
 
@@ -25,27 +25,31 @@ export const WorkspaceProvider = ({ children }: { children: React.ReactNode }) =
       const res = await fetch('/api/workspaces');
       const data = await res.json();
       if (Array.isArray(data)) {
-        const mapped: WorkspaceMetadata[] = data.map((ws: any) => ({
-          id: ws.id,
-          name: ws.name,
-          slug: ws.slug,
-          plan: { 
-            type: ws.planType || 'starter',
-            aiTokenLimit: 1000000,
-            automationLimit: 50,
-            memberLimit: 10
-          },
-          memberCount: ws._count?.memberships || 2,
-          role: 'owner',
-          active: false,
-          aiUsage: ws.aiTokenUsage || 0,
-          automationUsage: ws.automationUsage || 0,
-          subscription: {
-              status: ws.subscriptionStatus || 'trialing',
-              planType: ws.planType || 'starter',
-              endsAt: ws.subscriptionEndsAt || undefined
-          }
-        }));
+        const mapped: WorkspaceMetadata[] = data.map((ws: any) => {
+          const planConfig = PLAN_CONFIGS[(ws.planType || 'starter') as PlanType] || PLAN_CONFIGS.starter;
+          return {
+            id: ws.id,
+            name: ws.name,
+            slug: ws.slug,
+            plan: planConfig,
+            memberCount: ws._count?.memberships || 2,
+            role: 'owner',
+            active: false,
+            aiUsage: {
+              tokensUsed: ws.aiTokenUsage || 0,
+              tokensLimit: planConfig.aiTokenLimit
+            },
+            automationUsage: {
+              executed: ws.automationUsage || 0,
+              limit: planConfig.automationLimit
+            },
+            subscription: {
+                status: ws.subscriptionStatus || 'trialing',
+                planType: (ws.planType || 'starter') as PlanType,
+                endsAt: ws.subscriptionEndsAt || undefined
+            }
+          };
+        });
         setWorkspaces(mapped);
         return mapped;
       }

@@ -198,6 +198,7 @@ export function TaskManagement() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
+  const [isSynthesizing, setIsSynthesizing] = useState<string | null>(null);
 
   useEffect(() => {
     if (activeWorkspace?.id) {
@@ -412,6 +413,30 @@ export function TaskManagement() {
       }
     } catch (e) {
       toast.error("Failed to add comment");
+    }
+  };
+
+  const synthesizeSubtasks = async (task: Task) => {
+    try {
+      setIsSynthesizing(task.id);
+      const res = await fetch("/api/ai/subtasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          taskId: task.id, 
+          title: task.title, 
+          description: task.description 
+        }),
+      });
+      
+      if (!res.ok) throw new Error("AI Synthesis failed");
+      
+      toast.success("AI synthesized new checklist");
+      fetchTasks();
+    } catch (err) {
+      toast.error("AI Neural mapping failed");
+    } finally {
+      setIsSynthesizing(null);
     }
   };
 
@@ -702,17 +727,29 @@ export function TaskManagement() {
 
             {/* Subtasks Section */}
             <div className="p-4 border-b border-[#F4F7F5]">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] flex items-center gap-1.5">
-                  <ListChecks className="w-3 h-3" />
-                  Subtasks
-                  {task.subtaskTotal > 0 && (
-                    <span className="text-[#5C6B64] ml-1">
-                      ({task.subtaskCompleted} of {task.subtaskTotal} completed)
-                    </span>
-                  )}
-                </p>
-              </div>
+                <div className="flex items-center gap-2">
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] flex items-center gap-1.5">
+                    <ListChecks className="w-3 h-3" />
+                    Subtasks
+                    {task.subtaskTotal > 0 && (
+                      <span className="text-[#5C6B64] ml-1">
+                        ({task.subtaskCompleted} of {task.subtaskTotal} completed)
+                      </span>
+                    )}
+                  </p>
+                  <button
+                    onClick={() => synthesizeSubtasks(task)}
+                    disabled={isSynthesizing === task.id}
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-light-green/20 text-sage-deep text-[8px] font-black tracking-widest uppercase hover:bg-light-green/40 transition-all disabled:opacity-50"
+                  >
+                    {isSynthesizing === task.id ? (
+                      <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-2.5 h-2.5" />
+                    )}
+                    <span>Synthesize</span>
+                  </button>
+                </div>
 
               {/* Existing Subtasks */}
               <div className="space-y-1 mb-3">

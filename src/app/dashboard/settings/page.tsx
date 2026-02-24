@@ -1,16 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { AutomationPanel } from "@/components/system/AutomationPanel";
 import SecurityPanel from "@/components/system/SecurityPanel";
 import BrandingPanel from "@/components/system/BrandingPanel";
 import { BillingPanel } from "@/components/system/BillingPanel";
 import { 
-  Zap, 
   Shield, 
   Palette, 
   CreditCard,
-  Settings 
+  Settings,
+  Sparkles
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
@@ -18,27 +17,52 @@ import { cn } from "@/lib/utils";
 import { useWorkspaces } from "@/context/WorkspaceContext";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("automations");
+  const [activeTab, setActiveTab] = useState("ai");
   const { activeWorkspace: activeWs } = useWorkspaces();
 
   const tabs = [
-    { id: "automations", label: "Automations", icon: Zap },
+    { id: "ai", label: "AI Intelligence", icon: Sparkles },
     { id: "billing", label: "Billing", icon: CreditCard },
   ];
 
   const handleTabChange = (id: string) => {
-    console.log(`[SettingsPage] Tab changed to: ${id}`);
     setActiveTab(id);
   };
 
   const renderPanel = () => {
     switch (activeTab) {
-      case "automations":
-        return <AutomationPanel />;
+      case "ai":
+        return <div className="p-10 flex flex-col items-center justify-center text-center space-y-4">
+            <Sparkles className="w-12 h-12 text-light-green" />
+            <h2 className="text-2xl font-syne font-bold text-sage-deep">AI Intelligence Center</h2>
+            <p className="text-soft-blue max-w-sm">Manage your workspace's neural capabilities and autonomous agents.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-8">
+                <div className="p-6 rounded-2xl bg-soft-blue/5 border border-soft-blue/10 text-left">
+                    <h3 className="font-bold text-sage-deep">Smart Suggestions</h3>
+                    <p className="text-xs text-soft-blue mt-1">AI will automatically suggest subtasks and priorities based on task context.</p>
+                    <div className="mt-4 flex items-center gap-2">
+                        <div className="w-10 h-5 bg-light-green rounded-full relative">
+                            <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm" />
+                        </div>
+                        <span className="text-[10px] font-bold text-sage-deep uppercase tracking-widest">Active</span>
+                    </div>
+                </div>
+                <div className="p-6 rounded-2xl bg-soft-blue/5 border border-soft-blue/10 text-left opacity-50">
+                    <h3 className="font-bold text-sage-deep">Predictive Analytics</h3>
+                    <p className="text-xs text-soft-blue mt-1">Predict project delays before they happen using historical velocity.</p>
+                    <div className="mt-4 flex items-center gap-2 cursor-pointer">
+                        <div className="w-10 h-5 bg-soft-blue/20 rounded-full relative">
+                            <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm" />
+                        </div>
+                        <span className="text-[10px] font-bold text-soft-blue uppercase tracking-widest">Disabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>;
       case "billing":
         return <BillingPanel workspace={activeWs} />;
       default:
-        return <AutomationPanel />;
+        return <BillingPanel workspace={activeWs} />;
     }
   };
 
@@ -66,57 +90,50 @@ export default function SettingsPage() {
                 Settings
               </h1>
               <p className="text-lg text-cream/70 font-medium leading-relaxed max-w-xl">
-                Configure your workspace, manage AI permissions, and architect your ideal workflow automation system.
+                Configure your workspace, manage AI permissions, and monitor your neural workflow performance.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Sidebar Nav */}
-        <div className="lg:col-span-3 space-y-8">
-          <div className="sticky top-8">
-             <Card className="rounded-[24px] bg-white border border-soft-blue/10 shadow-soft overflow-hidden p-2">
-                <nav className="space-y-1">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleTabChange(tab.id)}
-                      className={cn(
-                        "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 group relative overflow-hidden cursor-pointer",
-                        activeTab === tab.id 
-                          ? "bg-sage-deep text-cream shadow-md" 
-                          : "text-sage-deep/60 hover:bg-soft-blue/10 hover:text-sage-deep"
-                      )}
-                    >
-                      <tab.icon className={cn(
-                        "w-4 h-4 transition-colors",
-                         activeTab === tab.id ? "text-light-green" : "text-sage-deep/40 group-hover:text-sage-deep"
-                      )} />
-                      <span className="tracking-wide">{tab.label}</span>
-                      {activeTab === tab.id && (
-                         <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-light-green shadow-[0_0_8px_rgba(204,255,0,0.6)]" />
-                      )}
-                    </button>
-                  ))}
-                </nav>
-             </Card>
-             
-             {/* Admin / Footer Links could go here */}
-             <div className="mt-6 px-4">
-                 <p className="text-[10px] font-mono text-sage-deep/30 uppercase tracking-widest text-center">
-                    FlowBoard Systems v2.4.0
-                 </p>
-             </div>
-          </div>
+      {/* Horizontal Navigation */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-2 p-1.5 bg-white rounded-[20px] border border-soft-blue/10 shadow-soft w-fit">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => handleTabChange(tab.id)}
+              className={cn(
+                "flex items-center gap-3 px-6 py-3 rounded-[14px] text-sm font-bold transition-all duration-500 group relative cursor-pointer",
+                activeTab === tab.id 
+                  ? "bg-sage-deep text-cream shadow-2xl scale-[1.02]" 
+                  : "text-sage-deep/60 hover:bg-soft-blue/5 hover:text-sage-deep"
+              )}
+            >
+              <tab.icon className={cn(
+                "w-4 h-4 transition-colors duration-500",
+                 activeTab === tab.id ? "text-light-green" : "text-sage-deep/30 group-hover:text-sage-deep"
+              )} />
+              <span className="tracking-wide">{tab.label}</span>
+              {activeTab === tab.id && (
+                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-light-green shadow-[0_0_12px_rgba(204,255,0,0.8)]" />
+              )}
+            </button>
+          ))}
         </div>
 
-        {/* Main Content Area */}
-        <div className="lg:col-span-9">
-          <div className="bg-white rounded-[32px] border border-soft-blue/10 shadow-soft overflow-hidden min-h-[600px]">
-            {renderPanel()}
-          </div>
+        <div className="flex items-center gap-4 bg-white/50 backdrop-blur-sm px-5 py-3 rounded-2xl border border-soft-blue/5">
+           <p className="text-[10px] font-mono text-sage-deep/40 uppercase tracking-[0.2em]">
+              FlowBoard Systems v2.4.0
+           </p>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="bg-white rounded-[40px] border border-soft-blue/10 shadow-2xl shadow-sage-deep/5 overflow-hidden min-h-[600px] transition-all duration-500">
+        <div className="w-full">
+          {renderPanel()}
         </div>
       </div>
     </div>

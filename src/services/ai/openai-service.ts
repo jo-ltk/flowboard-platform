@@ -133,9 +133,6 @@ export const aiService = {
     }
   },
 
-  /**
-   * Generate subtasks break-down
-   */
   async breakDownTask(taskTitle: string, description: string) {
     try {
       const openai = getOpenRouterClient();
@@ -158,6 +155,33 @@ export const aiService = {
     } catch (error: any) {
       console.error("AI Task Breakdown Error:", error);
       return { subtasks: [] };
+    }
+  },
+
+  /**
+   * Predict priority based on title and description
+   */
+  async predictPriority(title: string, description: string) {
+    try {
+        const openai = getOpenRouterClient();
+        const response = await openai.chat.completions.create({
+            model: MODELS.FAST,
+            messages: [
+                {
+                    role: "system",
+                    content: "Analyze the task and return a JSON object with 'priority' (HIGH, MEDIUM, or LOW) based on urgency and importance.",
+                },
+                {
+                    role: "user",
+                    content: `Task: ${title}\nContext: ${description}`,
+                },
+            ],
+        });
+        const content = response.choices[0].message.content;
+        return extractJson(content) || { priority: "MEDIUM" };
+    } catch (error: any) {
+        console.error("AI Priority Error:", error);
+        return { priority: "MEDIUM" };
     }
   },
 

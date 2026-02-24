@@ -19,6 +19,7 @@ import {
   AlertCircle,
   XCircle,
   Ban,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -73,6 +74,7 @@ export function TaskModal({
   const [projectId, setProjectId] = useState("");
   const [assigneeId, setAssigneeId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPredicting, setIsPredicting] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -128,6 +130,26 @@ export function TaskModal({
       .join("")
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const predictPriority = async () => {
+    if (!title.trim()) return;
+    setIsPredicting(true);
+    try {
+      const res = await fetch("/api/ai/priority", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description }),
+      });
+      const data = await res.json();
+      if (data.priority) {
+        setPriority(data.priority);
+      }
+    } catch (err) {
+      console.error("AI Priority prediction failed");
+    } finally {
+      setIsPredicting(false);
+    }
   };
 
   return (
@@ -328,10 +350,25 @@ export function TaskModal({
           <div className="grid grid-cols-2 gap-4">
             {/* Priority Selector */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] ml-1 flex items-center gap-2">
-                <Flag className="w-3 h-3 text-[#7C9A8B]" />
-                Priority
-              </label>
+              <div className="flex items-center justify-between ml-1">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-[#8A9E96] flex items-center gap-2">
+                  <Flag className="w-3 h-3 text-[#7C9A8B]" />
+                  Priority
+                </label>
+                <button
+                  type="button"
+                  onClick={predictPriority}
+                  disabled={isPredicting || !title.trim()}
+                  className="flex items-center gap-1 text-[8px] font-black tracking-widest uppercase text-light-green hover:text-light-green/80 transition-all disabled:opacity-30"
+                >
+                  {isPredicting ? (
+                    <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-2.5 h-2.5" />
+                  )}
+                  AI Suggest
+                </button>
+              </div>
               <div className="relative">
                 <select
                   value={priority}

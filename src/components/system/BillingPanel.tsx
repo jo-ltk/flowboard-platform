@@ -74,14 +74,14 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
       </AnimatePresence>
 
       {/* Current Plan Overview */}
-      <section className="bg-white border border-stone-200/60 rounded-3xl p-8 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div>
-            <h2 className="text-2xl font-bold text-stone-900 mb-2">Usage & Capacity</h2>
-            <p className="text-stone-500 font-medium">Monitoring resources for <span className="text-blue-600">"{workspace.name}"</span></p>
+      <section className="bg-white border border-stone-200/60 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold text-stone-900 tracking-tight">Usage & Capacity</h2>
+            <p className="text-stone-500 font-medium text-sm">Monitoring resources for <span className="text-blue-600">"{workspace.name}"</span></p>
           </div>
-          <div className="inline-flex flex-col items-end gap-3">
-            <div className="flex flex-col items-end">
+          <div className="flex flex-col items-start md:items-end gap-3">
+            <div className="flex flex-col items-start md:items-end">
               <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Current Plan</span>
               <div className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full border border-blue-100 text-sm font-bold uppercase tracking-wide">
                 {displayPlan}
@@ -163,11 +163,11 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-stone-50/50">
-                <th className="p-6 text-xs font-bold text-stone-400 uppercase tracking-wider">Feature</th>
-                <th className="p-6 text-xs font-bold text-stone-400 uppercase tracking-wider">Starter</th>
-                <th className="p-6 text-xs font-bold text-stone-400 uppercase tracking-wider">Architect</th>
-                <th className="p-6 text-xs font-bold text-stone-400 uppercase tracking-wider">Enterprise</th>
+              <tr className="bg-stone-50/50 border-b border-stone-100">
+                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Platform Feature</th>
+                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Starter</th>
+                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Architect</th>
+                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Enterprise</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -193,24 +193,27 @@ const UsageMeter = ({ icon: Icon, label, used, limit, color }: any) => {
   };
 
   return (
-    <div className="space-y-4 p-5  bg-stone-50/50 border border-stone-100">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className={cn("p-2 rounded-lg bg-white shadow-sm", color === 'blue' ? 'text-blue-600' : color === 'emerald' ? 'text-emerald-600' : 'text-amber-600')}>
+    <div className="space-y-4 p-6 rounded-2xl bg-stone-50/50 border border-stone-100/80 hover:bg-white hover:shadow-md hover:border-blue-100/50 transition-all duration-300 group">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className={cn(
+            "p-2 rounded-xl bg-white shadow-sm shrink-0 transition-transform group-hover:scale-110 duration-500", 
+            color === 'blue' ? 'text-blue-600' : color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'
+          )}>
             <Icon size={18} />
           </div>
-          <span className="text-sm font-bold text-stone-700">{label}</span>
+          <span className="text-sm font-bold text-stone-700 truncate">{label}</span>
         </div>
-        <span className="text-xs font-bold text-stone-500">
-          {limit === -1 ? 'Unlimited' : `${used.toLocaleString('en-US')} / ${limit.toLocaleString('en-US')}`}
+        <span className="text-xs font-bold text-stone-500 whitespace-nowrap tabular-nums bg-white/50 px-2 py-1 rounded-md border border-stone-100 shadow-sm shrink-0">
+          {limit === -1 ? 'Unlimited' : `${(used || 0).toLocaleString('en-US')} / ${(limit || 0).toLocaleString('en-US')}`}
         </span>
       </div>
-      <div className="h-2 w-full bg-stone-200/50 rounded-full overflow-hidden">
+      <div className="h-2 w-full bg-stone-200/40 rounded-full overflow-hidden p-px">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className={cn("h-full rounded-full", colorClasses[color as keyof typeof colorClasses])}
+          transition={{ duration: 1.2, ease: "circOut" }}
+          className={cn("h-full rounded-full transition-all", colorClasses[color as keyof typeof colorClasses])}
         />
       </div>
     </div>
@@ -258,7 +261,7 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
       </div>
 
       <ul className="space-y-4 mb-10">
-        <FeatureItem label={`${plan.aiTokenLimit === -1 ? 'Unlimited' : plan.aiTokenLimit.toLocaleString('en-US')} AI Tokens`} />
+        <FeatureItem label={`${plan.aiTokenLimit === -1 ? 'Unlimited' : (plan.aiTokenLimit || 0).toLocaleString('en-US')} AI Tokens`} />
         <FeatureItem label={`${plan.automationLimit === -1 ? 'Unlimited' : plan.automationLimit} Automations`} />
         <FeatureItem label={`${plan.memberLimit === -1 ? 'Unlimited' : plan.memberLimit} Seats`} />
         <FeatureItem label="Advanced Insight Engine" />

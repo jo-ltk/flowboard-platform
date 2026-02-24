@@ -31,8 +31,11 @@ export async function POST(req: Request) {
         priority: (priority?.toUpperCase() as 'HIGH' | 'MEDIUM' | 'LOW') || 'MEDIUM',
         status: status === 'completed' ? 'DONE' : 'TODO',
         projectId: project.id,
-        assigneeId: 'user-id-placeholder' // In real app, get from session
+        assigneeId: 'user-id-placeholder'
       },
+      include: {
+          project: true
+      }
     });
 
     return NextResponse.json(task);
@@ -93,6 +96,10 @@ export async function PUT(req: Request) {
     try {
         const body = await req.json();
         const { id, title, priority, status } = body;
+        const oldTask = await db.task.findUnique({
+            where: { id },
+            select: { status: true }
+        });
 
         const task = await db.task.update({
             where: { id },
@@ -100,6 +107,9 @@ export async function PUT(req: Request) {
                 title,
                 priority: priority ? priority.toUpperCase() : undefined,
                 status: status === 'completed' ? 'DONE' : 'TODO'
+            },
+            include: {
+                project: true
             }
         });
 

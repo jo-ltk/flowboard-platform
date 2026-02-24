@@ -111,9 +111,9 @@ export const AutomationPanel = () => {
     setIsSuggesting(true);
     setTimeout(() => {
       setSuggestions([
-        { trigger: "When PR remains unreviewed for 24h", action: "Nudge reviewers on Discord" },
-        { trigger: "When task is moved to 'Peer Review'", action: "Assign random team member" },
-        { trigger: "Every Friday at 4:30 PM", action: "Post 'Week in Review' stats" },
+        { trigger: "When task is completed", action: "Add system comment: 'Goal achieved!'" },
+        { trigger: "When task is started", action: "Add system comment: 'Operation initialized.'" },
+        { trigger: "When new task is created", action: "Add system comment: 'Awaiting architecture review.'" },
       ]);
       setIsSuggesting(false);
     }, 1500);

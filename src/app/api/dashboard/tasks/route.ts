@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
@@ -99,8 +100,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(task);
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Task POST error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
@@ -121,6 +123,12 @@ export async function PATCH(req: Request) {
     if (projectId !== undefined) updateData.projectId = projectId;
     if (assigneeId !== undefined) updateData.assigneeId = assigneeId || null;
     if (order !== undefined) updateData.order = order;
+
+    // Get old status for trigger comparison
+    const oldTask = await db.task.findUnique({ 
+        where: { id }, 
+        select: { status: true } 
+    });
 
     const task = await db.task.update({
       where: { id },
