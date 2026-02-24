@@ -139,4 +139,45 @@ flowboard/
 
 ---
 
-_Senior Core Documentation | Version 2.0 | Compiled by Antigravity_
+## 🎨 9. Presentation Guide: The Landing Page Flow
+
+FlowBoard's landing page is designed as a sequence of **"Architectural Protocols"** that move a user from chaos to clarity. Use this guide to explain the design narrative during presentations.
+
+### A. The Core Philosophy: "Architectural Productivity"
+
+- **The Mood**: Sage Wellness (#F4F7F5 background). It avoids the aggressive "blue/dark" tech tropes, opting for a calm, editorial feel.
+- **The Voice**: Strategic, High-Precision, Clinical yet Human.
+
+### B. Section-by-Section Narrative
+
+1.  **Protocol 01: The Entrance (Hero)**
+    - **Goal**: Immediate emotional resonance.
+    - **Key Phrase**: _"Master your workflow."_
+    - **Visual**: Stark, professional architectural imagery with clean, bold typography. CTAs use technical verbs like _"Initialize Flow"_ to reinforce the high-end feel.
+
+2.  **Protocol 02: The Order (Statement & Metrics)**
+    - **Goal**: Establish authority and name the pain points.
+    - **Message**: Work is chaotic; FlowBoard is the structure.
+    - **Data**: Surfaces hard metrics like **94.2% FlowScore™** and **2,400+ world-class teams** to build trust instantly.
+
+3.  **Protocol 03: The Functional Stack (Capabilities Grid)**
+    - **Goal**: Prove technical depth.
+    - **Features**: Highlights the AI Scheduler, Report Engine, and Client Portals.
+    - **Interaction**: Hover effects transition grayscale images to full color, symbolizing the "clarity" FlowBoard brings to a project.
+
+4.  **Protocol 04: The Neural Layer (AI Demo)**
+    - **Goal**: Showcase the "unfair advantage."
+    - **Context**: Use of terms like _"Intelligence Protocol V.04"_ and _"Nervous System."_
+    - **HUD Visuals**: Displays real-time efficiency metrics (e.g., _98.4% Efficiency_) using high-tech "Head-Up Display" components.
+
+5.  **Protocol 05: The Trust Protocol (Social Validation)**
+    - **Goal**: Prove social proof via "Architectural Monoliths."
+    - **Narrative**: Testimonials are framed as _"Logs,"_ and brand logos move in a high-speed technical marquee, suggesting a fast-paced, enterprise-ready ecosystem.
+
+6.  **Protocol 06: The Final Deployment (CTA)**
+    - **Goal**: High-friction removal and enterprise readiness.
+    - **Details**: Explicitly mentions **SOC2 Compliance** and **SAML Ready** to clear security hurdles before a user even signs up.
+
+---
+
+_Unified Product Presentation Protocol | Prepared by Antigravity_
