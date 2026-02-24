@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { NarrativeReport } from "@/components/system/NarrativeReport";
 import { useDemoMode } from "@/context/DemoContext";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface InsightProps {
   productivity: number;
@@ -117,17 +118,17 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
         <div className="space-y-2.5">
           {[
             { 
-              icon: <TrendingUp className="w-3.5 h-3.5" />, 
+              icon: TrendingUp, 
               text: "Morning flow state (9-11 AM) remains most effective.", 
               score: metrics.productivity 
             },
             { 
-              icon: <Zap className="w-3.5 h-3.5" />, 
+              icon: Zap, 
               text: "Found workflow optimizations for team collaboration.",
               score: metrics.workload 
             },
             { 
-              icon: <AlertCircle className="w-3.5 h-3.5" />, 
+              icon: AlertCircle, 
               text: "Timeline risk remains low; stability trending upward.", 
               score: metrics.risk 
             },
@@ -135,17 +136,17 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
             <motion.div 
               key={idx}
               variants={item}
-              className="group flex items-center justify-between p-3.5 rounded-xl bg-[#F4F7F5]/50 border border-transparent hover:border-[#DDE5E1] hover:bg-white transition-all cursor-default"
+              className="group flex items-center justify-between p-4 rounded-2xl bg-[#F4F7F5]/30 border border-transparent hover:border-[#DDE5E1] hover:bg-white transition-all duration-300 cursor-default"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-white border border-[#DDE5E1] flex items-center justify-center text-[#7C9A8B] group-hover:scale-105 transition-transform">
-                  {bullet.icon}
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 shrink-0 rounded-xl bg-white border border-[#DDE5E1] flex items-center justify-center text-[#7C9A8B] group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">
+                  <bullet.icon className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-semibold text-[#5C6B64] group-hover:text-[#2F3A35] transition-colors">
+                <span className="text-[13px] font-semibold text-[#5C6B64] group-hover:text-[#2F3A35] transition-colors leading-tight">
                   {bullet.text}
                 </span>
               </div>
-              <div className="text-[10px] font-bold text-[#8A9E96] group-hover:text-[#5C6B64] transition-colors tabular-nums">
+              <div className="text-[11px] font-bold text-[#8A9E96] group-hover:text-sage-mid transition-colors tabular-nums pl-4">
                 {idx === 2 ? `-${bullet.score}%` : `+${bullet.score}%`}
               </div>
             </motion.div>
@@ -173,37 +174,47 @@ export function AIInsightPanel({ productivity: initialProductivity = 92, risk: i
         </motion.div>
 
         {/* Action Bottom */}
-        <motion.div variants={item} className="pt-2 space-y-3">
-          <NarrativeReport />
-          <Button 
-            onClick={handleOptimize}
-            disabled={isOptimizing || hasOptimized}
-            className={cn(
-              "w-full h-12 flex items-center justify-center gap-2.5 rounded-xl font-bold text-[13px] transition-all duration-300",
-              hasOptimized 
-                ? "bg-[#7C9A8B]/15 border-[#7C9A8B]/30 text-[#5F7D6E] hover:bg-[#7C9A8B]/25" 
-                : "bg-white border-[#DDE5E1] text-[#2F3A35] hover:bg-[#F4F7F5] hover:border-[#AFC8B8]"
-            )}
-          >
-            <span className={cn("flex items-center gap-2", isOptimizing && "opacity-0")}>
-              {hasOptimized ? (
-                <>
-                  Schedule Balanced <Check className="w-4 h-4" />
-                </>
-              ) : (
-                <>
-                  Balance Schedule
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </>
+        <motion.div variants={item} className="pt-4">
+          <div className="grid grid-cols-1 gap-2">
+            <button 
+              onClick={handleOptimize}
+              disabled={isOptimizing || hasOptimized}
+              className={cn(
+                "group relative w-full h-14 flex items-center justify-between px-6 rounded-2xl font-bold text-[13px] transition-all duration-500 overflow-hidden shadow-sm",
+                hasOptimized 
+                  ? "bg-[#7C9A8B] text-white" 
+                  : "bg-[#2F3A35] text-white hover:bg-[#1E2623] hover:shadow-lg hover:-translate-y-0.5"
               )}
-            </span>
-            
-            {isOptimizing && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Loader2 className="w-5 h-5 animate-spin text-[#7C9A8B]" />
+            >
+              <div className="flex items-center gap-3 relative z-10">
+                {isOptimizing ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : hasOptimized ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Zap className="w-4 h-4 text-[#AFC8B8] group-hover:scale-110 transition-transform" />
+                )}
+                <span>{hasOptimized ? "Schedule Optimized" : "Balance Schedule Intelligence"}</span>
               </div>
-            )}
-          </Button>
+              <ArrowRight className={cn(
+                "w-4 h-4 text-white/50 group-hover:translate-x-1 transition-transform relative z-10",
+                (isOptimizing || hasOptimized) && "hidden"
+              )} />
+              
+              {/* Subtle shimmer effect */}
+              {!hasOptimized && !isOptimizing && (
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer" />
+              )}
+            </button>
+
+            <Link
+              href="/report"
+              className="w-full h-12 flex items-center justify-center gap-2 rounded-xl text-[11px] font-bold uppercase tracking-widest text-[#7C9A8B] hover:bg-[#7C9A8B]/5 transition-all duration-300"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              Executive Narrative
+            </Link>
+          </div>
         </motion.div>
       </motion.div>
     </motion.div>

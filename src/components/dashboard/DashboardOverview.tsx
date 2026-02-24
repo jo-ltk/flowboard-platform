@@ -285,9 +285,9 @@ export function DashboardOverview() {
                     <TrendingUp className="w-4 h-4 text-[#7C9A8B]" /> Recent Activity
                   </h3>
                 </div>
-                <div className="h-[280px] overflow-hidden relative">
+                <div className="h-[320px] overflow-hidden relative p-5 pt-0">
                   <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-white pointer-events-none" />
-                  <ActivityFeed />
+                  <ActivityFeed minimal={true} />
                 </div>
               </div>
           </div>

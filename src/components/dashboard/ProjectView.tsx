@@ -912,9 +912,9 @@ export function ProjectView() {
                     <Users className="w-4 h-4 text-sage-deep/40" /> Live Activity
                  </h3>
               </div>
-              <div className="h-[300px] overflow-hidden relative">
+              <div className="h-[320px] overflow-hidden relative p-6 pt-0">
                  <div className="absolute inset-0 z-10 bg-linear-to-b from-transparent via-transparent to-surface-elevated pointer-events-none" />
-                 <ActivityFeed />
+                  <ActivityFeed minimal={true} />
               </div>
             </div>
 

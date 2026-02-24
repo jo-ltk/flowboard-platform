@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Edit2, MessageSquare, CheckCircle2, Sparkles, Circle, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export const ActivityFeed: React.FC = () => {
+interface ActivityFeedProps {
+  minimal?: boolean;
+}
+
+export const ActivityFeed: React.FC<ActivityFeedProps> = ({ minimal = false }) => {
   const { events } = useActivity();
 
   const getTypeIcon = (type: ActivityEvent['type']) => {
@@ -27,29 +31,37 @@ export const ActivityFeed: React.FC = () => {
   };
 
   return (
-    <div className="bg-white border border-[#DDE5E1] rounded-2xl p-6 shadow-sm overflow-hidden flex flex-col h-full relative">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-             <Activity className="w-4 h-4 text-[#7C9A8B]" />
-             <h3 className="text-[13px] font-bold text-[#2F3A35] tracking-widest uppercase">Live Activity</h3>
+    <div className={cn(
+      !minimal && "bg-white border border-[#DDE5E1] rounded-2xl p-6 shadow-sm",
+      "overflow-hidden flex flex-col h-full relative"
+    )}>
+      {!minimal && (
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+               <Activity className="w-4 h-4 text-[#7C9A8B]" />
+               <h3 className="text-[13px] font-bold text-[#2F3A35] tracking-widest uppercase">Live Activity</h3>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-sage"></span>
+              </span>
+              <p className="text-[10px] text-[#8A9E96] font-bold tracking-tight uppercase">Real-time sync active</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-sage"></span>
-            </span>
-            <p className="text-[10px] text-[#8A9E96] font-bold tracking-tight uppercase">Real-time sync active</p>
+          <div className="flex gap-1.5 opacity-40">
+             <div className="w-1 h-3 bg-sage/30 rounded-full" />
+             <div className="w-1 h-5 bg-sage/50 rounded-full" />
+             <div className="w-1 h-4 bg-sage/40 rounded-full" />
           </div>
         </div>
-        <div className="flex gap-1.5 opacity-40">
-           <div className="w-1 h-3 bg-sage/30 rounded-full" />
-           <div className="w-1 h-5 bg-sage/50 rounded-full" />
-           <div className="w-1 h-4 bg-sage/40 rounded-full" />
-        </div>
-      </div>
+      )}
 
-      <div className="relative flex-1 overflow-y-auto pr-2 custom-scrollbar">
+      <div className={cn(
+        "relative flex-1 overflow-y-auto custom-scrollbar",
+        minimal ? "pr-1" : "pr-2"
+      )}>
         {events.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center p-6 text-center">
             <div className="w-14 h-14 rounded-full bg-[#F4F7F5] flex items-center justify-center mb-4 border border-[#DDE5E1]/50">
