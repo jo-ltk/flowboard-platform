@@ -20,14 +20,17 @@ const getOpenRouterClient = () => {
 
 const MODELS = {
   /**
-   * Best free vision model confirmed on this OpenRouter account: Google Gemma 3 27B.
-   * Supports text + image inputs — used when the user attaches an image.
+   * Arcee AI Trinity Large - Primary model for all text-based AI tasks.
+   * Used for chat, insights, priority prediction, task breakdown, and narrative reports.
+   * Free tier available.
+   */
+  FAST: "arcee-ai/trinity-large-preview:free",
+  /**
+   * Nvidia Nemotron Nano - Vision model for image analysis.
+   * Only used when user uploads an image for analysis.
+   * Supports text + image inputs.
    */
   SMART: "nvidia/nemotron-nano-12b-v2-vl:free",
-  /**
-   * Using the same great model for FAST as requested.
-   */
-  FAST: "nvidia/nemotron-nano-12b-v2-vl:free",
 } as const;
 
 /** Helper to robustly extract and parse JSON from AI responses */
@@ -141,7 +144,7 @@ export const aiService = {
         messages: [
           {
             role: "system",
-            content: "Break down the task into 3-5 actionable subtasks. Return JSON with a 'subtasks' array.",
+            content: `Break down the task into 3-5 actionable subtasks. Return JSON with a 'subtasks' array containing ONLY simple strings - each string should be a short, actionable subtask title (e.g., "Set up API endpoint", "Add authentication logic"). Do NOT include objects or additional fields.`,
           },
           {
             role: "user",
@@ -151,7 +154,21 @@ export const aiService = {
       });
 
       const content = response.choices[0].message.content;
-      return extractJson(content) || { subtasks: [] };
+      const result = extractJson(content) || { subtasks: [] };
+      
+      // Ensure subtasks is an array of strings
+      if (Array.isArray(result.subtasks)) {
+        result.subtasks = result.subtasks.map((s: any) => {
+          if (typeof s === 'string') return s;
+          if (typeof s === 'object' && s !== null) {
+            // Handle object format: extract task or title field
+            return s.task || s.title || s.name || String(s);
+          }
+          return String(s);
+        });
+      }
+      
+      return result;
     } catch (error: any) {
       console.error("AI Task Breakdown Error:", error);
       return { subtasks: [] };

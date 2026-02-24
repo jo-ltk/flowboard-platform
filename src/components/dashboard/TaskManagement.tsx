@@ -35,6 +35,7 @@ import { Badge } from "@/components/ui/Badge";
 import { toast } from "sonner";
 import { TaskModal } from "./TaskModal";
 import { DeleteTaskModal } from "./DeleteTaskModal";
+import { TaskDetailModal } from "./TaskDetailModal";
 import { useWorkspaces } from "@/context/WorkspaceContext";
 
 import {
@@ -200,6 +201,10 @@ export function TaskManagement() {
   const [loadingComments, setLoadingComments] = useState(false);
   const [isSynthesizing, setIsSynthesizing] = useState<string | null>(null);
 
+  // Task Detail Modal state
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
   useEffect(() => {
     if (activeWorkspace?.id) {
       setTasks([]);
@@ -210,7 +215,7 @@ export function TaskManagement() {
   }, [activeWorkspace?.id]);
 
   useEffect(() => {
-    const handleRefresh = () => fetchTasks();
+    const handleRefresh = () => fetchTasks(true);
     window.addEventListener("refresh-tasks", handleRefresh);
     return () => window.removeEventListener("refresh-tasks", handleRefresh);
   }, [activeWorkspace?.id]);
@@ -237,20 +242,20 @@ export function TaskManagement() {
     }
   };
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (silent = false) => {
     try {
-      setIsLoading(true);
+      if (!silent) setIsLoading(true);
       const res = await fetch(`/api/dashboard/tasks?workspaceId=${activeWorkspace?.id}`);
       if (!res.ok) {
-        toast.error("Failed to load tasks");
+        if (!silent) toast.error("Failed to load tasks");
         return;
       }
       const data = await res.json();
       if (Array.isArray(data)) setTasks(data);
     } catch (error) {
-      toast.error("Failed to connect to database");
+      if (!silent) toast.error("Failed to connect to database");
     } finally {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
     }
   };
 
@@ -431,7 +436,21 @@ export function TaskManagement() {
       
       if (!res.ok) throw new Error("AI Synthesis failed");
       
+      const data = await res.json();
       toast.success("AI synthesized new checklist");
+      
+      // Create updated task with the new subtasks from the response
+      const updatedTask = {
+        ...task,
+        subtasks: data.subtasks,
+        subtaskTotal: data.subtasks.length,
+        subtaskCompleted: 0,
+      };
+      
+      // Update the selected task so the modal shows the new subtasks immediately
+      setSelectedTask(updatedTask);
+      
+      // Also refresh the tasks list
       fetchTasks();
     } catch (err) {
       toast.error("AI Neural mapping failed");
@@ -504,12 +523,9 @@ export function TaskManagement() {
   };
 
   const toggleExpand = (task: Task) => {
-    if (expandedTask === task.id) {
-      setExpandedTask(null);
-    } else {
-      setExpandedTask(task.id);
-      fetchComments(task.id);
-    }
+    // Open the detail modal instead of expanding inline
+    setSelectedTask(task);
+    setIsDetailModalOpen(true);
   };
 
   const getInitials = (name: string) => {
@@ -1293,6 +1309,20 @@ export function TaskManagement() {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmDeleteTask}
         taskTitle={taskToDelete?.title}
+      />
+
+      <TaskDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedTask(null);
+        }}
+        task={selectedTask}
+        onTaskUpdate={() => fetchTasks(true)}
+        onTaskChange={(updatedTask) => setSelectedTask(updatedTask)}
+        workspaceId={activeWorkspace?.id}
+        projects={projects}
+        members={members}
       />
     </div>
   );
