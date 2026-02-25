@@ -74,16 +74,16 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
       </AnimatePresence>
 
       {/* Current Plan Overview */}
-      <section className="bg-white border border-stone-200/60 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <section className="bg-white border border-border-soft rounded-2xl p-6 sm:p-8 shadow-soft">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
-            <h2 className="text-2xl font-bold text-stone-900 tracking-tight">Usage & Capacity</h2>
-            <p className="text-stone-500 font-medium text-sm">Monitoring resources for <span className="text-blue-600">"{workspace.name}"</span></p>
+            <h2 className="text-xl sm:text-2xl font-bold text-sage-deep tracking-tight">Usage & Capacity</h2>
+            <p className="text-text-secondary font-medium text-sm">Monitoring resources for <span className="text-sage font-bold">"{workspace.name}"</span></p>
           </div>
           <div className="flex flex-col items-start md:items-end gap-3">
             <div className="flex flex-col items-start md:items-end">
-              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Current Plan</span>
-              <div className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full border border-blue-100 text-sm font-bold uppercase tracking-wide">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Current Plan</span>
+              <div className="bg-sage/10 text-sage-deep px-4 py-1.5 rounded-full border border-sage/20 text-sm font-bold uppercase tracking-wide">
                 {displayPlan}
               </div>
             </div>
@@ -102,38 +102,38 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
                   toast.error("Could not open billing portal.");
                 }
               }}
-              className="group flex items-center gap-2 text-[10px] font-bold text-stone-400 hover:text-stone-600 uppercase tracking-widest transition-colors"
+              className="group flex items-center gap-2 text-[10px] font-bold text-text-muted hover:text-text-secondary uppercase tracking-widest transition-colors"
             >
-              <CreditCard size={12} className="group-hover:text-blue-500 transition-colors" />
+              <CreditCard size={12} className="group-hover:text-sage transition-colors" />
               <span>Payment Methods & Invoices</span>
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-10">
           {/* AI Usage */}
           <UsageMeter 
             icon={Brain} 
             label="AI Insight Tokens" 
             used={workspace.aiUsage.tokensUsed} 
             limit={aiLimit} 
-            color="blue"
+            color="sage"
           />
           {/* Automations */}
           <UsageMeter 
             icon={Zap} 
-            label="Automations Executed" 
+            label="Automations" 
             used={workspace.automationUsage.executed} 
             limit={autoLimit} 
-            color="emerald"
+            color="sage-mid"
           />
           {/* Members */}
           <UsageMeter 
             icon={Users} 
-            label="Workspace Members" 
+            label="Team Seats" 
             used={workspace.memberCount} 
             limit={membersLimit} 
-            color="amber"
+            color="sage-soft"
           />
         </div>
       </section>
@@ -156,26 +156,26 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
       </div>
 
       {/* Features Comparison Table */}
-      <section className="overflow-hidden rounded-3xl border border-stone-200/60 bg-white shadow-sm">
-        <div className="p-8 border-b border-stone-100">
-          <h3 className="text-xl font-bold text-stone-900Condensed">Editorial Plan Comparison</h3>
+      <section className="overflow-hidden rounded-2xl border border-border-soft bg-white shadow-soft">
+        <div className="p-6 sm:p-8 border-b border-border-soft bg-surface-primary/50">
+          <h3 className="text-lg font-bold text-sage-deep uppercase tracking-widest">Protocol Matrix</h3>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto scrollbar-hide">
+          <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
-              <tr className="bg-stone-50/50 border-b border-stone-100">
-                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Platform Feature</th>
-                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Starter</th>
-                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Architect</th>
-                <th className="p-6 text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Enterprise</th>
+              <tr className="bg-surface-primary/30 border-b border-border-soft">
+                <th className="p-5 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Platform Logic</th>
+                <th className="p-5 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Starter</th>
+                <th className="p-5 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Architect</th>
+                <th className="p-5 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Enterprise</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100">
+            <tbody className="divide-y divide-border-soft/50">
               <ComparisonRow label="AI Narrative Reports" values={['Basic', 'Advanced', 'Executive']} />
               <ComparisonRow label="Real-time Presence" values={[true, true, true]} />
               <ComparisonRow label="Custom Automations" values={['5 max', '50 max', 'Unlimited']} />
               <ComparisonRow label="Data Separation" values={['Software', 'Dedicated', 'Sovereign']} />
-              <ComparisonRow label="Support" values={['Community', 'Priority', 'White-glove 24/7']} />
+              <ComparisonRow label="Support" values={['Community', 'Priority', 'White-glove']} />
             </tbody>
           </table>
         </div>
@@ -187,28 +187,28 @@ export const BillingPanel = ({ workspace }: BillingPanelProps) => {
 const UsageMeter = ({ icon: Icon, label, used, limit, color }: any) => {
   const percentage = limit === -1 ? 0 : Math.min((used / limit) * 100, 100);
   const colorClasses = {
-    blue: "bg-blue-600",
-    emerald: "bg-emerald-500",
-    amber: "bg-amber-500",
+    sage: "bg-sage",
+    "sage-mid": "bg-sage-mid",
+    "sage-soft": "bg-sage-soft",
   };
 
   return (
-    <div className="space-y-4 p-6 rounded-2xl bg-stone-50/50 border border-stone-100/80 hover:bg-white hover:shadow-md hover:border-blue-100/50 transition-all duration-300 group">
+    <div className="space-y-4 p-5 sm:p-6 rounded-2xl bg-surface-primary/30 border border-border-soft hover:bg-white hover:shadow-medium hover:border-sage-soft transition-all duration-300 group">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <div className={cn(
-            "p-2 rounded-xl bg-white shadow-sm shrink-0 transition-transform group-hover:scale-110 duration-500", 
-            color === 'blue' ? 'text-blue-600' : color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'
+            "p-2 rounded-xl bg-white shadow-soft shrink-0 transition-transform group-hover:scale-110 duration-500", 
+            color === 'sage' ? 'text-sage' : color === 'sage-mid' ? 'text-sage-mid' : 'text-sage-soft'
           )}>
-            <Icon size={18} />
+            <Icon size={16} />
           </div>
-          <span className="text-sm font-bold text-stone-700 truncate">{label}</span>
+          <span className="text-xs sm:text-sm font-bold text-sage-deep truncate uppercase tracking-wider">{label}</span>
         </div>
-        <span className="text-xs font-bold text-stone-500 whitespace-nowrap tabular-nums bg-white/50 px-2 py-1 rounded-md border border-stone-100 shadow-sm shrink-0">
-          {limit === -1 ? 'Unlimited' : `${(used || 0).toLocaleString('en-US')} / ${(limit || 0).toLocaleString('en-US')}`}
+        <span className="text-[10px] font-bold text-text-muted whitespace-nowrap tabular-nums bg-white px-2 py-0.5 rounded-lg border border-border-soft shadow-soft shrink-0">
+          {limit === -1 ? '∞' : `${(used || 0).toLocaleString('en-US')} / ${(limit || 0).toLocaleString('en-US')}`}
         </span>
       </div>
-      <div className="h-2 w-full bg-stone-200/40 rounded-full overflow-hidden p-px">
+      <div className="h-1.5 w-full bg-bg-alt rounded-full overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
@@ -247,16 +247,16 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
         : "bg-white border-stone-100 hover:border-stone-200"
     )}>
       {isCurrent && (
-        <div className="absolute top-0 right-8 -translate-y-1/2 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+        <div className="absolute top-0 right-8 -translate-y-1/2 bg-sage-deep text-white text-[9px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-soft">
           Active Plan
         </div>
       )}
       
-      <div className="mb-6 sm:mb-8">
-        <h3 className="text-sm sm:text-lg font-bold text-stone-900 uppercase tracking-widest mb-1 truncate">{plan.type}</h3>
+      <div className="mb-6">
+        <h3 className="text-xs sm:text-sm font-bold text-text-muted uppercase tracking-[0.2em] mb-1 truncate">{plan.type}</h3>
         <div className="flex items-baseline gap-1 flex-wrap">
-          <span className="text-3xl sm:text-4xl font-black text-stone-900">{plan.price}</span>
-          <span className="text-stone-500 font-medium text-xs sm:text-sm">/workspace</span>
+          <span className="text-3xl sm:text-4xl font-black text-sage-deep">{plan.price}</span>
+          <span className="text-text-muted font-medium text-[10px] sm:text-xs">/month</span>
         </div>
       </div>
 
@@ -318,14 +318,14 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
             onClick={handleUpgradeClick}
             disabled={loading || isCurrent}
             className={cn(
-              "w-full py-4  font-bold flex items-center justify-center gap-2 transition-all",
+              "w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all text-[10px] uppercase tracking-[0.2em]",
               isCurrent 
-                ? "bg-stone-200 text-stone-500 cursor-default" 
-                : "bg-stone-900 text-white hover:bg-stone-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                ? "bg-bg-alt text-text-muted cursor-default" 
+                : "bg-sage-deep text-white hover:bg-black hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-soft"
             )}
           >
-            {loading ? "Processing..." : isCurrent ? "Current Plan" : "Upgrade to " + plan.type}
-            {!isCurrent && !loading && <ArrowRight size={18} />}
+            {loading ? "Processing..." : isCurrent ? "Active" : "Transition to " + plan.type}
+            {!isCurrent && !loading && <ArrowRight size={14} />}
           </button>
         )}
       </AccessGate>
@@ -336,20 +336,20 @@ const PlanCard = ({ plan, isCurrent, role, workspaceId }: { plan: any, isCurrent
 
 const FeatureItem = ({ label }: { label: string }) => (
   <li className="flex items-start gap-3">
-    <div className="mt-0.5 w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
-      <Check size={12} strokeWidth={3} />
+    <div className="mt-0.5 w-4.5 h-4.5 rounded-full bg-sage/10 flex items-center justify-center text-sage shrink-0">
+      <Check size={10} strokeWidth={3} />
     </div>
-    <span className="text-sm font-medium text-stone-600">{label}</span>
+    <span className="text-xs sm:text-sm font-medium text-text-secondary">{label}</span>
   </li>
 );
 
 const ComparisonRow = ({ label, values }: { label: string, values: any[] }) => (
-  <tr>
-    <td className="p-6 text-sm font-bold text-stone-700">{label}</td>
+  <tr className="hover:bg-surface-primary/20 transition-colors">
+    <td className="p-5 text-sm font-bold text-sage-deep">{label}</td>
     {values.map((v, i) => (
-      <td key={i} className="p-6 text-sm text-stone-500">
+      <td key={i} className="p-5 text-xs sm:text-sm text-text-secondary">
         {typeof v === 'boolean' ? (
-          v ? <Check size={16} className="text-emerald-500" /> : "—"
+          v ? <div className="w-5 h-5 rounded-full bg-sage/10 flex items-center justify-center text-sage"><Check size={12} strokeWidth={3} /></div> : "—"
         ) : v}
       </td>
     ))}

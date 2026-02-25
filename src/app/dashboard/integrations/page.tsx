@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { AVAILABLE_INTEGRATIONS, IntegrationDefinition } from "@/types/integration";
-import { Plug, Check, ExternalLink, RefreshCw } from "lucide-react";
+import { AVAILABLE_INTEGRATIONS } from "@/types/integration";
+import { Plug, Check, ExternalLink, RefreshCw, Zap } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
-// Mock Icons
+// Brand Icons
 const Icons = {
   slack: ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.523v-6.312zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52h-2.521zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H3.784A2.528 2.528 0 0 1 1.263 8.834a2.528 2.528 0 0 1 2.52-2.521h5.05zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
@@ -22,16 +23,12 @@ const Icons = {
 };
 
 export default function IntegrationsPage() {
-  // In a real app, fetch this from the API
   const [connected, setConnected] = useState<string[]>([]);
   const [loading, setLoading] = useState<string | null>(null);
 
   const toggleIntegration = async (id: string) => {
     setLoading(id);
-    
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 800));
-
     if (connected.includes(id)) {
       setConnected(connected.filter(c => c !== id));
       toast.success(`Disconnected ${id}`);
@@ -39,78 +36,117 @@ export default function IntegrationsPage() {
       setConnected([...connected, id]);
       toast.success(`Connected to ${id}`);
     }
-    
     setLoading(null);
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 space-y-12 animate-in fade-in duration-500">
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">App Marketplace</h1>
-        <p className="text-lg text-slate-500 max-w-2xl">
-          Supercharge your workflow by connecting FlowBoard with your favorite tools.
-          Automate tasks, sync calendars, and streamline communication.
-        </p>
-      </div>
+    <div className="space-y-6 sm:space-y-8 pb-20 fade-in-up">
+      {/* Header */}
+      <div className="relative overflow-hidden bg-white border border-border-soft p-6 sm:p-8 lg:p-10 shadow-soft rounded-2xl lg:rounded-3xl">
+        <div className="absolute top-0 right-0 w-[200px] sm:w-[300px] h-[150px] sm:h-[200px] bg-sage-soft/10 blur-[60px] sm:blur-[80px] rounded-full pointer-events-none" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {AVAILABLE_INTEGRATIONS.map((app) => (
-          <div
-            key={app.id}
-            className="group flex flex-col p-6 bg-white border border-slate-200  hover:border-slate-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-          >
-            {/* Background gradient for connected state */}
-            {connected.includes(app.id) && (
-              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-50/50 to-transparent pointer-events-none" />
-            )}
-
-            <div className="flex items-start justify-between mb-6 relative">
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-3xl transition-transform group-hover:scale-110 ${
-                connected.includes(app.id) ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-900"
-              }`}>
-                {(() => {
-                  const Icon = Icons[app.icon as keyof typeof Icons];
-                  return Icon ? <Icon className="w-7 h-7" /> : <Plug />;
-                })()}
-              </div>
-              {connected.includes(app.id) && (
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-100/50 text-emerald-700 rounded-full text-xs font-semibold">
-                  <Check className="w-3.5 h-3.5" />
-                  Connected
-                </div>
-              )}
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-sage/10 border border-sage/20 text-sage-mid text-[10px] font-bold uppercase tracking-widest">
+                Integrations
+              </span>
+              <div className="h-3.5 w-px bg-border-soft" />
+              <span className="text-[10px] text-text-muted font-medium uppercase tracking-widest">
+                App Marketplace
+              </span>
             </div>
-
-            <div className="space-y-2 mb-8 flex-1 relative">
-              <h3 className="text-lg font-semibold text-slate-900">{app.name}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                {app.description}
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-sage-deep leading-tight">
+                Connections
+              </h1>
+              <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-text-secondary font-light leading-relaxed max-w-lg">
+                Supercharge your workflow by connecting FlowBoard with your favorite tools.
               </p>
             </div>
-
-            <div className="mt-auto relative">
-              <button
-                onClick={() => toggleIntegration(app.id)}
-                disabled={loading === app.id}
-                className={`w-full py-2.5 px-4 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${
-                  connected.includes(app.id)
-                    ? "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-red-600 hover:border-red-200"
-                    : "bg-slate-900 text-white hover:bg-slate-800 shadow-sm hover:shadow-md"
-                }`}
-              >
-                {loading === app.id ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : connected.includes(app.id) ? (
-                  "Disconnect"
-                ) : (
-                  <>
-                    Connect <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-                  </>
-                )}
-              </button>
-            </div>
           </div>
-        ))}
+
+          {connected.length > 0 && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-xl shrink-0">
+              <Zap className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-widest">
+                {connected.length} Active
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Integration Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        {AVAILABLE_INTEGRATIONS.map((app) => {
+          const isConnected = connected.includes(app.id);
+          const isLoading = loading === app.id;
+          const Icon = Icons[app.icon as keyof typeof Icons];
+
+          return (
+            <div
+              key={app.id}
+              className={cn(
+                "group flex flex-col p-5 sm:p-6 bg-white border rounded-2xl hover:shadow-medium transition-all duration-300 relative overflow-hidden",
+                isConnected
+                  ? "border-emerald-200 shadow-soft"
+                  : "border-border-soft hover:border-sage-soft"
+              )}
+            >
+              {/* Connected gradient */}
+              {isConnected && (
+                <div className="absolute inset-0 bg-linear-to-tr from-emerald-50/40 to-transparent pointer-events-none rounded-2xl" />
+              )}
+
+              <div className="flex items-start justify-between mb-5 relative">
+                <div className={cn(
+                  "w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110",
+                  isConnected
+                    ? "bg-sage-deep text-white shadow-soft"
+                    : "bg-bg-alt text-sage-deep border border-border-soft"
+                )}>
+                  {Icon ? <Icon className="w-6 h-6 sm:w-7 sm:h-7" /> : <Plug className="w-5 h-5" />}
+                </div>
+
+                {isConnected && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-100/60 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-widest shrink-0">
+                    <Check className="w-3 h-3" />
+                    Live
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-1.5 mb-6 flex-1 relative">
+                <h3 className="text-base sm:text-lg font-bold text-sage-deep">{app.name}</h3>
+                <p className="text-[11px] sm:text-xs text-text-secondary leading-relaxed">
+                  {app.description}
+                </p>
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => toggleIntegration(app.id)}
+                  disabled={isLoading}
+                  className={cn(
+                    "w-full py-2.5 px-4 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer",
+                    isConnected
+                      ? "bg-white border border-border-soft text-text-secondary hover:text-red-500 hover:border-red-200 hover:bg-red-50"
+                      : "bg-sage-deep text-white hover:bg-black shadow-soft"
+                  )}
+                >
+                  {isLoading ? (
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  ) : isConnected ? (
+                    "Disconnect"
+                  ) : (
+                    <>Connect <ExternalLink className="w-3 h-3 opacity-60" /></>
+                  )}
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

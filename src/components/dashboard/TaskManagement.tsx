@@ -1027,35 +1027,35 @@ export function TaskManagement() {
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     return (
-      <div className="bg-white rounded-xl border border-[#DDE5E1] p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] mb-1">
+      <div className="bg-white rounded-2xl border border-border-soft p-5 lg:p-6 shadow-soft">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="space-y-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
               Total Tasks
             </p>
-            <p className="text-2xl font-bold text-[#2F3A35]">{total}</p>
+            <p className="text-xl sm:text-2xl font-bold text-sage-deep">{total}</p>
           </div>
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] mb-1">
+          <div className="space-y-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
               In Progress
             </p>
-            <p className="text-2xl font-bold text-blue-600">{inProgress}</p>
+            <p className="text-xl sm:text-2xl font-bold text-blue-600">{inProgress}</p>
           </div>
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] mb-1">
+          <div className="space-y-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
               Completed
             </p>
-            <p className="text-2xl font-bold text-emerald-600">{completed}</p>
+            <p className="text-xl sm:text-2xl font-bold text-emerald-600">{completed}</p>
           </div>
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-[#8A9E96] mb-1">
-              Completion Rate
+          <div className="space-y-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
+              Stability
             </p>
             <div className="flex items-center gap-3">
-              <p className="text-2xl font-bold text-[#2F3A35]">{pct}%</p>
-              <div className="flex-1 h-2 bg-[#E9EFEC] rounded-full overflow-hidden">
+              <p className="text-xl sm:text-2xl font-bold text-sage-deep">{pct}%</p>
+              <div className="flex-1 h-1.5 bg-bg-alt rounded-full overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#10B981] transition-all duration-700"
+                  className="h-full rounded-full bg-sage-mid transition-all duration-700"
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -1072,44 +1072,44 @@ export function TaskManagement() {
       <SummaryBar />
 
       {/* Search & Filter Bar */}
-      <div className="flex flex-wrap items-center gap-4 bg-white/40 p-2.5 rounded-2xl border border-[#DDE5E1] shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-4 bg-white/40 p-2 lg:p-2.5 rounded-2xl border border-border-soft shadow-soft">
         {/* Search */}
-        <div className="relative flex-1 min-w-[280px] group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#AFC8B8] group-focus-within:text-[#7C9A8B] transition-colors" />
+        <div className="relative flex-1 group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-soft group-focus-within:text-sage transition-colors" />
           <input
             type="text"
             placeholder="Search tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 h-11 rounded-xl bg-white border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 transition-all outline-hidden text-sm font-medium placeholder:text-[#AFC8B8] placeholder:font-light"
+            className="w-full pl-11 pr-4 h-11 rounded-xl bg-white border border-border-soft focus:border-sage focus:ring-4 focus:ring-sage/5 transition-all outline-hidden text-sm font-medium placeholder:text-sage-soft placeholder:font-light"
           />
         </div>
 
         {/* Filters Group */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Priority Filter */}
-          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[130px]">
-            <Tag className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
+          <div className="relative h-10 sm:h-11 bg-white border border-border-soft rounded-xl px-3 sm:px-4 hover:border-sage-soft transition-all flex items-center group cursor-pointer min-w-[110px] sm:min-w-[130px] flex-1 sm:flex-initial">
+            <Tag className="shrink-0 w-3.5 h-3.5 text-sage-soft mr-2 group-hover:text-sage" />
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="appearance-none bg-transparent text-[11px] font-bold text-[#5C6B64] uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
+              className="appearance-none bg-transparent text-[10px] sm:text-[11px] font-bold text-text-secondary uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
             >
               <option value="ALL">Priority</option>
               <option value="HIGH">High</option>
               <option value="MEDIUM">Medium</option>
               <option value="LOW">Low</option>
             </select>
-            <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-[#AFC8B8] pointer-events-none" />
+            <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-sage-soft pointer-events-none" />
           </div>
 
           {/* Assignee Filter */}
-          <div className="relative h-11 bg-white border border-[#DDE5E1] rounded-xl px-4 hover:border-[#AFC8B8] transition-all flex items-center group cursor-pointer min-w-[130px]">
-            <UserCircle className="shrink-0 w-3.5 h-3.5 text-[#AFC8B8] mr-2.5 group-hover:text-[#7C9A8B]" />
+          <div className="relative h-10 sm:h-11 bg-white border border-border-soft rounded-xl px-3 sm:px-4 hover:border-sage-soft transition-all flex items-center group cursor-pointer min-w-[110px] sm:min-w-[130px] flex-1 sm:flex-initial">
+            <UserCircle className="shrink-0 w-3.5 h-3.5 text-sage-soft mr-2 group-hover:text-sage" />
             <select
               value={assigneeFilter}
               onChange={(e) => setAssigneeFilter(e.target.value)}
-              className="appearance-none bg-transparent text-[11px] font-bold text-[#5C6B64] uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
+              className="appearance-none bg-transparent text-[10px] sm:text-[11px] font-bold text-text-secondary uppercase tracking-wider outline-hidden cursor-pointer pr-6 w-full"
             >
               <option value="ALL">Assignee</option>
               <option value="UNASSIGNED">Unassigned</option>
@@ -1119,18 +1119,18 @@ export function TaskManagement() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-[#AFC8B8] pointer-events-none" />
+            <ChevronDown className="absolute right-3 w-3.5 h-3.5 text-sage-soft pointer-events-none" />
           </div>
 
           {/* View Mode */}
-          <div className="flex items-center bg-white border border-[#DDE5E1] rounded-xl overflow-hidden h-11 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center bg-white border border-border-soft rounded-xl overflow-hidden h-10 sm:h-11 shadow-sm flex-1 sm:flex-initial">
             <button
               onClick={() => setViewMode("pipeline")}
               className={cn(
-                "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer border-r border-[#DDE5E1]/50 last:border-0",
+                "flex-1 sm:px-4 h-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer border-r border-border-soft/50 last:border-0",
                 viewMode === "pipeline"
-                  ? "bg-[#2F3A35] text-white"
-                  : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
+                  ? "bg-sage-deep text-white"
+                  : "text-text-muted hover:text-text-secondary hover:bg-surface-primary"
               )}
             >
               Pipeline
@@ -1138,10 +1138,10 @@ export function TaskManagement() {
             <button
               onClick={() => setViewMode("list")}
               className={cn(
-                "px-4 h-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer",
+                "flex-1 sm:px-4 h-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer",
                 viewMode === "list"
-                  ? "bg-[#2F3A35] text-white"
-                  : "text-[#8A9E96] hover:text-[#5C6B64] hover:bg-[#F4F7F5]"
+                  ? "bg-sage-deep text-white"
+                  : "text-text-muted hover:text-text-secondary hover:bg-surface-primary"
               )}
             >
               List
@@ -1151,26 +1151,22 @@ export function TaskManagement() {
           <button
             onClick={() => setShowHiddenStages(!showHiddenStages)}
             className={cn(
-              "h-11 px-4 border rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2",
+              "h-10 sm:h-11 px-3 sm:px-4 border rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 flex-1 sm:flex-initial",
               showHiddenStages 
-                ? "bg-[#D97706] text-white border-transparent shadow-md" 
-                : "bg-white text-[#8A9E96] border-[#DDE5E1] hover:border-[#AFC8B8] hover:text-[#5C6B64]"
+                ? "bg-amber-600 text-white border-transparent shadow-md" 
+                : "bg-white text-text-muted border-border-soft hover:border-sage-soft hover:text-text-secondary"
             )}
           >
-            <Ban className={cn("w-3.5 h-3.5", showHiddenStages ? "text-white" : "text-[#AFC8B8]")} />
-            <span className="hidden sm:inline">Hold & Dropped</span>
-            <span className="sm:hidden">Hold</span>
+            <Ban className={cn("w-3.5 h-3.5", showHiddenStages ? "text-white" : "text-sage-soft")} />
+            <span className="inline">Hold</span>
           </button>
-        </div>
-
-        {/* Global Action */}
-        <div className="xl:ml-auto">
+          
           <button
             onClick={addTask}
-            className="h-11 px-6 rounded-xl bg-[#7C9A8B] text-white hover:bg-sage-mid transition-all shadow-sm hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer group whitespace-nowrap"
-          >
+            className="h-10 sm:h-11 px-4 sm:px-6 rounded-xl bg-sage text-white hover:bg-sage-mid transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer group whitespace-nowrap flex-1 sm:flex-initial"
+           >
             <Plus className="w-4 h-4" />
-            <span className="text-[11px] font-bold uppercase tracking-widest">New Task</span>
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">New</span>
           </button>
         </div>
       </div>
@@ -1271,7 +1267,7 @@ export function TaskManagement() {
                   setPriorityFilter("ALL");
                   setAssigneeFilter("ALL");
                 }}
-                className="text-xs font-bold text-[#7C9A8B] uppercase tracking-widest hover:text-[#5F7D6E] transition-colors cursor-pointer"
+                className="text-xs font-bold text-sage uppercase tracking-widest hover:text-sage-mid transition-colors cursor-pointer"
               >
                 Reset Filters
               </button>

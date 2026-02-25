@@ -90,6 +90,29 @@
   --radius-full: 9999px;
 }
 
+/* ─── Responsive Utilities ─── */
+@utility gap-section {
+  gap: 32px;
+  @media (max-width: 640px) {
+    gap: 16px;
+  }
+}
+
+@utility text-dashboard-heading {
+  font-size: 24px;
+  @media (max-width: 640px) {
+    font-size: 18px;
+  }
+}
+
+@utility text-dashboard-body {
+  font-size: 16px;
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+}
+
+
 /* ─── Custom Utilities ─── */
 @utility text-clamp-hero {
   font-size: clamp(2.8rem, 7vw, 6.5rem);

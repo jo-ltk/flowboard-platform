@@ -171,7 +171,7 @@ export function TeamManagement() {
   return (
     <div className="space-y-6">
       {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {(["OWNER", "ADMIN", "MEMBER", "GUEST"] as const).map((role) => {
           const config = ROLE_CONFIG[role];
           const count = members.filter((m) => m.role === role).length;
@@ -179,38 +179,38 @@ export function TeamManagement() {
           return (
             <div
               key={role}
-              className="bg-white border border-[#DDE5E1] p-5 hover:border-[#AFC8B8] transition-all duration-200"
+              className="bg-white border border-border-soft p-4 sm:p-5 hover:border-sage-soft transition-all duration-200 shadow-soft rounded-2xl"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className={cn("p-2 rounded-lg", config.color)}>
-                  <Icon className="w-4 h-4" />
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className={cn("p-1.5 sm:p-2 rounded-lg", config.color)}>
+                  <Icon className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A9E96]">
+                <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-text-muted">
                   {config.label}s
                 </span>
               </div>
-              <span className="text-3xl font-bold text-[#2F3A35]">{count}</span>
+              <span className="text-2xl sm:text-3xl font-bold text-sage-deep">{count}</span>
             </div>
           );
         })}
       </div>
 
       {/* Search & Add Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between pb-6 border-b border-[#DDE5E1]">
+      <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between pb-6 border-b border-border-soft">
         <div className="relative w-full sm:max-w-md group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#AFC8B8] group-focus-within:text-[#7C9A8B] transition-colors" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-soft group-focus-within:text-sage transition-colors" />
           <input
             type="text"
-            placeholder="Search by name or email..."
+            placeholder="Search team..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 h-11 rounded-xl bg-white border border-[#DDE5E1] focus:border-[#7C9A8B] focus:ring-4 focus:ring-[#7C9A8B]/5 transition-all outline-hidden text-sm font-medium placeholder:text-[#AFC8B8] placeholder:font-light"
+            className="w-full pl-11 pr-4 h-11 rounded-xl bg-white border border-border-soft focus:border-sage focus:ring-4 focus:ring-sage/5 transition-all outline-hidden text-sm font-medium placeholder:text-sage-soft placeholder:font-light"
           />
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="h-11 px-6 rounded-xl bg-[#7C9A8B] text-white hover:bg-[#5F7D6E] transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 cursor-pointer group"
+          className="h-11 px-6 rounded-xl bg-sage text-white hover:bg-sage-mid transition-all shadow-soft flex items-center justify-center gap-2 cursor-pointer group"
         >
           <Plus className="w-4 h-4" />
           <span className="text-[11px] font-bold uppercase tracking-widest">Add Person</span>
@@ -218,7 +218,7 @@ export function TeamManagement() {
       </div>
 
       {/* Members List */}
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-3 sm:gap-4">
         {filteredMembers.length > 0 ? (
           filteredMembers.map((member) => {
             const roleConfig = ROLE_CONFIG[member.role];
@@ -227,46 +227,46 @@ export function TeamManagement() {
             return (
               <div
                 key={member.id}
-                className="group bg-white border border-[#DDE5E1] p-5 hover:border-[#AFC8B8] hover:shadow-[0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-200 flex flex-col sm:flex-row sm:items-center gap-4"
+                className="group bg-white border border-border-soft p-4 sm:p-5 hover:border-sage-soft shadow-soft hover:shadow-medium transition-all duration-300 flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl"
               >
                 {/* Avatar */}
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
                   {member.image ? (
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-11 h-11 rounded-full object-cover border-2 border-[#DDE5E1]"
+                      className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-border-soft"
                     />
                   ) : (
-                    <div className="w-11 h-11 rounded-full bg-[#E9EFEC] border-2 border-[#DDE5E1] flex items-center justify-center text-sm font-bold text-[#7C9A8B]">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-bg-alt border-2 border-border-soft flex items-center justify-center text-xs sm:text-sm font-bold text-sage">
                       {getInitials(member.name)}
                     </div>
                   )}
 
-                  <div className="min-w-0">
-                    <h3 className="text-base font-bold text-[#2F3A35] truncate">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm sm:text-base font-bold text-sage-deep truncate">
                       {member.name}
                     </h3>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <Mail className="w-3 h-3 text-[#AFC8B8]" />
-                      <span className="text-xs text-[#8A9E96] truncate">{member.email}</span>
+                      <Mail className="w-3 h-3 text-sage-soft" />
+                      <span className="text-[10px] sm:text-xs text-text-muted truncate">{member.email}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Role */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between sm:justify-end gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-border-soft/50">
                   {editingRoleId === member.id ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       {(["ADMIN", "MEMBER", "GUEST"] as const).map((role) => (
                         <button
                           key={role}
                           onClick={() => handleRoleChange(member.id, role)}
                           className={cn(
-                            "px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer border",
+                            "px-2 sm:px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer border",
                             member.role === role
-                              ? "bg-[#7C9A8B] text-white border-[#7C9A8B]"
-                              : "bg-[#F4F7F5] text-[#5C6B64] border-[#DDE5E1] hover:border-[#AFC8B8]"
+                              ? "bg-sage text-white border-sage"
+                              : "bg-surface-primary text-text-secondary border-border-soft hover:border-sage-soft"
                           )}
                         >
                           {ROLE_CONFIG[role].label}
@@ -274,7 +274,7 @@ export function TeamManagement() {
                       ))}
                       <button
                         onClick={() => setEditingRoleId(null)}
-                        className="p-1.5 rounded-lg hover:bg-[#F4F7F5] text-[#8A9E96] cursor-pointer"
+                        className="p-1.5 rounded-lg hover:bg-surface-primary text-text-muted cursor-pointer"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -283,7 +283,7 @@ export function TeamManagement() {
                     <>
                       <Badge
                         className={cn(
-                          "text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-lg flex items-center gap-1.5 border-none",
+                          "text-[8px] sm:text-[9px] font-bold uppercase tracking-widest px-2.5 sm:px-3 py-1 rounded-lg flex items-center gap-1.5 border-none",
                           roleConfig.color
                         )}
                       >
@@ -292,16 +292,16 @@ export function TeamManagement() {
                       </Badge>
 
                       {member.role !== "OWNER" && (
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => setEditingRoleId(member.id)}
-                            className="h-8 px-3 rounded-lg bg-white hover:bg-[#F4F7F5] text-[#8A9E96] hover:text-[#5C6B64] border border-[#DDE5E1] transition-all cursor-pointer text-[10px] font-bold uppercase tracking-wider"
+                            className="h-8 px-3 rounded-lg bg-white hover:bg-surface-primary text-text-muted hover:text-text-secondary border border-border-soft transition-all cursor-pointer text-[10px] font-bold uppercase tracking-widest"
                           >
-                            Change Role
+                            Edit
                           </button>
                           <button
                             onClick={() => handleRemoveMember(member.id, member.name)}
-                            className="h-8 w-8 rounded-lg bg-white hover:bg-red-50 text-[#8A9E96] hover:text-red-500 border border-[#DDE5E1] hover:border-red-100 transition-all cursor-pointer flex items-center justify-center"
+                            className="h-8 w-8 rounded-lg bg-white hover:bg-red-50 text-text-muted hover:text-red-500 border border-border-soft hover:border-red-100 transition-all cursor-pointer flex items-center justify-center"
                             title="Remove"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -332,7 +332,7 @@ export function TeamManagement() {
             {!searchQuery && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="text-xs font-bold text-[#7C9A8B] uppercase tracking-widest hover:text-[#5F7D6E] transition-colors cursor-pointer flex items-center gap-1.5"
+                className="text-xs font-bold text-sage uppercase tracking-widest hover:text-sage-mid transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5" /> Add your first person
               </button>
@@ -386,7 +386,7 @@ function AddMemberModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <div
         className="fixed inset-0 bg-[#2F3A35]/20 backdrop-blur-sm"
         onClick={onClose}
@@ -502,7 +502,7 @@ function AddMemberModal({
             <button
               disabled={isSubmitting || !email.trim()}
               type="submit"
-              className="flex-2 bg-[#7C9A8B] text-white hover:bg-[#5F7D6E] py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="flex-2 bg-sage text-white hover:bg-sage-mid py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-soft flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

@@ -2,13 +2,12 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { DashboardNavbar } from "@/components/layout/DashboardNavbar";
 import { SidebarProvider } from "@/hooks/use-sidebar";
 import FlowBoardChatbot from "@/components/chat/FlowBoardChatbot";
+import { ActivityProvider } from "@/context/ActivityContext";
 
 export const metadata = {
   title: "Dashboard — FlowBoard",
   description: "Your calm command center for focused project management.",
 };
-
-import { ActivityProvider } from "@/context/ActivityContext";
 
 export default function DashboardLayout({
   children,
@@ -25,11 +24,11 @@ export default function DashboardLayout({
           <Sidebar />
 
           {/* Main area */}
-          <div className="flex flex-1 flex-col overflow-hidden">
+          <div className="flex flex-1 flex-col overflow-hidden relative">
             <DashboardNavbar />
 
             {/* Content area — light sage, generous padding */}
-            <main className="flex-1 overflow-y-auto bg-[#F4F7F5] p-6 lg:p-8 xl:p-10">
+            <main className="flex-1 overflow-y-auto bg-[#F4F7F5] p-4 sm:p-6 lg:p-8 xl:p-10 scroll-smooth">
               <div className="mx-auto max-w-[1320px]">
                 {children}
               </div>
@@ -41,3 +40,4 @@ export default function DashboardLayout({
     </SidebarProvider>
   );
 }
+

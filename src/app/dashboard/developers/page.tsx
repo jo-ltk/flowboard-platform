@@ -5,10 +5,18 @@ import WebhookManager from "@/components/system/WebhookManager";
 import { Terminal, Copy, Key, Shield, ArrowRight, BarChart3, Code } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+const TAB_LABELS: Record<string, string> = {
+  "api-keys": "API Keys",
+  webhooks: "Webhooks",
+  usage: "Usage",
+  docs: "Docs",
+};
 
 export default function DeveloperPortal() {
   const [activeTab, setActiveTab] = useState("api-keys");
-  const [apiKey, setApiKey] = useState("sk_live_51M0...");
+  const [apiKey] = useState("sk_live_51M0...");
   const [copied, setCopied] = useState(false);
 
   const copyKey = () => {
@@ -19,83 +27,93 @@ export default function DeveloperPortal() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 font-sans text-slate-900 bg-[#FAFAFA] min-h-screen">
-      
+    <div className="space-y-6 sm:space-y-8 pb-20 fade-in-up">
       {/* Header */}
-      <div className="mb-12 border-b border-slate-200 pb-8">
-        <h1 className="text-4xl font-serif font-light tracking-tight mb-4">
-          Developer <span className="text-slate-400 italic">Platform</span>
-        </h1>
-        <p className="text-lg text-slate-500 max-w-2xl font-light leading-relaxed">
-          Build powerful integrations on top of FlowBoard. Access your data programmatically, 
-          listen for real-time events, and extend workspace capabilities.
-        </p>
+      <div className="relative overflow-hidden bg-white border border-border-soft p-6 sm:p-8 lg:p-10 shadow-soft rounded-2xl lg:rounded-3xl">
+        <div className="absolute top-0 right-0 w-[200px] sm:w-[300px] h-[150px] sm:h-[200px] bg-sage-soft/10 blur-[60px] sm:blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-sage-deep/5 blur-[80px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 space-y-3 sm:space-y-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-sage/10 border border-sage/20 text-sage-mid text-[10px] font-bold uppercase tracking-widest">
+              Developer
+            </span>
+            <div className="h-3.5 w-px bg-border-soft" />
+            <span className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Portal</span>
+          </div>
+          <div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-sage-deep leading-tight">
+              Developer <span className="text-text-muted font-light">Platform</span>
+            </h1>
+            <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-text-secondary font-light leading-relaxed max-w-2xl">
+              Build powerful integrations. Access your data programmatically, listen for real-time events, and extend workspace capabilities.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-8 border-b border-slate-200 mb-10 overflow-x-auto">
-        {["api-keys", "webhooks", "usage", "docs"].map((tab) => (
+      <div className="flex gap-0 overflow-x-auto bg-white border border-border-soft rounded-2xl shadow-soft p-1.5 scrollbar-hide">
+        {Object.keys(TAB_LABELS).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`pb-4 px-1 text-sm font-medium transition-all relative ${
-              activeTab === tab 
-              ? "text-slate-900" 
-              : "text-slate-400 hover:text-slate-600"
-            }`}
-          >
-            {tab.replace("-", " ").toUpperCase()}
-            {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900" />
+            className={cn(
+              "flex-1 min-w-max py-2.5 px-4 sm:px-6 rounded-xl text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-all duration-200 cursor-pointer whitespace-nowrap",
+              activeTab === tab
+                ? "bg-sage-deep text-white shadow-soft"
+                : "text-text-muted hover:text-sage-deep hover:bg-bg-alt"
             )}
+          >
+            {TAB_LABELS[tab]}
           </button>
         ))}
       </div>
 
       {/* Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
         {/* Main Panel */}
-        <div className="lg:col-span-2 space-y-12">
-          
+        <div className="lg:col-span-2 space-y-6">
+
           {activeTab === "api-keys" && (
-            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="bg-white p-8  border border-slate-200 shadow-sm">
-                <div className="flex items-center justify-between mb-6">
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="bg-white p-6 sm:p-8 rounded-2xl border border-border-soft shadow-soft">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                   <div>
-                    <h3 className="text-xl font-medium mb-1 flex items-center gap-2">
-                      <Key className="w-5 h-5 text-emerald-500" />
+                    <h3 className="text-base sm:text-lg font-bold text-sage-deep mb-1 flex items-center gap-2">
+                      <Key className="w-4 h-4 text-sage" />
                       Production Keys
                     </h3>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-xs sm:text-sm text-text-secondary">
                       These keys have full access to your workspace. Keep them secret.
                     </p>
                   </div>
-                  <button className="text-sm bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                  <button className="text-[10px] font-bold uppercase tracking-widest bg-sage-deep text-white px-4 py-2.5 rounded-xl hover:bg-black transition-colors cursor-pointer shrink-0">
                     Roll Key
                   </button>
                 </div>
 
-                <div className="bg-slate-50 p-4 rounded-xl flex items-center justify-between font-mono text-sm border border-slate-200 group">
-                  <span className="text-slate-600 truncate max-w-[300px] blur-[2px] group-hover:blur-none transition-all">
+                <div className="bg-bg-alt p-4 rounded-xl flex items-center justify-between font-mono text-xs sm:text-sm border border-border-soft group">
+                  <span className="text-text-secondary truncate max-w-[200px] sm:max-w-[300px] blur-[2px] group-hover:blur-none transition-all">
                     {apiKey}
                   </span>
-                  <button 
+                  <button
                     onClick={copyKey}
-                    className="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-slate-900"
+                    className="p-2 hover:bg-white rounded-lg transition-colors text-text-muted hover:text-sage-deep ml-3 shrink-0 cursor-pointer"
                   >
-                    {copied ? <span className="text-xs font-sans text-emerald-600 font-medium">Copied!</span> : <Copy className="w-4 h-4" />}
+                    {copied ? <span className="text-[10px] font-sans text-emerald-600 font-bold">Copied!</span> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-lg font-serif">Quick Start</h3>
-                <div className="bg-[#1E1E1E] p-6  text-slate-300 font-mono text-xs overflow-x-auto shadow-xl">
-                  <div className="flex gap-2 mb-4 border-b border-white/10 pb-4">
-                    <span className="text-emerald-400">cURL</span>
-                    <span className="text-slate-500">Node.js</span>
-                    <span className="text-slate-500">Python</span>
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-sage-deep uppercase tracking-widest">Quick Start</h3>
+                <div className="bg-sage-deep rounded-2xl p-5 sm:p-6 text-white font-mono text-xs overflow-x-auto shadow-elevated">
+                  <div className="flex gap-3 mb-4 border-b border-white/10 pb-4">
+                    <span className="text-sage-soft font-bold text-[10px] uppercase tracking-widest">cURL</span>
+                    <span className="text-white/30 text-[10px]">Node.js</span>
+                    <span className="text-white/30 text-[10px]">Python</span>
                   </div>
                   <ClientCodeBlock />
                 </div>
@@ -104,29 +122,29 @@ export default function DeveloperPortal() {
           )}
 
           {activeTab === "webhooks" && (
-             <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-               <WebhookManager />
-             </div>
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <WebhookManager />
+            </div>
           )}
 
           {activeTab === "usage" && (
-            <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="p-6 bg-white border border-slate-200 ">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
-                    <BarChart3 className="w-6 h-6" />
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="p-6 sm:p-8 bg-white border border-border-soft rounded-2xl shadow-soft">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-sage/10 text-sage rounded-xl">
+                    <BarChart3 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-slate-900">API Requests</h3>
-                    <p className="text-sm text-slate-500">Last 30 Days</p>
+                    <h3 className="font-bold text-sage-deep">API Requests</h3>
+                    <p className="text-xs text-text-muted">Last 30 Days</p>
                   </div>
                 </div>
-                <div className="h-40 flex items-end gap-2 justify-between px-2">
+                <div className="h-36 sm:h-40 flex items-end gap-1.5 sm:gap-2 justify-between">
                   {[40, 65, 30, 80, 55, 90, 45, 60, 75, 50, 85, 95].map((h, i) => (
-                    <div 
-                      key={i} 
-                      style={{ height: `${h}%` }} 
-                      className="w-full bg-slate-100 rounded-t-md hover:bg-indigo-500 transition-colors"
+                    <div
+                      key={i}
+                      style={{ height: `${h}%` }}
+                      className="w-full bg-bg-alt rounded-t-lg hover:bg-sage transition-colors cursor-pointer"
                     />
                   ))}
                 </div>
@@ -135,46 +153,48 @@ export default function DeveloperPortal() {
           )}
 
           {activeTab === "docs" && (
-             <div className="prose prose-slate max-w-none animate-in fade-in slide-in-from-bottom-2 duration-500">
-               <h3>API Documentation</h3>
-               <p>Welcome to the FlowBoard API reference. Our API is organized around REST.</p>
-               <ul>
-                 <li><Link href="#" className="underline decoration-slate-300 underline-offset-4">Authentication</Link></li>
-                 <li><Link href="#" className="underline decoration-slate-300 underline-offset-4">Workspaces</Link></li>
-                 <li><Link href="#" className="underline decoration-slate-300 underline-offset-4">Projects & Tasks</Link></li>
-                 <li><Link href="#" className="underline decoration-slate-300 underline-offset-4">Automations</Link></li>
-               </ul>
-             </div>
+            <div className="prose prose-slate max-w-none animate-in fade-in slide-in-from-bottom-2 duration-300 bg-white border border-border-soft rounded-2xl p-6 sm:p-8 shadow-soft">
+              <h3 className="text-base font-bold text-sage-deep uppercase tracking-widest mb-4">API Documentation</h3>
+              <p className="text-sm text-text-secondary">Welcome to the FlowBoard API reference. Our API is organized around REST.</p>
+              <ul className="space-y-2 mt-4">
+                {["Authentication", "Workspaces", "Projects & Tasks", "Automations"].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="text-sage hover:text-sage-mid font-medium text-sm flex items-center gap-2 no-underline">
+                      <ArrowRight className="w-3.5 h-3.5" />
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
 
         {/* Sidebar Info */}
-        <div className="space-y-8">
-          <div className="bg-emerald-50/50 p-6  border border-emerald-100">
-            <h4 className="font-medium text-emerald-900 mb-2 flex items-center gap-2">
-              <Shield className="w-4 h-4" />
+        <div className="space-y-4 sm:space-y-6">
+          <div className="bg-sage/5 p-5 sm:p-6 rounded-2xl border border-sage/20 shadow-soft">
+            <h4 className="font-bold text-sage-deep mb-2 flex items-center gap-2 text-sm">
+              <Shield className="w-4 h-4 text-sage" />
               Security First
             </h4>
-            <p className="text-sm text-emerald-800/80 leading-relaxed">
+            <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
               Never expose your API keys in client-side code. Use environment variables and proxy requests through your own backend.
             </p>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="font-medium text-slate-900">Need Help?</h4>
-            <ul className="space-y-3 text-sm text-slate-500">
-              <li className="flex items-center gap-2 hover:text-slate-900 cursor-pointer transition-colors">
-                <Code className="w-4 h-4" />
-                API Reference
-              </li>
-              <li className="flex items-center gap-2 hover:text-slate-900 cursor-pointer transition-colors">
-                <Terminal className="w-4 h-4" />
-                CLI Tools
-              </li>
-              <li className="flex items-center gap-2 hover:text-slate-900 cursor-pointer transition-colors">
-                <ArrowRight className="w-4 h-4" />
-                Join Discord Community
-              </li>
+          <div className="bg-white border border-border-soft rounded-2xl p-5 sm:p-6 shadow-soft space-y-4">
+            <h4 className="font-bold text-sage-deep text-sm">Need Help?</h4>
+            <ul className="space-y-3">
+              {[
+                { icon: Code, label: "API Reference" },
+                { icon: Terminal, label: "CLI Tools" },
+                { icon: ArrowRight, label: "Join Discord Community" },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-center gap-3 text-xs sm:text-sm text-text-secondary hover:text-sage-deep cursor-pointer transition-colors group">
+                  <Icon className="w-4 h-4 text-sage-soft group-hover:text-sage transition-colors" />
+                  {label}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -186,7 +206,7 @@ export default function DeveloperPortal() {
 
 function ClientCodeBlock() {
   return (
-    <pre className="text-slate-300 font-mono text-xs leading-relaxed">
+    <pre className="text-sage-light font-mono text-xs leading-relaxed whitespace-pre-wrap wrap-break-word">
 {`curl -X POST https://api.flowboard.app/v1/tasks \\
   -H "Authorization: Bearer sk_live_..." \\
   -H "Content-Type: application/json" \\
@@ -198,3 +218,4 @@ function ClientCodeBlock() {
     </pre>
   );
 }
+

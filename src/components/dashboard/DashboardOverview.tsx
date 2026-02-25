@@ -1,27 +1,21 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { 
   Activity, 
   Zap, 
-  Clock, 
   Users, 
   ArrowUpRight, 
   Calendar,
   Layers,
-  Sparkles,
   BarChart3,
   Globe,
   TrendingUp,
-  Layout,
-  MessageSquare,
-  Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { AIInsightPanel } from "./AIInsightPanel";
 import { DataVizSystem } from "./DataVizSystem";
 import { PresenceSystem } from "@/components/system/PresenceSystem";
@@ -62,8 +56,6 @@ export function DashboardOverview() {
     return () => window.removeEventListener("refresh-tasks", handleRefresh);
   }, [activeWorkspace?.id]);
 
-  console.log("[DashboardOverview] Rendering...");
-
   const currentDate = new Date().toLocaleDateString('en-US', { 
     weekday: 'long', 
     year: 'numeric', 
@@ -72,7 +64,6 @@ export function DashboardOverview() {
   });
 
   const handleProjectClick = (project: any) => {
-    console.log(`[DashboardOverview] Project clicked: ${project.label}`);
     const params = new URLSearchParams();
     params.set('id', project.id);
     params.set('name', project.label);
@@ -82,44 +73,43 @@ export function DashboardOverview() {
   };
 
   const handleViewAll = () => {
-    console.log("[DashboardOverview] View All Projects clicked");
     router.push("/dashboard/projects");
   };
 
   return (
-    <div className="space-y-6 pb-20 fade-in-up">
+    <div className="space-y-6 lg:space-y- gap-section pb-20 fade-in-up px-0 sm:px-0">
       {/* ─── Calm Editorial Header ─── */}
-      <div className="relative overflow-hidden  bg-white border border-[#DDE5E1] p-8 lg:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
+      <div className="card-wellness relative overflow-hidden bg-white p-6 lg:p-10">
         {/* Subtle sage orb */}
-        <div className="absolute top-0 right-0 w-[300px] h-[200px] bg-[#AFC8B8]/12 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[200px] lg:w-[300px] h-[150px] lg:h-[200px] bg-[#7C9A8B]/10 blur-[60px] lg:blur-[80px] rounded-full pointer-events-none" />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <div className="lg:col-span-8 space-y-4">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+          <div className="lg:col-span-8 space-y-4 lg:space-y-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#7C9A8B]/10 border border-[#7C9A8B]/20 text-[#5F7D6E] text-[11px] font-semibold uppercase tracking-[0.08em]">
+              <span className="badge-sage">
                 {activeWorkspace?.name || "Initializing..."}
               </span>
               <div className="h-3.5 w-px bg-[#DDE5E1]" />
-              <span className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">
+              <span className="text-[10px] text-[#8A9E96] font-bold uppercase tracking-[0.2em]">
                 Flow Monitor
               </span>
             </div>
 
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-[#2F3A35]">
+              <h1 className="text-dashboard-heading font-bold tracking-tight leading-tight text-[#2F3A35] lg:text-5xl">
                 Good morning ☀️
               </h1>
-              <p className="mt-2 text-base text-[#5C6B64] font-light leading-relaxed max-w-md">
+              <p className="mt-2 text-dashboard-body text-[#5C6B64] font-light leading-relaxed max-w-md">
                 Here's your project overview — calm, clear, and up to date.
               </p>
             </div>
 
-            <div className="flex items-center gap-4 pt-1">
+            <div className="flex flex-wrap items-center gap-4 pt-1">
               <PresenceSystem />
-              <div className="h-3.5 w-px bg-[#DDE5E1]" />
+              <div className="hidden sm:block h-3.5 w-px bg-[#DDE5E1]" />
               <div className="flex items-center gap-2 bg-[#F4F7F5] px-3.5 py-2 rounded-full border border-[#DDE5E1] cursor-default">
                 <Calendar className="w-3.5 h-3.5 text-[#7C9A8B]" />
-                <span className="text-[11px] font-medium text-[#5C6B64] tracking-wide">
+                <span className="text-[10px] font-bold text-[#5C6B64] uppercase tracking-wider">
                   {currentDate}
                 </span>
               </div>
@@ -127,30 +117,30 @@ export function DashboardOverview() {
           </div>
 
           {/* Velocity metric */}
-          <div className="lg:col-span-4">
-            <div className="bg-[#F4F7F5]  p-6 border border-[#DDE5E1] hover:border-[#AFC8B8] transition-all duration-200 group">
-              <div className="flex items-center justify-between mb-3">
+          <div className="lg:col-span-4 self-stretch sm:self-auto">
+            <div className="bg-[#F4F7F5] p-6 lg:p-8 border border-[#DDE5E1] hover:border-[#AFC8B8] transition-all duration-300 group rounded-2xl">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-[#7C9A8B]/12 border border-[#7C9A8B]/20">
+                  <div className="p-1.5 rounded-lg bg-white border border-[#DDE5E1]">
                     <Zap className="w-3.5 h-3.5 text-[#7C9A8B]" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.08em] text-[#8A9E96]">Team Velocity</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8A9E96]">Team Velocity</span>
                 </div>
                 {(isDemoMode || (data?.stats?.velocity > 90)) && (
-                  <Badge variant="outline" className="border-[#AFC8B8] text-[#5F7D6E] text-[9px] px-2 py-0.5">
+                  <Badge variant="outline" className="border-[#AFC8B8] bg-white text-sage-mid text-[9px] px-2 py-0.5 rounded-full">
                     +{data?.stats?.velocity > 90 ? "4.6%" : "2.1%"}
                   </Badge>
                 )}
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-[#2F3A35]">
+                <span className="text-4xl lg:text-5xl font-bold text-[#2F3A35]">
                   {loading ? "–" : (data?.stats?.velocity || "94.2")}
                 </span>
-                <span className="text-lg font-semibold text-[#8A9E96]">%</span>
+                <span className="text-lg font-bold text-[#8A9E96] uppercase tracking-widest">%</span>
               </div>
-              <div className="w-full bg-[#DDE5E1] h-1.5 rounded-full mt-3.5 overflow-hidden">
+              <div className="w-full bg-[#DDE5E1] h-1.5 rounded-full mt-5 overflow-hidden">
                 <div
-                  className="bg-[#7C9A8B] h-full rounded-full transition-all duration-1000"
+                  className="bg-[#7C9A8B] h-full rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${data?.stats?.velocity || 94}%` }}
                 />
               </div>
@@ -159,32 +149,32 @@ export function DashboardOverview() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-section">
         {/* Main Content: Projects & Data */}
-        <div className="lg:col-span-8 space-y-8">
+        <div className="lg:col-span-8 space-y-gap-section">
           
           {/* Active Projects Grid */}
           <section className="space-y-6">
             <div className="flex items-center justify-between px-1">
                <div className="flex items-center gap-3">
-                  <h2 className="text-2xl font-bold text-[#2F3A35]">Active Projects</h2>
-                  <div className="h-[2px] w-16 bg-[#DDE5E1]" />
+                  <h2 className="text-xl lg:text-2xl font-bold text-[#2F3A35]">Active Projects</h2>
+                  <div className="hidden sm:block h-[2px] w-12 bg-[#DDE5E1]" />
                </div>
                <button 
                 onClick={handleViewAll}
-                className="text-xs font-bold text-[#7C9A8B] uppercase tracking-widest hover:text-[#5F7D6E] transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="text-[10px] font-black text-[#7C9A8B] uppercase tracking-[0.2em] hover:text-sage-mid transition-colors flex items-center gap-1.5 cursor-pointer"
                >
-                  View All <ArrowUpRight className="w-3.5 h-3.5" />
+                  All Projects <ArrowUpRight className="w-3.5 h-3.5" />
                </button>
             </div>
             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
                {loading ? (
                  [1, 2, 3, 4].map((i) => (
-                   <div key={i} className="h-44  bg-[#E9EFEC] animate-pulse border border-[#DDE5E1]" />
+                   <div key={i} className="h-44 bg-[#E9EFEC] animate-pulse border border-[#DDE5E1] rounded-2xl" />
                  ))
                ) : (
-                 (data?.projects || []).map((project: any, i: number) => {
+                 (data?.projects || []).slice(0, 4).map((project: any, i: number) => {
                     const ProjectIcon = (() => {
                         switch(project.icon) {
                             case 'Layers': return Layers;
@@ -199,26 +189,26 @@ export function DashboardOverview() {
                         <div
                           key={i}
                           onClick={() => handleProjectClick(project)}
-                          className="group relative p-6  bg-white border border-[#DDE5E1] shadow-[0_1px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.08)] hover:border-[#AFC8B8] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                          className="card-wellness group p-6 cursor-pointer hover:border-[#7C9A8B]"
                         >
-                          <div className="flex justify-between items-start mb-5">
-                            <div className="p-2.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] transition-all duration-200 group-hover:border-[#AFC8B8]">
+                          <div className="flex justify-between items-start mb-6">
+                            <div className="p-2.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] transition-all duration-300 group-hover:border-[#AFC8B8] group-hover:bg-white">
                               <ProjectIcon className="w-4.5 h-4.5 text-[#7C9A8B]" />
                             </div>
-                            <Badge variant="secondary" className="bg-[#F4F7F5] text-[#8A9E96] border border-[#DDE5E1] text-[9px] font-semibold uppercase tracking-wider">
+                            <Badge variant="secondary" className="bg-[#F4F7F5] text-[#8A9E96] border border-[#DDE5E1] text-[9px] font-bold uppercase tracking-widest rounded-full group-hover:bg-white group-hover:text-[#7C9A8B] transition-colors">
                               {project.status}
                             </Badge>
                           </div>
 
-                          <h3 className="font-semibold text-base text-[#2F3A35] mb-2">{project.label}</h3>
-                          <div className="flex items-center justify-between text-[11px] text-[#8A9E96] font-medium mb-3">
-                            <span>Progress</span>
-                            <span className="font-semibold text-[#5C6B64]">{project.progress}%</span>
+                          <h3 className="font-bold text-base text-[#2F3A35] mb-2">{project.label}</h3>
+                          <div className="flex items-center justify-between text-[10px] text-[#8A9E96] font-bold uppercase tracking-wider mb-4">
+                            <span>Efficiency</span>
+                            <span className="text-[#5C6B64]">{project.progress}%</span>
                           </div>
 
                           <div className="relative h-1.5 w-full bg-[#E9EFEC] rounded-full overflow-hidden">
                             <div
-                              className="absolute top-0 left-0 h-full rounded-full bg-[#7C9A8B] transition-all duration-1000 ease-out"
+                              className="absolute top-0 left-0 h-full rounded-full bg-[#7C9A8B] transition-all duration-1000 ease-in-out"
                               style={{ width: `${project.progress}%` }}
                             />
                           </div>
@@ -230,63 +220,68 @@ export function DashboardOverview() {
           </section>
 
           {/* System Health & Activity Feed Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-section">
               {/* System Health Card */}
-              <Card className=" border border-[#DDE5E1] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden h-full">
+              <Card className="card-wellness border-[#DDE5E1] bg-white overflow-hidden h-full">
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-sm font-semibold text-[#2F3A35] flex items-center gap-2">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-[11px] font-bold text-[#2F3A35] uppercase tracking-[0.2em] flex items-center gap-2">
                       <Activity className="w-4 h-4 text-[#7C9A8B]" /> System Health
                     </h3>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-[#7C9A8B] animate-pulse" />
-                      <span className="text-[10px] text-[#8A9E96] font-medium">Live</span>
+                    <div className="flex items-center gap-1.5 bg-[#F4F7F5] px-2 py-1 rounded-full border border-[#DDE5E1]">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#7C9A8B] animate-pulse" />
+                      <span className="text-[9px] text-sage-mid font-bold uppercase tracking-widest">Live</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2.5">
-                    <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] transition-colors">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center p-4 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] hover:bg-white transition-all duration-300 cursor-default">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 rounded-full bg-[#7C9A8B]" />
-                        <span className="text-xs font-medium text-[#5C6B64] uppercase tracking-wide">Uptime</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#7C9A8B]" />
+                        <span className="text-[10px] font-bold text-[#5C6B64] uppercase tracking-widest">Uptime</span>
                       </div>
-                      <span className="text-sm font-semibold text-[#2F3A35]">{data?.stats?.uptime || "99.98%"}</span>
+                      <span className="text-xs font-bold text-[#2F3A35] tracking-tight">{data?.stats?.uptime || "99.98%"}</span>
                     </div>
 
-                    <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] transition-colors">
+                    <div className="flex justify-between items-center p-4 rounded-xl bg-[#F4F7F5] border border-[#DDE5E1] hover:border-[#AFC8B8] hover:bg-white transition-all duration-300 cursor-default">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 rounded-full bg-[#AFC8B8]" />
-                        <span className="text-xs font-medium text-[#5C6B64] uppercase tracking-wide">Latency</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#AFC8B8]" />
+                        <span className="text-[10px] font-bold text-[#5C6B64] uppercase tracking-widest">Latency</span>
                       </div>
-                      <span className="text-sm font-semibold text-[#2F3A35]">{data?.stats?.latency || "24ms"}</span>
+                      <span className="text-xs font-bold text-[#2F3A35] tracking-tight">{data?.stats?.latency || "24ms"}</span>
                     </div>
                   </div>
+
                 </div>
 
                 {/* Mini bar chart */}
-                <div className="h-20 bg-[#F4F7F5] border-t border-[#DDE5E1] flex items-end gap-0.5 p-3">
+                <div className="h-20 bg-[#F4F7F5] border-t border-[#DDE5E1] flex items-end gap-1 p-4">
                   {[40, 60, 45, 70, 50, 65, 55, 80, 75, 60, 90, 85].map((h, i) => (
                     <div
                       key={i}
-                      className="flex-1 rounded-t-sm transition-colors"
+                      className="flex-1 rounded-t-[2px] transition-all duration-500 hover:bg-[#7C9A8B] group relative"
                       style={{
                         height: `${h}%`,
-                        background: i >= 9 ? "#7C9A8B" : `rgba(175,200,184,${0.25 + i * 0.06})`
+                        background: i >= 9 ? "#7C9A8B" : `rgba(124, 154, 139, ${0.15 + i * 0.05})`
                       }}
-                    />
+                    >
+                       <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#2F3A35] text-white text-[8px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none font-bold">
+                         {h}%
+                       </div>
+                    </div>
                   ))}
                 </div>
               </Card>
 
               {/* Activity Feed */}
-              <div className="bg-white  border border-[#DDE5E1] shadow-[0_2px_12px_rgba(0,0,0,0.04)] h-full overflow-hidden">
-                <div className="p-5 border-b border-[#DDE5E1]">
-                  <h3 className="text-sm font-semibold text-[#2F3A35] flex items-center gap-2">
+              <div className="card-wellness bg-white h-[400px] sm:h-auto overflow-hidden flex flex-col">
+                <div className="p-6 border-b border-[#DDE5E1] bg-white">
+                  <h3 className="text-[11px] font-bold text-[#2F3A35] uppercase tracking-[0.2em] flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-[#7C9A8B]" /> Recent Activity
                   </h3>
                 </div>
-                <div className="h-[320px] overflow-hidden relative p-5 pt-0">
-                  <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-white pointer-events-none" />
+                <div className="flex-1 overflow-hidden relative p-6 pt-0">
+                  <div className="absolute inset-x-0 bottom-0 h-16 z-10 bg-linear-to-t from-white to-transparent pointer-events-none" />
                   <ActivityFeed minimal={true} />
                 </div>
               </div>
@@ -294,10 +289,10 @@ export function DashboardOverview() {
 
           {/* Data Visualization Section */}
           <section>
-            <div className="bg-white  border border-[#DDE5E1] shadow-[0_2px_12px_rgba(0,0,0,0.04)] p-7">
-              <div className="flex flex-col gap-1 mb-6">
-                <h2 className="text-lg font-semibold text-[#2F3A35]">Project Analytics</h2>
-                <p className="text-[11px] text-[#8A9E96] font-medium uppercase tracking-[0.12em]">Performance overview</p>
+            <div className="card-wellness bg-white p-6 lg:p-8">
+              <div className="flex flex-col gap-1 mb-8">
+                <h2 className="text-lg lg:text-xl font-bold text-[#2F3A35]">Project Analytics</h2>
+                <span className="text-[10px] text-[#8A9E96] font-bold uppercase tracking-[0.2em]">Heuristic Performance Monitor</span>
               </div>
               <DataVizSystem stats={data?.stats} />
             </div>
@@ -305,14 +300,13 @@ export function DashboardOverview() {
         </div>
 
         {/* Sidebar: AI & Health */}
-        <div className="lg:col-span-4 space-y-8">
-           <div className="sticky top-8 space-y-8">
+        <div className="lg:col-span-4 space-y-gap-section">
+           <div className="lg:sticky lg:top-8 space-y-gap-section">
               
               {/* AI Insight Panel */}
               <div className="transform transition-all duration-500 hover:translate-x-[-4px]">
                   <AIInsightPanel stats={data?.stats} />
               </div>
-
 
            </div>
         </div>
@@ -320,3 +314,4 @@ export function DashboardOverview() {
     </div>
   );
 }
+

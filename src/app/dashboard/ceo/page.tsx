@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { AnalyticsDashboard } from "@/components/system/AnalyticsDashboard";
 import { ExpansionInsights } from "@/components/system/ExpansionInsights";
@@ -38,27 +38,29 @@ const MOCK_SIGNALS = [
 ];
 
 export default function CEODashboardPage() {
-  const [data, setData] = useState(MOCK_ANALYTICS);
-
-  // In a real implementation, fetch data from analytics-engine via API
-  // useEffect(() => { ... }, []);
+  const [data] = useState(MOCK_ANALYTICS);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur-md">
-        <Container className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-6 w-6 rounded-md bg-slate-900" />
-            <h1 className="text-lg font-bold text-slate-900">CEO Command Center</h1>
+    <div className="space-y-6 sm:space-y-8 pb-20 fade-in-up">
+      {/* Header */}
+      <div className="relative overflow-hidden bg-white border border-border-soft p-6 sm:p-8 shadow-soft rounded-2xl lg:rounded-3xl">
+        <div className="absolute top-0 right-0 w-[200px] sm:w-[300px] h-[150px] sm:h-[200px] bg-sage-soft/10 blur-[60px] sm:blur-[80px] rounded-full pointer-events-none" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-md bg-sage-deep" />
+              <h1 className="text-sm font-bold text-sage-deep uppercase tracking-widest">CEO Command Center</h1>
+            </div>
+            <p className="text-xs text-text-muted">Executive intelligence. Real-time signals.</p>
           </div>
-          <div className="flex items-center gap-4 text-sm font-medium text-slate-500">
-            <span>Live Data</span>
+          <div className="flex items-center gap-3 text-xs font-bold text-text-muted uppercase tracking-widest">
+            <span>Live</span>
             <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           </div>
-        </Container>
-      </header>
+        </div>
+      </div>
 
-      <Container className="mt-8 space-y-8">
+      <Container className="space-y-6 sm:space-y-8 px-0!">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <KPICard label="MRR" value={`$${data.mrr.toLocaleString()}`} trend="+12%" />
@@ -71,7 +73,7 @@ export default function CEODashboardPage() {
 
         {/* Analytics Deep Dive */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-900">Product Health</h2>
+          <h2 className="text-base sm:text-xl font-bold text-sage-deep uppercase tracking-widest">Product Health</h2>
           <AnalyticsDashboard
             conversionFunnel={data.conversionFunnel}
             aiUsageDistribution={data.aiUsageDistribution}
@@ -86,12 +88,12 @@ function KPICard({ label, value, trend }: { label: string; value: string; trend:
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-border-soft bg-white p-5 sm:p-6 shadow-soft hover:shadow-medium hover:border-sage-soft transition-all duration-300"
     >
-      <p className="text-sm font-medium text-slate-500">{label}</p>
+      <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{label}</p>
       <div className="mt-2 flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-slate-900">{value}</span>
-        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600">
+        <span className="text-2xl sm:text-3xl font-bold text-sage-deep">{value}</span>
+        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-600 uppercase tracking-widest border border-emerald-100">
           {trend}
         </span>
       </div>
